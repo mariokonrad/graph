@@ -1,5 +1,5 @@
-#ifndef __GRAPH__PROPERTY_MAP__HPP__
-#define __GRAPH__PROPERTY_MAP__HPP__
+#ifndef __GRAPH__VERTEX_PROPERTY_MAP__HPP__
+#define __GRAPH__VERTEX_PROPERTY_MAP__HPP__
 
 #include "adj_matrix.hpp"
 #include <map>
@@ -9,7 +9,7 @@ namespace graph {
 /// This templated provides a property map for vertices
 /// of an adjacency matrix.
 template <typename T>
-class property_map
+class vertex_property_map
 {
 	private:
 		/// Type of the property map.
@@ -41,7 +41,7 @@ class property_map
 	public:
 		/// Constructor to initialize the property map according to
 		/// the specified adjacency matrix.
-		property_map(size_t n)
+		vertex_property_map(size_t n)
 			: n(n)
 		{}
 
