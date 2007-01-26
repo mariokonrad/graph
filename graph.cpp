@@ -3,25 +3,21 @@
 #include "graph_bfs.hpp"
 #include <cstdio>
 
-template <typename ADJ_MATRIX>
 class Printer
 {
 	public:
-		void operator()(const typename ADJ_MATRIX::vertex_t & v) const
+		void operator()(const graph::adj_matrix::vertex_t & v) const
 		{
-			printf(" %u ", v);
+			printf(" %lu ", v);
 		}
 };
-
 
 int main(int, char **)
 {
 	using namespace graph;
 
-	typedef adj_matrix<no_property> A;
-
-	Printer<A> p;
-	A m(5);
+	Printer p;
+	adj_matrix m(5);
 
 	m.add(0, 1);
 	m.add(0, 2);
@@ -39,7 +35,7 @@ int main(int, char **)
 	depth_first_search(m, 0, p);
 	printf("\n");
 
-	A::vertex_list v;
+	adj_matrix::vertex_list v;
 	printf("Topological sorted  : ");
 	if (topological_sort(m, v) == false) {
 		printf("FAILED: circle detected");

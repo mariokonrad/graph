@@ -6,20 +6,11 @@
 
 namespace graph {
 
-struct no_property {
-	no_property(size_t) {}
-	no_property(const no_property &) {}
-};
-
 /// This class represents a graph, implemented as adjacency matrix
 /// and provides simple accessors to the graph.
 /// It is possible to add unidirectional edges, but they get treated
 /// idividually.
 /// Properties for vertices and/or edges are not possible.
-template <
-	 typename VertexProperties = no_property
-	,typename EdgeProperties = no_property
-	>
 class adj_matrix
 {
 	public:
@@ -43,20 +34,24 @@ class adj_matrix
 	private:
 		Matrix m; // adjacency matrix
 		size_t n; // number of vertices
-		VertexProperties vp;
-		EdgeProperties ep;
+	private:
+		/// Returns the index of the edge within the list.
+		inline size_t edge_index(vertex_t from, vertex_t to) const
+		{
+			return from + to * n;
+		}
 	public:
 		/// Constructor to set the size of the matrix and initialize it
 		/// with no edges.
 		///
 		/// \param[in] n Size of the matrix.
 		adj_matrix(size_t n)
-			: m(n * n, 0), n(n), vp(n), ep(n)
+			: m(n * n, 0), n(n)
 		{}
 
 		/// Copy constructor. The entire matrix is copied.
 		adj_matrix(const adj_matrix & other)
-			: m(other.m), n(other.n), vp(other.vp), ep(other.ep)
+			: m(other.m), n(other.n)
 		{}
 
 		/// Returns the size of the matrix (number of vertices).
@@ -71,13 +66,11 @@ class adj_matrix
 		///
 		/// \param[in] from  Starting vertex of the edge.
 		/// \param[in] to    Ending vertex of the edge.
-		/// \param[in] bidir Flag to set unidirectional edges.
 		/// \return true on success, false otherwise
-		inline bool add(vertex_t from, vertex_t to, bool bidir = false)
+		inline bool add(vertex_t from, vertex_t to)
 		{
 			if ((from >= n) || (to >= n)) return false;
 			edge(from, to) = 1;
-			if (bidir) edge(to, from) = 1;
 			return true;
 		}
 
@@ -87,12 +80,10 @@ class adj_matrix
 		///
 		/// \param[in] from  Starting vertex of the edge.
 		/// \param[in] to    Ending vertex of the edge.
-		/// \param[in] bidir Flag to remove unidirectional edges.
-		inline bool remove(vertex_t from, vertex_t to, bool bidir = false)
+		inline bool remove(vertex_t from, vertex_t to)
 		{
 			if ((from >= n) || (to >= n)) return false;
 			edge(from, to) = 0;
-			if (bidir) edge(to, from) = 0;
 			return true;
 		}
 
@@ -104,7 +95,7 @@ class adj_matrix
 		/// Complexity: O(1)
 		inline int & edge(vertex_t from, vertex_t to)
 		{
-			return m[from + to * n];
+			return m[edge_index(from, to)];
 		}
 
 		/// Accessor for edges. This method provides read only access
@@ -113,7 +104,7 @@ class adj_matrix
 		/// Complexity: O(1)
 		inline int edge(vertex_t from, vertex_t to) const
 		{
-			return m[from + to * n];
+			return m[edge_index(from, to)];
 		}
 
 		/// Returns a list of edges defined by the matrix.

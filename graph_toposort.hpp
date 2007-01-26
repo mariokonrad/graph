@@ -12,29 +12,28 @@ namespace graph {
 /// \param[in]  m The adjacency matrix.
 /// \param[out] v The resulting vertex list.
 /// \return true=sorting successful, false=graph contains cycles.
-template <typename ADJ_MATRIX>
-bool topological_sort(const ADJ_MATRIX & m,
-	typename ADJ_MATRIX::vertex_list & v)
+bool topological_sort(const adj_matrix & m,
+	adj_matrix::vertex_list & v)
 {
 	// copy of matrix to work on (remove edges)
-	ADJ_MATRIX tm(m);
+	adj_matrix tm(m);
 
 	// all nodes with no incoming edges
-	typename ADJ_MATRIX::vertex_list Q;
-	for (typename ADJ_MATRIX::vertex_t i = 0; i < m.size(); ++i)
+	adj_matrix::vertex_list Q;
+	for (adj_matrix::vertex_t i = 0; i < m.size(); ++i)
 		if (tm.num_incoming(i) == 0)
 			Q.push_back(i);
 
 	// sort
 	while (Q.size() > 0) {
 		// remove node from Q
-		typename ADJ_MATRIX::vertex_t node = Q.front();
+		adj_matrix::vertex_t node = Q.front();
 		Q.erase(Q.begin());
 
 		// node is member of the result vector
 		v.push_back(node);
 
-		for (typename ADJ_MATRIX::vertex_t i = 0; i < tm.size(); ++i) {
+		for (adj_matrix::vertex_t i = 0; i < tm.size(); ++i) {
 			if (i == node) continue; // not to self
 			if (tm.edge(node, i)) {
 				tm.remove(node, i); // remove edge from graph

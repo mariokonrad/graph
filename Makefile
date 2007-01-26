@@ -3,6 +3,8 @@
 CXX=g++
 CC=g++
 
+CXXFLAGS=-O2 -Wall -ansi -pedantic
+
 .PHONY: all clean
 
 all : graph

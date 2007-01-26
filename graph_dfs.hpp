@@ -5,10 +5,10 @@
 
 namespace graph {
 
-template <class Visitor, typename ADJ_MATRIX>
-static void r_depth_first_search(const ADJ_MATRIX & adj,
-	typename ADJ_MATRIX::vertex_t id,
-	Visitor & v, typename ADJ_MATRIX::visited_list & visited)
+template <class Visitor>
+static void r_depth_first_search(const adj_matrix & adj,
+	adj_matrix::vertex_t id,
+	Visitor & v, adj_matrix::visited_list & visited)
 {
 	// guard
 	if (id >= adj.size()) return;
@@ -19,7 +19,7 @@ static void r_depth_first_search(const ADJ_MATRIX & adj,
 	v(id);
 
 	// search deeper
-	for (typename ADJ_MATRIX::vertex_t i = 0; i < adj.size(); ++i)
+	for (adj_matrix::vertex_t i = 0; i < adj.size(); ++i)
 		if ((i != id) && adj.edge(id, i))
 			r_depth_first_search(adj, i, v, visited);
 }
@@ -30,11 +30,11 @@ static void r_depth_first_search(const ADJ_MATRIX & adj,
 /// \param[in]  m       The adjacency matrix to visit.
 /// \param[in]  v       The starting vertex.
 /// \param[out] visitor Visitor which gets called for each found vertex.
-template <class Visitor, typename ADJ_MATRIX>
-void depth_first_search(const ADJ_MATRIX & m,
-	typename ADJ_MATRIX::vertex_t v, Visitor & visitor)
+template <class Visitor>
+void depth_first_search(const adj_matrix & m,
+	adj_matrix::vertex_t v, Visitor & visitor)
 {
-	typename ADJ_MATRIX::visited_list visited(m.size(), false);
+	adj_matrix::visited_list visited(m.size(), false);
 	r_depth_first_search(m, v, visitor, visited);
 }
 

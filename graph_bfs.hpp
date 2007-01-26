@@ -12,13 +12,13 @@ namespace graph {
 /// \param[in]  m       The adjacency matrix to visit.
 /// \param[in]  v       The starting vertex.
 /// \param[out] visitor Visitor which gets called for each found vertex.
-template <class Visitor, typename ADJ_MATRIX>
-void breadth_first_search(const ADJ_MATRIX & m,
-	typename ADJ_MATRIX::vertex_t v, Visitor & visitor)
+template <class Visitor>
+void breadth_first_search(const adj_matrix & m,
+	adj_matrix::vertex_t v, Visitor & visitor)
 {
-	std::queue<typename ADJ_MATRIX::vertex_t> q;
-	typename ADJ_MATRIX::visited_list gray(m.size(), false);
-	typename ADJ_MATRIX::visited_list black(m.size(), false);
+	std::queue<adj_matrix::vertex_t> q;
+	adj_matrix::visited_list gray(m.size(), false);
+	adj_matrix::visited_list black(m.size(), false);
 
 	// starting vertex is gray and put into queue
 	gray[v] = true;
@@ -26,10 +26,10 @@ void breadth_first_search(const ADJ_MATRIX & m,
 
 	while (q.size() > 0) {
 		// remove first in queue
-		typename ADJ_MATRIX::vertex_t u = q.front(); q.pop();
+		adj_matrix::vertex_t u = q.front(); q.pop();
 
 		// all white successors of u
-		for (typename ADJ_MATRIX::vertex_t i = 0; i < m.size(); ++i) {
+		for (adj_matrix::vertex_t i = 0; i < m.size(); ++i) {
 			if (!gray[i] && !black[i] && m.edge(u, i)) {
 				gray[i] = true;
 				q.push(i);
