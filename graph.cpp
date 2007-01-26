@@ -2,6 +2,7 @@
 #include "graph_toposort.hpp"
 #include "graph_bfs.hpp"
 #include <cstdio>
+#include "edge_property_map.hpp"
 
 class Printer
 {
@@ -43,6 +44,16 @@ int main(int, char **)
 		for_each(v.begin(), v.end(), p);
 	}
 	printf("\n");
+
+	typedef edge_property_map<float> EP;
+	EP ep(m.size());
+	ep.prop(0, 1) = 0.5;
+	ep.prop(0, 2) = 0.5;
+	ep.prop(0, 3) = 0.5;
+	ep.prop(1, 2) = 0.5;
+	ep.prop(1, 3) = 0.5;
+	ep.prop(2, 4) = 0.5;
+	ep.prop(3, 4) = 0.5;
 
 	return 0;
 }

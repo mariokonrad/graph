@@ -45,6 +45,12 @@ class vertex_property_map
 			: n(n)
 		{}
 
+		/// Constructor to initialize the property map according to
+		/// the specified adjacency matrix.
+		vertex_property_map(const vertex_property_map & other)
+			: p(other.p), n(other.n)
+		{}
+
 		/// Sets the value for the specified vertex.
 		/// This method checks boundaries.
 		///
