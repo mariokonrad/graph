@@ -1,19 +1,23 @@
-# Makefile
+.PHONY: all clean tags
 
 CXX=g++
-CC=g++
-
-CXXFLAGS=-O2 -Wall -ansi -pedantic
-
-.PHONY: all clean
+CXXFLAGS=-std=c++11 -O0 -Wall -Wextra -pedantic -ggdb
 
 all : graph
 
-graph : graph.o
+tags :
+	find . -type f -regextype posix-egrep -regex ".*\.(cpp|cc|cxx|c|hpp|hh|hxx|h)" > cscope.files
+	ctags -L cscope.files
+	cscope -b
 
-graph.o : graph.cpp *.hpp
+graph : graph.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 clean :
-	rm -f *.o *.exe graph *.stackdump *~
+	rm -f *.o *.exe *.stackdump *~
+	rm -f tags cscope.files cscope.out
+	rm -f graph
 
-# EOF
+%.o : %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+

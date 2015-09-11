@@ -3,16 +3,18 @@
 
 #include "adj_matrix.hpp"
 
-namespace graph {
+namespace graph
+{
 
 template <class Visitor>
-static void r_depth_first_search(const adj_matrix & adj,
-	adj_matrix::vertex_t id,
-	Visitor & v, adj_matrix::visited_list & visited)
+static void r_depth_first_search(const adj_matrix & adj, adj_matrix::vertex_t id, Visitor & v,
+	adj_matrix::visited_list & visited)
 {
 	// guard
-	if (id >= adj.size()) return;
-	if (visited[id]) return;
+	if (id >= adj.size())
+		return;
+	if (visited[id])
+		return;
 
 	// visit
 	visited[id] = true;
@@ -31,13 +33,11 @@ static void r_depth_first_search(const adj_matrix & adj,
 /// \param[in]  v       The starting vertex.
 /// \param[out] visitor Visitor which gets called for each found vertex.
 template <class Visitor>
-void depth_first_search(const adj_matrix & m,
-	adj_matrix::vertex_t v, Visitor & visitor)
+void depth_first_search(const adj_matrix & m, adj_matrix::vertex_t v, Visitor & visitor)
 {
 	adj_matrix::visited_list visited(m.size(), false);
 	r_depth_first_search(m, v, visitor, visited);
 }
-
 }
 
 #endif

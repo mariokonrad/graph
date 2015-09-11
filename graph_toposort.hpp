@@ -3,7 +3,8 @@
 
 #include "adj_matrix.hpp"
 
-namespace graph {
+namespace graph
+{
 
 /// This algorithm adds the vertices of the specified matrix
 /// to the vertex list in topological order. The graph must
@@ -12,8 +13,7 @@ namespace graph {
 /// \param[in]  m The adjacency matrix.
 /// \param[out] v The resulting vertex list.
 /// \return true=sorting successful, false=graph contains cycles.
-bool topological_sort(const adj_matrix & m,
-	adj_matrix::vertex_list & v)
+bool topological_sort(const adj_matrix & m, adj_matrix::vertex_list & v)
 {
 	// copy of matrix to work on (remove edges)
 	adj_matrix tm(m);
@@ -34,22 +34,24 @@ bool topological_sort(const adj_matrix & m,
 		v.push_back(node);
 
 		for (adj_matrix::vertex_t i = 0; i < tm.size(); ++i) {
-			if (i == node) continue; // not to self
+			if (i == node)
+				continue; // not to self
 			if (tm.edge(node, i)) {
 				tm.remove(node, i); // remove edge from graph
 
 				// has i other incoming edges?
-				if (tm.num_incoming(i) == 0) Q.push_back(i);
+				if (tm.num_incoming(i) == 0)
+					Q.push_back(i);
 			}
 		}
 	}
 
 	// remaining edges?
-	if (tm.num_edges() > 0) return false; // cycle!
+	if (tm.num_edges() > 0)
+		return false; // cycle!
 
 	return true;
 }
-
 }
 
 #endif
