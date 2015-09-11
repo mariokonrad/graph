@@ -10,12 +10,12 @@ namespace graph
 /// This algorithm searches the graph and calls the visitor for each
 /// vertex. The strategy is 'breadth first'.
 ///
-/// \param[in]  m The adjacency matrix to visit.
-/// \param[in]  v The starting vertex.
+/// \param[in] m The adjacency matrix to visit.
+/// \param[in] v The starting vertex.
 /// \param[out] visitor Visitor which gets called for each found vertex.
 ///
 template <class Visitor>
-void breadth_first_search(const adj_matrix & m, adj_matrix::vertex_t v, Visitor & visitor)
+Visitor breadth_first_search(const adj_matrix & m, adj_matrix::vertex_t v, Visitor visitor)
 {
 	std::queue<adj_matrix::vertex_t> q;
 	adj_matrix::visited_list gray(m.size(), false);
@@ -42,6 +42,7 @@ void breadth_first_search(const adj_matrix & m, adj_matrix::vertex_t v, Visitor 
 		black[u] = true;
 		visitor(u);
 	}
+	return visitor;
 }
 }
 

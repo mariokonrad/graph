@@ -1,4 +1,4 @@
-.PHONY: all clean tags
+.PHONY: all clean tags dependencies
 
 CXX=g++
 CXXFLAGS=-std=c++11 -O0 -Wall -Wextra -pedantic -ggdb
@@ -13,11 +13,18 @@ tags :
 graph : graph.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
+-include $(wildcard *.d)
+
 clean :
-	rm -f *.o *.exe *.stackdump *~
+	rm -f *.o *.d
 	rm -f tags cscope.files cscope.out
 	rm -f graph
 
+dependencies :
+	$(CXX) $(CXXFLAGS) -MM *.cpp
+
 %.o : %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+	@$(CXX) $(CXXFLAGS) -MM $< > $<.d
+
 

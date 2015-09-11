@@ -17,19 +17,13 @@ int main(int, char **)
 
 	adj_matrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 
-	{
-		std::cout << "Breadth First Search: ";
-		Printer p;
-		breadth_first_search(m, 0, p);
-		std::cout << "\n";
-	}
+	std::cout << "Breadth First Search: ";
+	breadth_first_search(m, 0, Printer{});
+	std::cout << "\n";
 
-	{
-		std::cout << "Depth First Search  : ";
-		Printer p;
-		depth_first_search(m, 0, p);
-		std::cout << "\n";
-	}
+	std::cout << "Depth First Search  : ";
+	depth_first_search(m, 0, Printer{});
+	std::cout << "\n";
 
 	{
 		adj_matrix::vertex_list v;
@@ -37,8 +31,7 @@ int main(int, char **)
 		if (topological_sort(m, v) == false) {
 			std::cout << "FAILED: circle detected";
 		} else {
-			Printer p;
-			for_each(v.begin(), v.end(), p);
+			for_each(v.begin(), v.end(), Printer{});
 		}
 		std::cout << "\n";
 	}
