@@ -49,17 +49,18 @@ private:
 public:
 	/// Constructor to initialize the property map according to
 	/// the specified adjacency matrix.
-	edge_property_map(size_type n)
-		: n(n)
+	edge_property_map(const adj_matrix & m)
+		: n(m.size())
 	{
 	}
 
-	/// Copy constructor.
-	edge_property_map(const edge_property_map & other)
-		: p(other.p)
-		, n(other.n)
-	{
-	}
+	edge_property_map(const edge_property_map &) = default;
+
+	edge_property_map(edge_property_map &&) = default;
+
+	edge_property_map & operator=(const edge_property_map &) = default;
+
+	edge_property_map & operator=(edge_property_map &&) = default;
 
 	/// Read/Write access to the property.
 	T & prop(const adj_matrix::vertex_t & from, const adj_matrix::vertex_t & to)

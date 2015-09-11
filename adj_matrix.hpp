@@ -42,7 +42,7 @@ private:
 
 private:
 	/// Returns the index of the edge within the list.
-	inline size_type edge_index(vertex_t from, vertex_t to) const { return from + to * n; }
+	size_type edge_index(vertex_t from, vertex_t to) const { return from + to * n; }
 
 public:
 	/// Constructor to set the size of the matrix and initialize it
@@ -55,6 +55,13 @@ public:
 	{
 	}
 
+	adj_matrix(size_type n, std::initializer_list<edge_t> edges)
+		: adj_matrix(n)
+	{
+		for (auto const & e : edges)
+			add(e.first, e.second);
+	}
+
 	/// Copy constructor. The entire matrix is copied.
 	adj_matrix(const adj_matrix &) = default;
 
@@ -65,7 +72,7 @@ public:
 	adj_matrix & operator=(adj_matrix &&) = default;
 
 	/// Returns the size of the matrix (number of vertices).
-	inline size_type size(void) const { return n; }
+	size_type size(void) const { return n; }
 
 	/// Adds an edge to the matrix.
 	///
@@ -74,7 +81,7 @@ public:
 	/// \param[in] from  Starting vertex of the edge.
 	/// \param[in] to    Ending vertex of the edge.
 	/// \return true on success, false otherwise
-	inline bool add(vertex_t from, vertex_t to)
+	bool add(vertex_t from, vertex_t to)
 	{
 		if ((from >= n) || (to >= n))
 			return false;
@@ -88,7 +95,7 @@ public:
 	///
 	/// \param[in] from  Starting vertex of the edge.
 	/// \param[in] to    Ending vertex of the edge.
-	inline bool remove(vertex_t from, vertex_t to)
+	bool remove(vertex_t from, vertex_t to)
 	{
 		if ((from >= n) || (to >= n))
 			return false;
@@ -102,13 +109,13 @@ public:
 	/// \note The call 'edge(a,b)=1' is the same as 'add(a,b)'.
 	///
 	/// Complexity: O(1)
-	inline int & edge(vertex_t from, vertex_t to) { return m[edge_index(from, to)]; }
+	int & edge(vertex_t from, vertex_t to) { return m[edge_index(from, to)]; }
 
 	/// Accessor for edges. This method provides read only access
 	/// to the matrix and is not boundary checked.
 	///
 	/// Complexity: O(1)
-	inline int edge(vertex_t from, vertex_t to) const { return m[edge_index(from, to)]; }
+	int edge(vertex_t from, vertex_t to) const { return m[edge_index(from, to)]; }
 
 	/// Returns a list of edges defined by the matrix.
 	///
@@ -158,7 +165,7 @@ public:
 	/// Returns the total number of edges within the matrix.
 	///
 	/// Complexity: O(n^2)
-	inline size_type num_edges(void) const { return std::count(m.begin(), m.end(), 1); }
+	size_type num_edges(void) const { return std::count(m.begin(), m.end(), 1); }
 };
 }
 

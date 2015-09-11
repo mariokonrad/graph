@@ -15,15 +15,7 @@ int main(int, char **)
 {
 	using namespace graph;
 
-	adj_matrix m(5);
-
-	m.add(0, 1);
-	m.add(0, 2);
-	m.add(0, 3);
-	m.add(1, 2);
-	m.add(1, 3);
-	m.add(2, 4);
-	m.add(3, 4);
+	adj_matrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 
 	{
 		std::cout << "Breadth First Search: ";
@@ -52,8 +44,7 @@ int main(int, char **)
 	}
 
 	{
-		using EP = edge_property_map<float>;
-		EP ep(m.size());
+		edge_property_map<float> ep(m);
 		ep.prop(0, 1) = 0.5;
 		ep.prop(0, 2) = 0.5;
 		ep.prop(0, 3) = 0.5;

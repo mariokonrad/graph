@@ -44,7 +44,7 @@ private:
 
 private:
 	PMap p; // the properties
-	size_t n; // size of the graph / number of vertices
+	size_type n; // size of the graph / number of vertices
 
 public:
 	/// Constructor to initialize the property map according to
@@ -56,11 +56,13 @@ public:
 
 	/// Constructor to initialize the property map according to
 	/// the specified adjacency matrix.
-	vertex_property_map(const vertex_property_map & other)
-		: p(other.p)
-		, n(other.n)
-	{
-	}
+	vertex_property_map(const vertex_property_map &) = default;
+
+	vertex_property_map(vertex_property_map &&) = default;
+
+	vertex_property_map & operator=(const vertex_property_map &) = default;
+
+	vertex_property_map & operator=(vertex_property_map &&) = default;
 
 	/// Sets the value for the specified vertex.
 	/// This method checks boundaries.
