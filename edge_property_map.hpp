@@ -11,9 +11,6 @@ namespace graph
 /// of an adjacency matrix.
 template <typename T> class edge_property_map
 {
-public:
-	using size_type = adj_matrix::size_type;
-
 private:
 	/// Type of the property map.
 	using PMap = std::map<adj_matrix::edge_t, T>;
@@ -44,7 +41,7 @@ private:
 
 private:
 	PMap p; // the properties
-	const size_type n; // size of the graph / number of vertices
+	const adj_matrix::vertex_t n; // size of the graph / number of vertices
 
 public:
 	/// Constructor to initialize the property map according to

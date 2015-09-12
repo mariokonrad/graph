@@ -21,10 +21,8 @@ namespace graph
 class adj_matrix
 {
 public:
-	using size_type = size_t;
-
 	/// Type of the vertex to identify it within the graph.
-	using vertex_t = size_type;
+	using vertex_t = int;
 
 	/// Representation of vertices within the matrix
 	using vertex_value_t = int;
@@ -74,26 +72,28 @@ private:
 
 private:
 	Matrix m; // adjacency matrix
-	const size_type n; // number of vertices
+	const vertex_t n; // number of vertices
 
 private:
 	/// Returns the index of the edge within the list.
-	size_type edge_index(vertex_t from, vertex_t to) const { return from + to * n; }
+	vertex_t edge_index(vertex_t from, vertex_t to) const { return from + to * n; }
 
 public:
 	/// Constructor to set the size of the matrix and initialize it
 	/// with no edges.
 	///
 	/// \param[in] n Size of the matrix.
-	adj_matrix(size_type n)
+	adj_matrix(vertex_t n)
 		: m(n * n, 0)
 		, n(n)
 	{
+		assert(n > 0);
 	}
 
-	adj_matrix(size_type n, std::initializer_list<edge_t> edges)
+	adj_matrix(vertex_t n, std::initializer_list<edge_t> edges)
 		: adj_matrix(n)
 	{
+		assert(n > 0);
 		for (auto const & e : edges)
 			add(e.from, e.to);
 	}
@@ -108,7 +108,7 @@ public:
 	adj_matrix & operator=(adj_matrix &&) = default;
 
 	/// Returns the size of the matrix (number of vertices).
-	size_type size() const { return n; }
+	vertex_t size() const { return n; }
 
 	/// Adds an edge to the matrix.
 	///
@@ -117,16 +117,17 @@ public:
 	/// \param[in] from Starting vertex of the edge.
 	/// \param[in] to Ending vertex of the edge.
 	/// \param[in] bidirectional Flag to add bidirectional edge
+	/// \param[in] value Value for the specified edge
 	/// \return true on success, false otherwise
 	///
 	/// \note This function performs boundary check.
-	bool add(vertex_t from, vertex_t to, bool bidirectional = false)
+	bool add(vertex_t from, vertex_t to, bool bidirectional = false, vertex_value_t value = 1)
 	{
 		if ((from >= n) || (to >= n))
 			return false;
-		edge(from, to) = 1;
+		edge(from, to) = value;
 		if (bidirectional)
-			edge(to, from) = 1;
+			edge(to, from) = value;
 		return true;
 	}
 
@@ -182,11 +183,11 @@ public:
 	/// is always 0.
 	///
 	/// Complexity: O(n)
-	size_type num_incoming(vertex_t to) const
+	vertex_t num_incoming(vertex_t to) const
 	{
 		if (to >= n)
 			return 0;
-		size_type cnt = 0;
+		vertex_t cnt = 0;
 		for (vertex_t i = 0; i < n; ++i)
 			if (edge(i, to))
 				++cnt;
@@ -198,11 +199,11 @@ public:
 	/// is always 0.
 	///
 	/// Complexity: O(n)
-	size_type num_outgoing(vertex_t from) const
+	vertex_t num_outgoing(vertex_t from) const
 	{
 		if (from >= n)
 			return 0;
-		size_type cnt = 0;
+		vertex_t cnt = 0;
 		for (vertex_t i = 0; i < n; ++i)
 			if (edge(from, i))
 				++cnt;
@@ -212,7 +213,7 @@ public:
 	/// Returns the total number of edges within the matrix.
 	///
 	/// Complexity: O(n^2)
-	size_type num_edges() const { return std::count(m.begin(), m.end(), 1); }
+	vertex_t num_edges() const { return std::count(m.begin(), m.end(), 1); }
 };
 }
 

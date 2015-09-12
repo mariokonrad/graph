@@ -3,6 +3,7 @@
 #include "graph_dfs.hpp"
 #include "graph_toposort.hpp"
 #include "graph_bfs.hpp"
+#include "graph_mst.hpp"
 #include "edge_property_map.hpp"
 
 class Printer
@@ -49,6 +50,37 @@ int main(int, char **)
 		std::cout << "Edge Properties:\n";
 		for (auto const & edge : m.edges()) {
 			std::cout << "  " << edge.from << " -> " << edge.to << " : " << ep[edge] << "\n";
+		}
+	}
+
+	{
+		adj_matrix m1{4};
+		m1.add(0, 1, true, 2);
+		m1.add(0, 3, true, 1);
+		m1.add(1, 3, true, 2);
+		m1.add(2, 3, true, 3);
+
+		std::cout << "Minimum Spanning Tree (Prim):\n";
+		for (auto const & edge : graph::minimum_spanning_tree_prim(m1)) {
+			std::cout << "  " << edge.from << " -> " << edge.to << "\n";
+		}
+	}
+
+	{
+		adj_matrix m1{6};
+		m1.add(0, 1, true, 1);
+		m1.add(0, 3, true, 4);
+		m1.add(0, 4, true, 3);
+		m1.add(1, 3, true, 4);
+		m1.add(1, 4, true, 2);
+		m1.add(2, 4, true, 4);
+		m1.add(2, 5, true, 5);
+		m1.add(3, 4, true, 4);
+		m1.add(4, 5, true, 7);
+
+		std::cout << "Minimum Spanning Tree (Prim):\n";
+		for (auto const & edge : graph::minimum_spanning_tree_prim(m1)) {
+			std::cout << "  " << edge.from << " -> " << edge.to << "\n";
 		}
 	}
 
