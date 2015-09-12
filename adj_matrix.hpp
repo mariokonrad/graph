@@ -31,7 +31,7 @@ public:
 		const vertex_t from;
 		const vertex_t to;
 
-		explicit edge_t(vertex_t from, vertex_t to)
+		explicit edge_t(vertex_t from, vertex_t to) noexcept
 			: from(from)
 			, to(to)
 		{
@@ -43,6 +43,12 @@ public:
 		{
 			assert(v.size() == 2);
 		}
+
+		edge_t(const edge_t &) noexcept = default;
+		edge_t(edge_t &&) noexcept = default;
+
+		edge_t & operator=(const edge_t &) = default;
+		edge_t & operator=(edge_t &&) noexcept = default;
 
 		friend bool operator<(const edge_t & a, const edge_t & b)
 		{
