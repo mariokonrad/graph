@@ -60,6 +60,9 @@ public:
 	/// Container type for a list of vertices.
 	using vertex_list = std::vector<vertex_t>;
 
+	/// Container type for a list of vertices.
+	using vertex_value_list = std::vector<vertex_value_t>;
+
 	/// Container type for a list of edges.
 	using edge_list = std::vector<edge_t>;
 
@@ -164,6 +167,33 @@ public:
 	///
 	/// Complexity: O(1)
 	vertex_value_t edge(vertex_t from, vertex_t to) const { return m[edge_index(from, to)]; }
+
+	/// Returns a list of vertices. This function is for convinience only.
+	///
+	/// Complexity: O(n)
+	vertex_list vertices() const
+	{
+		vertex_list v(size());
+		for (vertex_t i = 0; i < n; ++i)
+			v[i] = i;
+		return v;
+	}
+
+	/// Returns a list of neighbors of v
+	///
+	/// Complexity: O(n)
+	vertex_list neighbors_of(vertex_t v) const
+	{
+		vertex_list result;
+		for (vertex_t to = 0; to < n; ++to) {
+			if (to != v) {
+				if (edge(v, to)) {
+					result.push_back(to);
+				}
+			}
+		}
+		return result;
+	}
 
 	/// Returns a list of edges defined by the matrix.
 	///
