@@ -38,13 +38,18 @@ int main(int, char **)
 
 	{
 		edge_property_map<float> ep(m);
-		ep.prop(0, 1) = 0.5;
-		ep.prop(0, 2) = 0.5;
-		ep.prop(0, 3) = 0.5;
-		ep.prop(1, 2) = 0.5;
+		ep.prop(0, 1) = 0.1;
+		ep.prop(0, 2) = 0.2;
+		ep.prop(0, 3) = 0.3;
+		ep.prop(1, 2) = 0.4;
 		ep.prop(1, 3) = 0.5;
-		ep.prop(2, 4) = 0.5;
-		ep.prop(3, 4) = 0.5;
+		ep.prop(2, 4) = 0.6;
+		ep.prop(3, 4) = 0.7;
+
+		std::cout << "Edge Properties:\n";
+		for (auto const & edge : m.edges()) {
+			std::cout << "  " << edge.from << " -> " << edge.to << " : " << ep[edge] << "\n";
+		}
 	}
 
 	return 0;

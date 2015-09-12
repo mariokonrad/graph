@@ -37,14 +37,14 @@ private:
 
 		void operator()(const typename PMap::value_type & v)
 		{
-			if (pred(v.second))
-				vec.push_back(v.first);
+			if (pred(v.to))
+				vec.push_back(v.from);
 		}
 	};
 
 private:
 	PMap p; // the properties
-	size_type n; // size of the graph / number of vertices
+	const size_type n; // size of the graph / number of vertices
 
 public:
 	/// Constructor to initialize the property map according to
@@ -65,13 +65,13 @@ public:
 	/// Read/Write access to the property.
 	T & prop(const adj_matrix::vertex_t & from, const adj_matrix::vertex_t & to)
 	{
-		return p[adj_matrix::edge_t(from, to)];
+		return p[adj_matrix::edge_t{from, to}];
 	}
 
 	/// Read access to the property.
 	const T & prop(const adj_matrix::vertex_t & from, const adj_matrix::vertex_t & to) const
 	{
-		return p[adj_matrix::edge_t(from, to)];
+		return p[adj_matrix::edge_t{from, to}];
 	}
 
 	/// Read/Write accessor for the the property of the specified

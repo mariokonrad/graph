@@ -37,20 +37,20 @@ private:
 
 		void operator()(const typename PMap::value_type & v)
 		{
-			if (pred(v.second))
-				vec.push_back(v.first);
+			if (pred(v.to))
+				vec.push_back(v.from);
 		}
 	};
 
 private:
 	PMap p; // the properties
-	size_type n; // size of the graph / number of vertices
+	const size_type n; // size of the graph / number of vertices
 
 public:
 	/// Constructor to initialize the property map according to
 	/// the specified adjacency matrix.
-	vertex_property_map(size_type n)
-		: n(n)
+	vertex_property_map(const adj_matrix & m)
+		: n(m.size())
 	{
 	}
 

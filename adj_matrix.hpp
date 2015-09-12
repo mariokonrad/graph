@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <cassert>
 
 namespace graph
 {
@@ -11,7 +12,12 @@ namespace graph
 /// and provides simple accessors to the graph.
 /// It is possible to add unidirectional edges, but they get treated
 /// idividually.
+///
 /// Properties for vertices and/or edges are not possible.
+///
+/// Once constructed, the size is constant. It is not possible to
+/// grow or shrink.
+///
 class adj_matrix
 {
 public:
@@ -21,7 +27,32 @@ public:
 	using vertex_t = size_type;
 
 	/// Type for the edge, connection two vertices.
-	using edge_t = std::pair<vertex_t, vertex_t>;
+	struct edge_t {
+		const vertex_t from;
+		const vertex_t to;
+
+		explicit edge_t(vertex_t from, vertex_t to)
+			: from(from)
+			, to(to)
+		{
+		}
+
+		edge_t(const std::initializer_list<vertex_t> v)
+			: from(*v.begin())
+			, to(*(v.begin()+1))
+		{
+			assert(v.size() == 2);
+		}
+
+		friend bool operator<(const edge_t & a, const edge_t & b)
+		{
+			if (a.from < b.from)
+				return true;
+			if (a.from == b.from)
+				return (a.to < b.to);
+			return false;
+		}
+	};
 
 	/// Container type for a list of vertices.
 	using vertex_list = std::vector<vertex_t>;
@@ -38,7 +69,7 @@ private:
 
 private:
 	Matrix m; // adjacency matrix
-	size_type n; // number of vertices
+	const size_type n; // number of vertices
 
 private:
 	/// Returns the index of the edge within the list.
@@ -59,7 +90,7 @@ public:
 		: adj_matrix(n)
 	{
 		for (auto const & e : edges)
-			add(e.first, e.second);
+			add(e.from, e.to);
 	}
 
 	/// Copy constructor. The entire matrix is copied.
@@ -126,7 +157,7 @@ public:
 		for (vertex_t from = 0; from < n; ++from)
 			for (vertex_t to = 0; to < n; ++to)
 				if (edge(from, to))
-					vec.push_back(edge_t(from, to));
+					vec.emplace_back(from, to);
 		return vec;
 	}
 
