@@ -22,14 +22,14 @@ private:
 	/// Template which supports the finding and collecting
 	/// of edges holding certain property (according to
 	/// the predicate).
-	template <class Predicate> class Collector
+	template <class Predicate> class collector
 	{
 	private:
 		adj_matrix::edge_list & vec;
 		const Predicate & pred;
 
 	public:
-		Collector(adj_matrix::edge_list & vec, const Predicate & pred)
+		collector(adj_matrix::edge_list & vec, const Predicate & pred)
 			: vec(vec)
 			, pred(pred)
 		{
@@ -90,7 +90,7 @@ public:
 	template <class Predicate>
 	void collect_if(adj_matrix::edge_list & vec, const Predicate & pred)
 	{
-		for_each(p.begin(), p.end(), Collector<Predicate>(vec, pred));
+		for_each(p.begin(), p.end(), collector<Predicate>(vec, pred));
 	}
 };
 }
