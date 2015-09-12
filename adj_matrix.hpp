@@ -26,20 +26,19 @@ public:
 	/// Type of the vertex to identify it within the graph.
 	using vertex_t = size_type;
 
+	/// Representation of vertices within the matrix
+	using vertex_value_t = int;
+
 	/// Type for the edge, connection two vertices.
 	struct edge_t {
 		const vertex_t from;
 		const vertex_t to;
 
-		explicit edge_t(vertex_t from, vertex_t to) noexcept
-			: from(from)
-			, to(to)
-		{
-		}
+		explicit edge_t(vertex_t from, vertex_t to) noexcept : from(from), to(to) {}
 
 		edge_t(const std::initializer_list<vertex_t> v)
 			: from(*v.begin())
-			, to(*(v.begin()+1))
+			, to(*(v.begin() + 1))
 		{
 			assert(v.size() == 2);
 		}
@@ -71,7 +70,7 @@ public:
 
 private:
 	/// Type for the matrix itself.
-	using Matrix = std::vector<int>;
+	using Matrix = std::vector<vertex_value_t>;
 
 private:
 	Matrix m; // adjacency matrix
@@ -109,20 +108,25 @@ public:
 	adj_matrix & operator=(adj_matrix &&) = default;
 
 	/// Returns the size of the matrix (number of vertices).
-	size_type size(void) const { return n; }
+	size_type size() const { return n; }
 
 	/// Adds an edge to the matrix.
 	///
 	/// Complexity: O(1)
 	///
-	/// \param[in] from  Starting vertex of the edge.
-	/// \param[in] to    Ending vertex of the edge.
+	/// \param[in] from Starting vertex of the edge.
+	/// \param[in] to Ending vertex of the edge.
+	/// \param[in] bidirectional Flag to add bidirectional edge
 	/// \return true on success, false otherwise
-	bool add(vertex_t from, vertex_t to)
+	///
+	/// \note This function performs boundary check.
+	bool add(vertex_t from, vertex_t to, bool bidirectional = false)
 	{
 		if ((from >= n) || (to >= n))
 			return false;
 		edge(from, to) = 1;
+		if (bidirectional)
+			edge(to, from) = 1;
 		return true;
 	}
 
@@ -130,13 +134,19 @@ public:
 	///
 	/// Complexity: O(1)
 	///
-	/// \param[in] from  Starting vertex of the edge.
-	/// \param[in] to    Ending vertex of the edge.
-	bool remove(vertex_t from, vertex_t to)
+	/// \param[in] from Starting vertex of the edge.
+	/// \param[in] bidirectional Flag to remove bidirectional edge
+	/// \param[in] to Ending vertex of the edge.
+	/// \return true on success, false otherwise
+	///
+	/// \note This function performs boundary check.
+	bool remove(vertex_t from, vertex_t to, bool bidirectional = false)
 	{
 		if ((from >= n) || (to >= n))
 			return false;
 		edge(from, to) = 0;
+		if (bidirectional)
+			edge(to, from) = 0;
 		return true;
 	}
 
@@ -146,13 +156,13 @@ public:
 	/// \note The call 'edge(a,b)=1' is the same as 'add(a,b)'.
 	///
 	/// Complexity: O(1)
-	int & edge(vertex_t from, vertex_t to) { return m[edge_index(from, to)]; }
+	vertex_value_t & edge(vertex_t from, vertex_t to) { return m[edge_index(from, to)]; }
 
 	/// Accessor for edges. This method provides read only access
 	/// to the matrix and is not boundary checked.
 	///
 	/// Complexity: O(1)
-	int edge(vertex_t from, vertex_t to) const { return m[edge_index(from, to)]; }
+	vertex_value_t edge(vertex_t from, vertex_t to) const { return m[edge_index(from, to)]; }
 
 	/// Returns a list of edges defined by the matrix.
 	///
@@ -202,7 +212,7 @@ public:
 	/// Returns the total number of edges within the matrix.
 	///
 	/// Complexity: O(n^2)
-	size_type num_edges(void) const { return std::count(m.begin(), m.end(), 1); }
+	size_type num_edges() const { return std::count(m.begin(), m.end(), 1); }
 };
 }
 
