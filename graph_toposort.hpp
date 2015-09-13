@@ -1,7 +1,7 @@
 #ifndef __GRAPH__GRAPH_TOPOSORT__HPP__
 #define __GRAPH__GRAPH_TOPOSORT__HPP__
 
-#include "adj_matrix.hpp"
+#include "adjmatrix.hpp"
 
 namespace graph
 {
@@ -13,27 +13,27 @@ namespace graph
 /// \param[in]  m The adjacency matrix.
 /// \param[out] v The resulting vertex list.
 /// \return true=sorting successful, false=graph contains cycles.
-bool topological_sort(const adj_matrix & m, adj_matrix::vertex_list & v)
+bool topological_sort(const adjmatrix & m, adjmatrix::vertex_list & v)
 {
 	// copy of matrix to work on (remove edges)
-	adj_matrix tm(m);
+	adjmatrix tm(m);
 
 	// all nodes with no incoming edges
-	adj_matrix::vertex_list Q;
-	for (adj_matrix::vertex_t i = 0; i < m.size(); ++i)
+	adjmatrix::vertex_list Q;
+	for (adjmatrix::vertex_t i = 0; i < m.size(); ++i)
 		if (tm.num_incoming(i) == 0)
 			Q.push_back(i);
 
 	// sort
 	while (Q.size() > 0) {
 		// remove node from Q
-		adj_matrix::vertex_t node = Q.front();
+		adjmatrix::vertex_t node = Q.front();
 		Q.erase(Q.begin());
 
 		// node is member of the result vector
 		v.push_back(node);
 
-		for (adj_matrix::vertex_t i = 0; i < tm.size(); ++i) {
+		for (adjmatrix::vertex_t i = 0; i < tm.size(); ++i) {
 			if (i == node)
 				continue; // not to self
 			if (tm.edge(node, i)) {

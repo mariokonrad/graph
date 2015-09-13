@@ -1,5 +1,5 @@
 #include <iostream>
-#include "adj_matrix.hpp"
+#include "adjmatrix.hpp"
 #include "graph_dfs.hpp"
 #include "graph_toposort.hpp"
 #include "graph_bfs.hpp"
@@ -10,13 +10,13 @@
 class Printer
 {
 public:
-	void operator()(const graph::adj_matrix::vertex_t & v) const { std::cout << " " << v; }
+	void operator()(const graph::adjmatrix::vertex_t & v) const { std::cout << " " << v; }
 };
 
 void test_bfs()
 {
 	using namespace graph;
-	adj_matrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	std::cout << "Breadth First Search: ";
 	breadth_first_search(m, 0, Printer{});
 	std::cout << "\n";
@@ -25,7 +25,7 @@ void test_bfs()
 void test_dfs()
 {
 	using namespace graph;
-	adj_matrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	std::cout << "Depth First Search  : ";
 	depth_first_search(m, 0, Printer{});
 	std::cout << "\n";
@@ -34,8 +34,8 @@ void test_dfs()
 void test_toposort()
 {
 	using namespace graph;
-	adj_matrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
-	adj_matrix::vertex_list v;
+	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+	adjmatrix::vertex_list v;
 	std::cout << "Topological sorted  : ";
 	if (topological_sort(m, v) == false) {
 		std::cout << "FAILED: circle detected";
@@ -48,7 +48,7 @@ void test_toposort()
 void test_edge_prop_map()
 {
 	using namespace graph;
-	adj_matrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	edge_property_map<float> ep(m);
 	ep[{0, 1}] = 0.1;
 	ep[{0, 2}] = 0.2;
@@ -69,7 +69,7 @@ void test_mst()
 	using namespace graph;
 
 	{
-		adj_matrix m{4};
+		adjmatrix m{4};
 		m.add(0, 1, true, 2);
 		m.add(0, 3, true, 1);
 		m.add(1, 3, true, 2);
@@ -82,7 +82,7 @@ void test_mst()
 	}
 
 	{
-		adj_matrix m{6};
+		adjmatrix m{6};
 		m.add(0, 1, true, 1);
 		m.add(0, 3, true, 4);
 		m.add(0, 4, true, 3);
@@ -103,7 +103,7 @@ void test_mst()
 void test_path()
 {
 	using namespace graph;
-	adj_matrix m{6};
+	adjmatrix m{6};
 	m.add(0, 1, true, 1);
 	m.add(0, 3, true, 4);
 	m.add(0, 4, true, 3);

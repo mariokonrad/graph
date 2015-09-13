@@ -2,7 +2,7 @@
 #define __GRAPH__GRAPH_BFS__HPP__
 
 #include <queue>
-#include "adj_matrix.hpp"
+#include "adjmatrix.hpp"
 
 namespace graph
 {
@@ -15,11 +15,11 @@ namespace graph
 /// \param[out] visitor Visitor which gets called for each found vertex.
 ///
 template <class Visitor>
-Visitor breadth_first_search(const adj_matrix & m, adj_matrix::vertex_t v, Visitor visitor)
+Visitor breadth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor visitor)
 {
-	std::queue<adj_matrix::vertex_t> q;
-	adj_matrix::visited_list gray(m.size(), false);
-	adj_matrix::visited_list black(m.size(), false);
+	std::queue<adjmatrix::vertex_t> q;
+	adjmatrix::visited_list gray(m.size(), false);
+	adjmatrix::visited_list black(m.size(), false);
 
 	// starting vertex is gray and put into queue
 	gray[v] = true;
@@ -27,11 +27,11 @@ Visitor breadth_first_search(const adj_matrix & m, adj_matrix::vertex_t v, Visit
 
 	while (q.size() > 0) {
 		// remove first in queue
-		adj_matrix::vertex_t u = q.front();
+		adjmatrix::vertex_t u = q.front();
 		q.pop();
 
 		// all white successors of u
-		for (adj_matrix::vertex_t i = 0; i < m.size(); ++i) {
+		for (adjmatrix::vertex_t i = 0; i < m.size(); ++i) {
 			if (!gray[i] && !black[i] && m.edge(u, i)) {
 				gray[i] = true;
 				q.push(i);

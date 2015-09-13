@@ -1,14 +1,14 @@
 #ifndef __GRAPH__GRAPH_DFS__HPP__
 #define __GRAPH__GRAPH_DFS__HPP__
 
-#include "adj_matrix.hpp"
+#include "adjmatrix.hpp"
 
 namespace graph
 {
 
 template <class Visitor>
-static void r_depth_first_search(const adj_matrix & adj, adj_matrix::vertex_t id,
-	Visitor & visitor, adj_matrix::visited_list & visited)
+static void r_depth_first_search(const adjmatrix & adj, adjmatrix::vertex_t id,
+	Visitor & visitor, adjmatrix::visited_list & visited)
 {
 	// guard
 	if (id >= adj.size())
@@ -21,7 +21,7 @@ static void r_depth_first_search(const adj_matrix & adj, adj_matrix::vertex_t id
 	visitor(id);
 
 	// search deeper
-	for (adj_matrix::vertex_t i = 0; i < adj.size(); ++i)
+	for (adjmatrix::vertex_t i = 0; i < adj.size(); ++i)
 		if ((i != id) && adj.edge(id, i))
 			r_depth_first_search(adj, i, visitor, visited);
 }
@@ -33,9 +33,9 @@ static void r_depth_first_search(const adj_matrix & adj, adj_matrix::vertex_t id
 /// \param[in] v The starting vertex.
 /// \param[out] visitor Visitor which gets called for each found vertex.
 template <class Visitor>
-Visitor depth_first_search(const adj_matrix & m, adj_matrix::vertex_t v, Visitor visitor)
+Visitor depth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor visitor)
 {
-	adj_matrix::visited_list visited(m.size(), false);
+	adjmatrix::visited_list visited(m.size(), false);
 	r_depth_first_search(m, v, visitor, visited);
 	return visitor;
 }

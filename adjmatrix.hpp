@@ -1,5 +1,5 @@
-#ifndef __GRAPH__ADJ_MATRIX__HPP__
-#define __GRAPH__ADJ_MATRIX__HPP__
+#ifndef __GRAPH__ADJMATRIX__HPP__
+#define __GRAPH__ADJMATRIX__HPP__
 
 #include <vector>
 #include <algorithm>
@@ -18,7 +18,7 @@ namespace graph
 /// Once constructed, the size is constant. It is not possible to
 /// grow or shrink.
 ///
-class adj_matrix
+class adjmatrix
 {
 public:
 	/// Type of the vertex to identify it within the graph.
@@ -86,29 +86,26 @@ public:
 	/// with no edges.
 	///
 	/// \param[in] n Size of the matrix.
-	adj_matrix(vertex_t n)
+	adjmatrix(vertex_t n)
 		: m(n * n, 0)
 		, n(n)
 	{
 		assert(n > 0);
 	}
 
-	adj_matrix(vertex_t n, std::initializer_list<edge_t> edges)
-		: adj_matrix(n)
+	adjmatrix(vertex_t n, std::initializer_list<edge_t> edges)
+		: adjmatrix(n)
 	{
 		assert(n > 0);
 		for (auto const & e : edges)
 			add(e.from, e.to);
 	}
 
-	/// Copy constructor. The entire matrix is copied.
-	adj_matrix(const adj_matrix &) = default;
+	adjmatrix(const adjmatrix &) = default;
+	adjmatrix(adjmatrix &&) = default;
 
-	adj_matrix(adj_matrix &&) = default;
-
-	adj_matrix & operator=(const adj_matrix &) = default;
-
-	adj_matrix & operator=(adj_matrix &&) = default;
+	adjmatrix & operator=(const adjmatrix &) = default;
+	adjmatrix & operator=(adjmatrix &&) = default;
 
 	/// Returns the size of the matrix (number of vertices).
 	vertex_t size() const { return n; }

@@ -3,7 +3,7 @@
 
 #include <map>
 #include <stdexcept>
-#include "adj_matrix.hpp"
+#include "adjmatrix.hpp"
 
 namespace graph
 {
@@ -22,13 +22,13 @@ private:
 	using PMap = std::map<Element, T>;
 
 private:
-	const adj_matrix::vertex_t n; // size of the graph / number of vertices
+	const adjmatrix::vertex_t n; // size of the graph / number of vertices
 	PMap properties; // the properties
 
 public:
 	/// Constructor to initialize the property map according to
 	/// the specified adjacency matrix.
-	property_map(const adj_matrix & m)
+	property_map(const adjmatrix & m)
 		: n(m.size())
 	{
 	}
@@ -86,8 +86,8 @@ public:
 };
 }
 
-template <class T> using edge_property_map = detail::property_map<T, adj_matrix::edge_list>;
-template <class T> using vertex_property_map = detail::property_map<T, adj_matrix::vertex_list>;
+template <class T> using edge_property_map = detail::property_map<T, adjmatrix::edge_list>;
+template <class T> using vertex_property_map = detail::property_map<T, adjmatrix::vertex_list>;
 }
 
 #endif
