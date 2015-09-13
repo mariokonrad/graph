@@ -5,7 +5,7 @@
 #include "graph_bfs.hpp"
 #include "graph_mst.hpp"
 #include "graph_path.hpp"
-#include "edge_property_map.hpp"
+#include "property_map.hpp"
 
 class Printer
 {
@@ -50,13 +50,13 @@ void test_edge_prop_map()
 	using namespace graph;
 	adj_matrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	edge_property_map<float> ep(m);
-	ep.prop(0, 1) = 0.1;
-	ep.prop(0, 2) = 0.2;
-	ep.prop(0, 3) = 0.3;
-	ep.prop(1, 2) = 0.4;
-	ep.prop(1, 3) = 0.5;
-	ep.prop(2, 4) = 0.6;
-	ep.prop(3, 4) = 0.7;
+	ep[{0, 1}] = 0.1;
+	ep[{0, 2}] = 0.2;
+	ep[{0, 3}] = 0.3;
+	ep[{1, 2}] = 0.4;
+	ep[{1, 3}] = 0.5;
+	ep[{2, 4}] = 0.6;
+	ep[{3, 4}] = 0.7;
 
 	std::cout << "Edge Properties:\n";
 	for (auto const & edge : m.edges()) {
