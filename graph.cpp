@@ -7,18 +7,12 @@
 #include "graph_path.hpp"
 #include "property_map.hpp"
 
-class Printer
-{
-public:
-	void operator()(const graph::adjmatrix::vertex_t & v) const { std::cout << " " << v; }
-};
-
 void test_bfs()
 {
 	using namespace graph;
 	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	std::cout << "Breadth First Search: ";
-	breadth_first_search(m, 0, Printer{});
+	breadth_first_search(m, 0, [](auto const & v){ std::cout << " " << v; });
 	std::cout << "\n";
 }
 
@@ -27,7 +21,7 @@ void test_dfs()
 	using namespace graph;
 	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	std::cout << "Depth First Search  : ";
-	depth_first_search(m, 0, Printer{});
+	depth_first_search(m, 0, [](auto const & v) { std::cout << " " << v; });
 	std::cout << "\n";
 }
 
@@ -36,11 +30,13 @@ void test_toposort()
 	using namespace graph;
 	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	adjmatrix::vertex_list v;
+	bool success;
+	std::tie(v, success) = topological_sort(m);
 	std::cout << "Topological sorted  : ";
-	if (topological_sort(m, v) == false) {
+	if (!success) {
 		std::cout << "FAILED: circle detected";
 	} else {
-		for_each(v.begin(), v.end(), Printer{});
+		for_each(v.begin(), v.end(), [](auto const & v) { std::cout << " " << v; });
 	}
 	std::cout << "\n";
 }

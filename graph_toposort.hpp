@@ -1,6 +1,7 @@
 #ifndef __GRAPH__GRAPH_TOPOSORT__HPP__
 #define __GRAPH__GRAPH_TOPOSORT__HPP__
 
+#include <tuple>
 #include "adjmatrix.hpp"
 
 namespace graph
@@ -10,10 +11,14 @@ namespace graph
 /// to the vertex list in topological order. The graph must
 /// be free of cycles to determine a topological order.
 ///
-/// \param[in]  m The adjacency matrix.
-/// \param[out] v The resulting vertex list.
-/// \return true=sorting successful, false=graph contains cycles.
-bool topological_sort(const adjmatrix & m, adjmatrix::vertex_list & v)
+/// Complexity: O(n^2)
+///
+/// \param[in] m The adjacency matrix.
+/// \return A tuple containing the list and a status which is:
+///   - \c true : sorting successful
+///   - \c false : graph contains cycles
+///
+std::tuple<adjmatrix::vertex_list, bool> topological_sort(const adjmatrix & m)
 {
 	// copy of matrix to work on (remove edges)
 	adjmatrix tm(m);
@@ -23,6 +28,8 @@ bool topological_sort(const adjmatrix & m, adjmatrix::vertex_list & v)
 	for (adjmatrix::vertex_t i = 0; i < m.size(); ++i)
 		if (tm.num_incoming(i) == 0)
 			Q.push_back(i);
+
+	adjmatrix::vertex_list v;
 
 	// sort
 	while (Q.size() > 0) {
@@ -48,9 +55,9 @@ bool topological_sort(const adjmatrix & m, adjmatrix::vertex_list & v)
 
 	// remaining edges?
 	if (tm.num_edges() > 0)
-		return false; // cycle!
+		return std::make_tuple(adjmatrix::vertex_list{}, false); // cycle!
 
-	return true;
+	return std::make_tuple(v, true);
 }
 }
 

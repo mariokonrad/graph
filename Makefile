@@ -1,7 +1,7 @@
 .PHONY: all clean tags dependencies
 
 CXX=g++
-CXXFLAGS=-std=c++11 -O0 -Wall -Wextra -pedantic -ggdb
+CXXFLAGS=-std=c++1y -O0 -Wall -Wextra -pedantic -ggdb
 
 all : graph
 

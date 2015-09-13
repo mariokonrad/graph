@@ -12,7 +12,8 @@ namespace graph
 ///
 /// \param[in] m The adjacency matrix to visit.
 /// \param[in] v The starting vertex.
-/// \param[out] visitor Visitor which gets called for each found vertex.
+/// \param[in] visitor Visitor which gets called for each found vertex.
+/// \return The visitor functor
 ///
 template <class Visitor>
 Visitor breadth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor visitor)
