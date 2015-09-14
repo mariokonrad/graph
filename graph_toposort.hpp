@@ -11,7 +11,7 @@ namespace graph
 /// to the vertex list in topological order. The graph must
 /// be free of cycles to determine a topological order.
 ///
-/// Complexity: O(n^2)
+/// Complexity: O(V + E)
 ///
 /// \param[in] m The adjacency matrix.
 /// \return A tuple containing the list and a status which is:
@@ -53,9 +53,9 @@ std::tuple<adjmatrix::vertex_list, bool> topological_sort(const adjmatrix & m)
 		}
 	}
 
-	// remaining edges?
+	// cycle / remaining edges?
 	if (tm.num_edges() > 0)
-		return std::make_tuple(adjmatrix::vertex_list{}, false); // cycle!
+		return std::make_tuple(adjmatrix::vertex_list{}, false);
 
 	return std::make_tuple(v, true);
 }
