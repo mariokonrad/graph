@@ -84,4 +84,17 @@ TEST(Test_adjmatrix, outgoing)
 	EXPECT_EQ(0u, m.outgoing(2).size());
 	EXPECT_EQ(0u, m.outgoing(3).size());
 }
+
+TEST(Test_adjmatrix, remove)
+{
+	graph::adjmatrix m{4, {{0, 1}, {0, 2}, {0, 3}, {1, 0}, {1, 2}}};
+
+	EXPECT_EQ(4, m.size());
+	EXPECT_EQ(5, m.count_edges());
+
+	m.remove({0,1});
+
+	EXPECT_EQ(4, m.size());
+	EXPECT_EQ(4, m.count_edges());
+}
 }

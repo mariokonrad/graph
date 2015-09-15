@@ -25,6 +25,8 @@ public:
 	/// Representation of vertices within the matrix
 	using vertex_value_t = int;
 
+	static constexpr vertex_value_t no_value = 0;
+
 	/// Type for the edge, connection two vertices.
 	struct edge_t {
 		const vertex_t from;
@@ -39,6 +41,8 @@ public:
 
 		edge_t & operator=(const edge_t &) = default;
 		edge_t & operator=(edge_t &&) noexcept = default;
+
+		edge_t reverse() const;
 
 		friend bool operator<(const edge_t & a, const edge_t & b);
 	};
@@ -60,7 +64,7 @@ private:
 	std::vector<vertex_value_t> m; // adjacency matrix
 
 private:
-	vertex_t edge_index(vertex_t from, vertex_t to) const noexcept;
+	vertex_t edge_index(edge_t e) const noexcept;
 
 public:
 	adjmatrix(vertex_t n);
@@ -75,12 +79,26 @@ public:
 	vertex_t size() const noexcept;
 	vertex_t count_edges() const noexcept;
 
-	bool add(vertex_t from, vertex_t to, bool bidirectional = false, vertex_value_t value = 1);
+	bool add(edge_t e, bool bidirectional = false, vertex_value_t value = 1);
+	bool add(vertex_t from, vertex_t to, bool bidirectional = false, vertex_value_t value = 1)
+	{
+		return add({from, to}, bidirectional, value);
+	}
 
-	bool remove(vertex_t from, vertex_t to, bool bidirectional = false);
+	bool remove(edge_t e, bool bidirectional = false);
+	bool remove(vertex_t from, vertex_t to, bool bidirectional = false)
+	{
+		return remove({from, to}, bidirectional);
+	}
 
-	vertex_value_t & edge(vertex_t from, vertex_t to);
-	vertex_value_t edge(vertex_t from, vertex_t to) const;
+	vertex_value_t & edge(edge_t e);
+	vertex_value_t edge(edge_t e) const;
+
+	vertex_value_t & edge(vertex_t from, vertex_t to) { return edge({from, to}); }
+	vertex_value_t edge(vertex_t from, vertex_t to) const { return edge({from, to}); }
+
+	vertex_value_t & operator[](edge_t e);
+	const vertex_value_t & operator[](edge_t e) const;
 
 	vertex_list_t vertices() const;
 	edge_list_t edges() const;
