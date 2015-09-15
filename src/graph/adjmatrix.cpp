@@ -151,36 +151,32 @@ adjmatrix::edge_list adjmatrix::edges() const
 	return vec;
 }
 
-/// Returns the number of incoming edges for the specified
-/// vertex. If a non-existant vertex ist specified the result
-/// is always 0.
+/// Returns a list of nodes from where an edge exists.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_t adjmatrix::num_incoming(vertex_t to) const
+adjmatrix::vertex_list adjmatrix::incoming(vertex_t to) const
 {
+	vertex_list v;
 	if (to >= n)
-		return 0;
-	vertex_t cnt = 0;
+		return v;
 	for (vertex_t i = 0; i < n; ++i)
 		if (edge(i, to))
-			++cnt;
-	return cnt;
+			v.push_back(i);
+	return v;
 }
 
-/// Returns the number of outgoing edges for the specified
-/// vertex. If a non-existant vertex ist specified the result
-/// is always 0.
+/// Returns a list of nodes to where an edge exists.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_t adjmatrix::num_outgoing(vertex_t from) const
+adjmatrix::vertex_list adjmatrix::outgoing(vertex_t from) const
 {
+	vertex_list v;
 	if (from >= n)
-		return 0;
-	vertex_t cnt = 0;
+		return v;
 	for (vertex_t i = 0; i < n; ++i)
 		if (edge(from, i))
-			++cnt;
-	return cnt;
+			v.push_back(from);
+	return v;
 }
 
 /// Returns the total number of edges within the matrix.

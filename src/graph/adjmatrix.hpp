@@ -90,8 +90,8 @@ public:
 
 	edge_list edges() const;
 
-	vertex_t num_incoming(vertex_t to) const;
-	vertex_t num_outgoing(vertex_t from) const;
+	vertex_list incoming(vertex_t to) const;
+	vertex_list outgoing(vertex_t from) const;
 
 	vertex_t num_edges() const noexcept;
 };
