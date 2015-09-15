@@ -8,6 +8,7 @@ add_executable(testrunner
 	graph/Test_adjmatrix.cpp
 	graph/Test_dfs.cpp
 	graph/Test_bfs.cpp
+	graph/Test_toposort.cpp
 	)
 
 target_link_libraries(testrunner

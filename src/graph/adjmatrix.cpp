@@ -7,12 +7,12 @@ namespace graph
 
 constexpr adjmatrix::vertex_value_t adjmatrix::no_value;
 
-bool operator<(const adjmatrix::edge_t & a, const adjmatrix::edge_t & b)
+bool adjmatrix::edge_t::operator<(const adjmatrix::edge_t & other) const
 {
-	if (a.from < b.from)
+	if (from < other.from)
 		return true;
-	if (a.from == b.from)
-		return (a.to < b.to);
+	if (from == other.from)
+		return (to < other.to);
 	return false;
 }
 

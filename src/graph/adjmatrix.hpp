@@ -44,7 +44,7 @@ public:
 
 		edge_t reverse() const;
 
-		friend bool operator<(const edge_t & a, const edge_t & b);
+		bool operator<(const edge_t & other) const;
 	};
 
 	/// Container type for a list of vertices.
@@ -107,8 +107,6 @@ public:
 	vertex_list_t incoming(vertex_t to) const;
 	vertex_list_t outgoing(vertex_t from) const;
 };
-
-bool operator<(const adjmatrix::edge_t & a, const adjmatrix::edge_t & b);
 }
 
 #endif
