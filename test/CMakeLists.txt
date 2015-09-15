@@ -9,6 +9,9 @@ add_executable(testrunner
 	graph/Test_dfs.cpp
 	graph/Test_bfs.cpp
 	graph/Test_toposort.cpp
+	graph/Test_mst.cpp
+	graph/Test_dot.cpp
+	graph/Test_path.cpp
 	)
 
 target_link_libraries(testrunner

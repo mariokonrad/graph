@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <graph/adjmatrix.hpp>
 #include <graph/dfs.hpp>
 #include <graph/toposort.hpp>
