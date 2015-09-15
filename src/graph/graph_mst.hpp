@@ -2,7 +2,8 @@
 #define __GRAPH__GRAPH_MST__HPP__
 
 #include <limits>
-#include "adjmatrix.hpp"
+#include <algorithm>
+#include <graph/adjmatrix.hpp>
 
 namespace graph
 {

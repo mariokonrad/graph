@@ -2,8 +2,6 @@
 #define __GRAPH__ADJMATRIX__HPP__
 
 #include <vector>
-#include <algorithm>
-#include <cassert>
 
 namespace graph
 {
@@ -32,14 +30,9 @@ public:
 		const vertex_t from;
 		const vertex_t to;
 
-		explicit edge_t(vertex_t from, vertex_t to) noexcept : from(from), to(to) {}
+		explicit edge_t(vertex_t from, vertex_t to) noexcept;
 
-		edge_t(const std::initializer_list<vertex_t> v)
-			: from(*v.begin())
-			, to(*(v.begin() + 1))
-		{
-			assert(v.size() == 2);
-		}
+		edge_t(const std::initializer_list<vertex_t> v);
 
 		edge_t(const edge_t &) noexcept = default;
 		edge_t(edge_t &&) noexcept = default;
@@ -47,14 +40,7 @@ public:
 		edge_t & operator=(const edge_t &) = default;
 		edge_t & operator=(edge_t &&) noexcept = default;
 
-		friend bool operator<(const edge_t & a, const edge_t & b)
-		{
-			if (a.from < b.from)
-				return true;
-			if (a.from == b.from)
-				return (a.to < b.to);
-			return false;
-		}
+		friend bool operator<(const edge_t & a, const edge_t & b);
 	};
 
 	/// Container type for a list of vertices.
@@ -78,28 +64,11 @@ private:
 	const vertex_t n; // number of vertices
 
 private:
-	/// Returns the index of the edge within the list.
-	vertex_t edge_index(vertex_t from, vertex_t to) const { return from + to * n; }
+	vertex_t edge_index(vertex_t from, vertex_t to) const noexcept;
 
 public:
-	/// Constructor to set the size of the matrix and initialize it
-	/// with no edges.
-	///
-	/// \param[in] n Size of the matrix.
-	adjmatrix(vertex_t n)
-		: m(n * n, 0)
-		, n(n)
-	{
-		assert(n > 0);
-	}
-
-	adjmatrix(vertex_t n, std::initializer_list<edge_t> edges)
-		: adjmatrix(n)
-	{
-		assert(n > 0);
-		for (auto const & e : edges)
-			add(e.from, e.to);
-	}
+	adjmatrix(vertex_t n);
+	adjmatrix(vertex_t n, std::initializer_list<edge_t> edges);
 
 	adjmatrix(const adjmatrix &) = default;
 	adjmatrix(adjmatrix &&) = default;
@@ -107,141 +76,27 @@ public:
 	adjmatrix & operator=(const adjmatrix &) = default;
 	adjmatrix & operator=(adjmatrix &&) = default;
 
-	/// Returns the size of the matrix (number of vertices).
-	vertex_t size() const { return n; }
+	vertex_t size() const noexcept;
 
-	/// Adds an edge to the matrix.
-	///
-	/// Complexity: O(1)
-	///
-	/// \param[in] from Starting vertex of the edge.
-	/// \param[in] to Ending vertex of the edge.
-	/// \param[in] bidirectional Flag to add bidirectional edge
-	/// \param[in] value Value for the specified edge
-	/// \return true on success, false otherwise
-	///
-	/// \note This function performs boundary check.
-	bool add(vertex_t from, vertex_t to, bool bidirectional = false, vertex_value_t value = 1)
-	{
-		if ((from >= n) || (to >= n))
-			return false;
-		edge(from, to) = value;
-		if (bidirectional)
-			edge(to, from) = value;
-		return true;
-	}
+	bool add(vertex_t from, vertex_t to, bool bidirectional = false, vertex_value_t value = 1);
 
-	/// Removes an edge from the matrix.
-	///
-	/// Complexity: O(1)
-	///
-	/// \param[in] from Starting vertex of the edge.
-	/// \param[in] bidirectional Flag to remove bidirectional edge
-	/// \param[in] to Ending vertex of the edge.
-	/// \return true on success, false otherwise
-	///
-	/// \note This function performs boundary check.
-	bool remove(vertex_t from, vertex_t to, bool bidirectional = false)
-	{
-		if ((from >= n) || (to >= n))
-			return false;
-		edge(from, to) = 0;
-		if (bidirectional)
-			edge(to, from) = 0;
-		return true;
-	}
+	bool remove(vertex_t from, vertex_t to, bool bidirectional = false);
 
-	/// Accessor for edges. This method provides writing access to
-	/// the matrix and is not boundary checked.
-	///
-	/// \note The call 'edge(a,b)=1' is the same as 'add(a,b)'.
-	///
-	/// Complexity: O(1)
-	vertex_value_t & edge(vertex_t from, vertex_t to) { return m[edge_index(from, to)]; }
+	vertex_value_t & edge(vertex_t from, vertex_t to);
+	vertex_value_t edge(vertex_t from, vertex_t to) const;
 
-	/// Accessor for edges. This method provides read only access
-	/// to the matrix and is not boundary checked.
-	///
-	/// Complexity: O(1)
-	vertex_value_t edge(vertex_t from, vertex_t to) const { return m[edge_index(from, to)]; }
+	vertex_list vertices() const;
+	vertex_list neighbors_of(vertex_t v) const;
 
-	/// Returns a list of vertices. This function is for convinience only.
-	///
-	/// Complexity: O(n)
-	vertex_list vertices() const
-	{
-		vertex_list v(size());
-		for (vertex_t i = 0; i < n; ++i)
-			v[i] = i;
-		return v;
-	}
+	edge_list edges() const;
 
-	/// Returns a list of neighbors of v
-	///
-	/// Complexity: O(n)
-	vertex_list neighbors_of(vertex_t v) const
-	{
-		vertex_list result;
-		for (vertex_t to = 0; to < n; ++to) {
-			if (to != v) {
-				if (edge(v, to)) {
-					result.push_back(to);
-				}
-			}
-		}
-		return result;
-	}
+	vertex_t num_incoming(vertex_t to) const;
+	vertex_t num_outgoing(vertex_t from) const;
 
-	/// Returns a list of edges defined by the matrix.
-	///
-	/// Complexity: O(n^2)
-	edge_list edges() const
-	{
-		edge_list vec;
-		for (vertex_t from = 0; from < n; ++from)
-			for (vertex_t to = 0; to < n; ++to)
-				if (edge(from, to))
-					vec.emplace_back(from, to);
-		return vec;
-	}
-
-	/// Returns the number of incoming edges for the specified
-	/// vertex. If a non-existant vertex ist specified the result
-	/// is always 0.
-	///
-	/// Complexity: O(n)
-	vertex_t num_incoming(vertex_t to) const
-	{
-		if (to >= n)
-			return 0;
-		vertex_t cnt = 0;
-		for (vertex_t i = 0; i < n; ++i)
-			if (edge(i, to))
-				++cnt;
-		return cnt;
-	}
-
-	/// Returns the number of outgoing edges for the specified
-	/// vertex. If a non-existant vertex ist specified the result
-	/// is always 0.
-	///
-	/// Complexity: O(n)
-	vertex_t num_outgoing(vertex_t from) const
-	{
-		if (from >= n)
-			return 0;
-		vertex_t cnt = 0;
-		for (vertex_t i = 0; i < n; ++i)
-			if (edge(from, i))
-				++cnt;
-		return cnt;
-	}
-
-	/// Returns the total number of edges within the matrix.
-	///
-	/// Complexity: O(n^2)
-	vertex_t num_edges() const { return std::count(m.begin(), m.end(), 1); }
+	vertex_t num_edges() const noexcept;
 };
+
+bool operator<(const adjmatrix::edge_t & a, const adjmatrix::edge_t & b);
 }
 
 #endif

@@ -9,6 +9,7 @@ add_library(libgraph
 	graph/graph_toposort.hpp
 	graph/property_map.hpp
 	utils/priority_queue.hpp
+	graph/adjmatrix.cpp
 	graph/dot.cpp
 	)
 
