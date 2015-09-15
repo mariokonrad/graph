@@ -32,32 +32,18 @@ TEST_F(Test_dfs, empty_graph)
 TEST_F(Test_dfs, invalid_node)
 {
 	graph::adjmatrix::vertex_list_t v;
-	graph::depth_first_search(graph::adjmatrix{5}, 5, [&v](auto vertex) { v.push_back(vertex); });
+	graph::depth_first_search(
+		graph::adjmatrix{5}, 5, [&v](auto vertex) { v.push_back(vertex); });
 	EXPECT_EQ((graph::adjmatrix::vertex_list_t{}), v);
 }
 
-TEST_F(Test_dfs, graph_start_0)
-{
-	test_dfs(graph::adjmatrix::vertex_list_t{0, 1, 3, 2, 4}, 0);
-}
+TEST_F(Test_dfs, graph_start_0) { test_dfs(graph::adjmatrix::vertex_list_t{0, 1, 3, 2, 4}, 0); }
 
-TEST_F(Test_dfs, graph_start_1)
-{
-	test_dfs(graph::adjmatrix::vertex_list_t{1, 3, 0, 2, 4}, 1);
-}
+TEST_F(Test_dfs, graph_start_1) { test_dfs(graph::adjmatrix::vertex_list_t{1, 3, 0, 2, 4}, 1); }
 
-TEST_F(Test_dfs, graph_start_2)
-{
-	test_dfs(graph::adjmatrix::vertex_list_t{2, 3, 0, 1, 4}, 2);
-}
+TEST_F(Test_dfs, graph_start_2) { test_dfs(graph::adjmatrix::vertex_list_t{2, 3, 0, 1, 4}, 2); }
 
-TEST_F(Test_dfs, graph_start_3)
-{
-	test_dfs(graph::adjmatrix::vertex_list_t{3, 0, 1, 2, 4}, 3);
-}
+TEST_F(Test_dfs, graph_start_3) { test_dfs(graph::adjmatrix::vertex_list_t{3, 0, 1, 2, 4}, 3); }
 
-TEST_F(Test_dfs, graph_start_4)
-{
-	test_dfs(graph::adjmatrix::vertex_list_t{4}, 4);
-}
+TEST_F(Test_dfs, graph_start_4) { test_dfs(graph::adjmatrix::vertex_list_t{4}, 4); }
 }

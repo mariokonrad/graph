@@ -18,6 +18,9 @@ namespace graph
 template <class Visitor>
 Visitor breadth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor visitor)
 {
+	if (v >= m.size())
+		return visitor;
+
 	std::queue<adjmatrix::vertex_t> q;
 	adjmatrix::visited_list_t gray(m.size(), false);
 	adjmatrix::visited_list_t black(m.size(), false);

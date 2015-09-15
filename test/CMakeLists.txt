@@ -7,6 +7,7 @@ add_executable(testrunner
 	utils/Test_priority_queue.cpp
 	graph/Test_adjmatrix.cpp
 	graph/Test_dfs.cpp
+	graph/Test_bfs.cpp
 	)
 
 target_link_libraries(testrunner
