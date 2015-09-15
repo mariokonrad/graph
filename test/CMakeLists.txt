@@ -5,6 +5,7 @@ include_directories(
 
 add_executable(testrunner
 	utils/Test_priority_queue.cpp
+	graph/Test_adjmatrix.cpp
 	)
 
 target_link_libraries(testrunner
