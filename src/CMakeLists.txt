@@ -6,11 +6,11 @@ add_library(libgraph
 	graph/graph_dfs.hpp
 	graph/graph_mst.hpp
 	graph/graph_path.hpp
-	graph/graph_toposort.hpp
 	graph/property_map.hpp
 	utils/priority_queue.hpp
 	graph/adjmatrix.cpp
 	graph/dot.cpp
+	graph/graph_toposort.cpp
 	)
 
 install(
