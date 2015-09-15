@@ -27,6 +27,11 @@ public:
 
 	static constexpr vertex_value_t no_value = 0;
 
+	enum class edge_type {
+		uni, ///< unidirectional
+		bi ///< bidirectional
+	};
+
 	/// Type for the edge, connection two vertices.
 	struct edge_t {
 		const vertex_t from;
@@ -79,16 +84,17 @@ public:
 	vertex_t size() const noexcept;
 	vertex_t count_edges() const noexcept;
 
-	bool add(edge_t e, bool bidirectional = false, vertex_value_t value = 1);
-	bool add(vertex_t from, vertex_t to, bool bidirectional = false, vertex_value_t value = 1)
+	bool add(edge_t e, edge_type type = edge_type::uni, vertex_value_t value = 1);
+	bool add(
+		vertex_t from, vertex_t to, edge_type type = edge_type::uni, vertex_value_t value = 1)
 	{
-		return add({from, to}, bidirectional, value);
+		return add({from, to}, type, value);
 	}
 
-	bool remove(edge_t e, bool bidirectional = false);
-	bool remove(vertex_t from, vertex_t to, bool bidirectional = false)
+	bool remove(edge_t e, edge_type type = edge_type::uni);
+	bool remove(vertex_t from, vertex_t to, edge_type type = edge_type::uni)
 	{
-		return remove({from, to}, bidirectional);
+		return remove({from, to}, type);
 	}
 
 	vertex_value_t & edge(edge_t e);

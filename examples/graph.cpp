@@ -67,10 +67,10 @@ void test_mst()
 
 	{
 		adjmatrix m{4};
-		m.add(0, 1, true, 2);
-		m.add(0, 3, true, 1);
-		m.add(1, 3, true, 2);
-		m.add(2, 3, true, 3);
+		m.add(0, 1, adjmatrix::edge_type::bi, 2);
+		m.add(0, 3, adjmatrix::edge_type::bi, 1);
+		m.add(1, 3, adjmatrix::edge_type::bi, 2);
+		m.add(2, 3, adjmatrix::edge_type::bi, 3);
 
 		std::cout << "Minimum Spanning Tree (Prim):\n";
 		for (auto const & edge : graph::minimum_spanning_tree_prim(m)) {
@@ -80,15 +80,15 @@ void test_mst()
 
 	{
 		adjmatrix m{6};
-		m.add(0, 1, true, 1);
-		m.add(0, 3, true, 4);
-		m.add(0, 4, true, 3);
-		m.add(1, 3, true, 4);
-		m.add(1, 4, true, 2);
-		m.add(2, 4, true, 4);
-		m.add(2, 5, true, 5);
-		m.add(3, 4, true, 4);
-		m.add(4, 5, true, 7);
+		m.add(0, 1, adjmatrix::edge_type::bi, 1);
+		m.add(0, 3, adjmatrix::edge_type::bi, 4);
+		m.add(0, 4, adjmatrix::edge_type::bi, 3);
+		m.add(1, 3, adjmatrix::edge_type::bi, 4);
+		m.add(1, 4, adjmatrix::edge_type::bi, 2);
+		m.add(2, 4, adjmatrix::edge_type::bi, 4);
+		m.add(2, 5, adjmatrix::edge_type::bi, 5);
+		m.add(3, 4, adjmatrix::edge_type::bi, 4);
+		m.add(4, 5, adjmatrix::edge_type::bi, 7);
 
 		std::cout << "Minimum Spanning Tree (Prim):\n";
 		for (auto const & edge : graph::minimum_spanning_tree_prim(m)) {
@@ -101,15 +101,15 @@ void test_path()
 {
 	using namespace graph;
 	adjmatrix m{6};
-	m.add(0, 1, true, 1);
-	m.add(0, 3, true, 4);
-	m.add(0, 4, true, 3);
-	m.add(1, 3, true, 4);
-	m.add(1, 4, true, 2);
-	m.add(2, 4, true, 4);
-	m.add(2, 5, true, 5);
-	m.add(3, 4, true, 4);
-	m.add(4, 5, true, 7);
+	m.add(0, 1, adjmatrix::edge_type::bi, 1);
+	m.add(0, 3, adjmatrix::edge_type::bi, 4);
+	m.add(0, 4, adjmatrix::edge_type::bi, 3);
+	m.add(1, 3, adjmatrix::edge_type::bi, 4);
+	m.add(1, 4, adjmatrix::edge_type::bi, 2);
+	m.add(2, 4, adjmatrix::edge_type::bi, 4);
+	m.add(2, 5, adjmatrix::edge_type::bi, 5);
+	m.add(3, 4, adjmatrix::edge_type::bi, 4);
+	m.add(4, 5, adjmatrix::edge_type::bi, 7);
 
 	std::cout << "Shortest Path (Dijkstra):";
 	for (auto const & v : graph::shortest_path_dijkstra(m, 0, 2)) {

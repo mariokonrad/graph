@@ -11,42 +11,42 @@ public:
 	static graph::adjmatrix create_simple_uni()
 	{
 		graph::adjmatrix g{5};
-		g.add(0, 1, false, 1);
-		g.add(0, 2, false, 2);
-		g.add(1, 2, false, 2);
-		g.add(1, 3, false, 3);
-		g.add(2, 3, false, 1);
-		g.add(2, 4, false, 5);
-		g.add(3, 4, false, 1);
+		g.add(0, 1, graph::adjmatrix::edge_type::uni, 1);
+		g.add(0, 2, graph::adjmatrix::edge_type::uni, 2);
+		g.add(1, 2, graph::adjmatrix::edge_type::uni, 2);
+		g.add(1, 3, graph::adjmatrix::edge_type::uni, 3);
+		g.add(2, 3, graph::adjmatrix::edge_type::uni, 1);
+		g.add(2, 4, graph::adjmatrix::edge_type::uni, 5);
+		g.add(3, 4, graph::adjmatrix::edge_type::uni, 1);
 		return g;
 	}
 
 	static graph::adjmatrix create_cycle_uni()
 	{
 		graph::adjmatrix g{5};
-		g.add(0, 1, false, 1);
-		g.add(0, 2, false, 2);
-		g.add(1, 2, false, 2);
-		g.add(1, 3, false, 3);
-		g.add(2, 3, false, 1);
-		g.add(2, 4, false, 5);
-		g.add(3, 4, false, 1);
-		g.add(4, 0, false, 4);
-		g.add(3, 0, false, 2);
-		g.add(3, 1, false, 1);
+		g.add(0, 1, graph::adjmatrix::edge_type::uni, 1);
+		g.add(0, 2, graph::adjmatrix::edge_type::uni, 2);
+		g.add(1, 2, graph::adjmatrix::edge_type::uni, 2);
+		g.add(1, 3, graph::adjmatrix::edge_type::uni, 3);
+		g.add(2, 3, graph::adjmatrix::edge_type::uni, 1);
+		g.add(2, 4, graph::adjmatrix::edge_type::uni, 5);
+		g.add(3, 4, graph::adjmatrix::edge_type::uni, 1);
+		g.add(4, 0, graph::adjmatrix::edge_type::uni, 4);
+		g.add(3, 0, graph::adjmatrix::edge_type::uni, 2);
+		g.add(3, 1, graph::adjmatrix::edge_type::uni, 1);
 		return g;
 	}
 
 	static graph::adjmatrix create_simple_bi()
 	{
 		graph::adjmatrix g{5};
-		g.add(0, 1, true, 1);
-		g.add(0, 2, true, 2);
-		g.add(1, 2, true, 2);
-		g.add(1, 3, true, 3);
-		g.add(2, 3, true, 1);
-		g.add(2, 4, true, 5);
-		g.add(3, 4, true, 1);
+		g.add(0, 1, graph::adjmatrix::edge_type::bi, 1);
+		g.add(0, 2, graph::adjmatrix::edge_type::bi, 2);
+		g.add(1, 2, graph::adjmatrix::edge_type::bi, 2);
+		g.add(1, 3, graph::adjmatrix::edge_type::bi, 3);
+		g.add(2, 3, graph::adjmatrix::edge_type::bi, 1);
+		g.add(2, 4, graph::adjmatrix::edge_type::bi, 5);
+		g.add(3, 4, graph::adjmatrix::edge_type::bi, 1);
 		return g;
 	}
 };

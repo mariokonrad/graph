@@ -59,17 +59,17 @@ adjmatrix::vertex_t adjmatrix::size() const noexcept { return n; }
 /// Complexity: O(1)
 ///
 /// \param[in] e The edge to add
-/// \param[in] bidirectional Flag to add bidirectional edge
+/// \param[in] type Type of edge to add
 /// \param[in] value Value for the specified edge
 /// \return true on success, false otherwise
 ///
 /// \note This function performs boundary check.
-bool adjmatrix::add(edge_t e, bool bidirectional, vertex_value_t value)
+bool adjmatrix::add(edge_t e, edge_type type, vertex_value_t value)
 {
 	if ((e.from >= n) || (e.to >= n))
 		return false;
 	edge(e) = value;
-	if (bidirectional)
+	if (type == edge_type::bi)
 		edge(e.reverse()) = value;
 	return true;
 }
@@ -79,16 +79,16 @@ bool adjmatrix::add(edge_t e, bool bidirectional, vertex_value_t value)
 /// Complexity: O(1)
 ///
 /// \param[in] e Edge to remove
-/// \param[in] bidirectional Flag to remove bidirectional edge
+/// \param[in] type Type of edge to add
 /// \return true on success, false otherwise
 ///
 /// \note This function performs boundary check.
-bool adjmatrix::remove(edge_t e, bool bidirectional)
+bool adjmatrix::remove(edge_t e, edge_type type)
 {
 	if ((e.from >= n) || (e.to >= n))
 		return false;
 	edge(e) = no_value;
-	if (bidirectional)
+	if (type == edge_type::bi)
 		edge(e.reverse()) = no_value;
 	return true;
 }

@@ -45,7 +45,7 @@ TEST(Test_adjmatrix, add_edges_bidirectional)
 {
 	graph::adjmatrix m{2};
 
-	EXPECT_TRUE(m.add(0, 1, true));
+	EXPECT_TRUE(m.add(0, 1, graph::adjmatrix::edge_type::bi));
 	EXPECT_EQ(2, m.count_edges());
 }
 
