@@ -1,5 +1,5 @@
-#ifndef __GRAPH__GRAPH_BFS__HPP__
-#define __GRAPH__GRAPH_BFS__HPP__
+#ifndef __GRAPH__BFS__HPP__
+#define __GRAPH__BFS__HPP__
 
 #include <queue>
 #include "adjmatrix.hpp"

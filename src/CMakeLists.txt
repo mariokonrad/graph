@@ -2,26 +2,26 @@ cmake_minimum_required(VERSION 3.0)
 
 add_library(libgraph
 	graph/adjmatrix.hpp
-	graph/graph_bfs.hpp
-	graph/graph_dfs.hpp
-	graph/graph_mst.hpp
-	graph/graph_path.hpp
+	graph/bfs.hpp
+	graph/dfs.hpp
+	graph/mst.hpp
+	graph/path.hpp
 	graph/property_map.hpp
 	utils/priority_queue.hpp
 	graph/adjmatrix.cpp
 	graph/dot.cpp
-	graph/graph_toposort.cpp
+	graph/toposort.cpp
 	)
 
 install(
 	FILES
 		graph/adjmatrix.hpp
 		graph/dot.hpp
-		graph/graph_bfs.hpp
-		graph/graph_dfs.hpp
-		graph/graph_mst.hpp
-		graph/graph_path.hpp
-		graph/graph_toposort.hpp
+		graph/bfs.hpp
+		graph/dfs.hpp
+		graph/mst.hpp
+		graph/path.hpp
+		graph/toposort.hpp
 		graph/property_map.hpp
 	DESTINATION include/graph
 	)

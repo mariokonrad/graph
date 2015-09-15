@@ -1,5 +1,5 @@
-#ifndef __GRAPH__GRAPH_PATH__HPP__
-#define __GRAPH__GRAPH_PATH__HPP__
+#ifndef __GRAPH__PATH__HPP__
+#define __GRAPH__PATH__HPP__
 
 #include "adjmatrix.hpp"
 

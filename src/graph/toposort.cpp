@@ -1,4 +1,4 @@
-#include "graph_toposort.hpp"
+#include "toposort.hpp"
 
 namespace graph
 {

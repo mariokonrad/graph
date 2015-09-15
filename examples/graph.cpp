@@ -1,10 +1,10 @@
 #include <iostream>
 #include <graph/adjmatrix.hpp>
-#include <graph/graph_dfs.hpp>
-#include <graph/graph_toposort.hpp>
-#include <graph/graph_bfs.hpp>
-#include <graph/graph_mst.hpp>
-#include <graph/graph_path.hpp>
+#include <graph/dfs.hpp>
+#include <graph/toposort.hpp>
+#include <graph/bfs.hpp>
+#include <graph/mst.hpp>
+#include <graph/path.hpp>
 #include <graph/property_map.hpp>
 
 void test_bfs()

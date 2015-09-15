@@ -1,5 +1,5 @@
-#ifndef __GRAPH__GRAPH_TOPOSORT__HPP__
-#define __GRAPH__GRAPH_TOPOSORT__HPP__
+#ifndef __GRAPH__TOPOSORT__HPP__
+#define __GRAPH__TOPOSORT__HPP__
 
 #include <tuple>
 #include <graph/adjmatrix.hpp>

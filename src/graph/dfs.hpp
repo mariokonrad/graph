@@ -1,5 +1,5 @@
-#ifndef __GRAPH__GRAPH_DFS__HPP__
-#define __GRAPH__GRAPH_DFS__HPP__
+#ifndef __GRAPH__DFS__HPP__
+#define __GRAPH__DFS__HPP__
 
 #include "adjmatrix.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef __GRAPH__GRAPH_MST__HPP__
-#define __GRAPH__GRAPH_MST__HPP__
+#ifndef __GRAPH__MST__HPP__
+#define __GRAPH__MST__HPP__
 
 #include <limits>
 #include <algorithm>
