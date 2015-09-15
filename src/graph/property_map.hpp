@@ -72,8 +72,7 @@ public:
 	///
 	/// \param[in] pred Predicate to satisfy.
 	/// \return List of edges, satisfying the predicate.
-	template <class Predicate>
-	Container collect_if(Predicate pred) const
+	template <class Predicate> Container collect_if(Predicate pred) const
 	{
 		Container result;
 		for_each(properties.begin(), properties.end(),
@@ -86,8 +85,9 @@ public:
 };
 }
 
-template <class T> using edge_property_map = detail::property_map<T, adjmatrix::edge_list>;
-template <class T> using vertex_property_map = detail::property_map<T, adjmatrix::vertex_list>;
+template <class T> using edge_property_map = detail::property_map<T, adjmatrix::edge_list_t>;
+template <class T>
+using vertex_property_map = detail::property_map<T, adjmatrix::vertex_list_t>;
 }
 
 #endif

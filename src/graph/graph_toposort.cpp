@@ -13,18 +13,18 @@ namespace graph
 ///   - \c true : sorting successful
 ///   - \c false : graph contains cycles
 ///
-std::tuple<adjmatrix::vertex_list, bool> topological_sort(const adjmatrix & m)
+std::tuple<adjmatrix::vertex_list_t, bool> topological_sort(const adjmatrix & m)
 {
 	// copy of matrix to work on (remove edges)
 	adjmatrix tm(m);
 
 	// all nodes with no incoming edges
-	adjmatrix::vertex_list Q;
+	adjmatrix::vertex_list_t Q;
 	for (adjmatrix::vertex_t i = 0; i < m.size(); ++i)
 		if (tm.incoming(i).empty())
 			Q.push_back(i);
 
-	adjmatrix::vertex_list v;
+	adjmatrix::vertex_list_t v;
 
 	// sort
 	while (Q.size() > 0) {
@@ -49,8 +49,8 @@ std::tuple<adjmatrix::vertex_list, bool> topological_sort(const adjmatrix & m)
 	}
 
 	// cycle / remaining edges?
-	if (tm.num_edges() > 0)
-		return std::make_tuple(adjmatrix::vertex_list{}, false);
+	if (tm.count_edges() > 0)
+		return std::make_tuple(adjmatrix::vertex_list_t{}, false);
 
 	return std::make_tuple(v, true);
 }

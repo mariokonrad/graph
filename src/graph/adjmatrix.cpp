@@ -33,8 +33,8 @@ adjmatrix::vertex_t adjmatrix::edge_index(vertex_t from, vertex_t to) const noex
 ///
 /// \param[in] n Size of the matrix.
 adjmatrix::adjmatrix(vertex_t n)
-	: m(n * n, 0)
-	, n(n)
+	: n(n)
+	, m(n * n, 0)
 {
 	assert(n > 0);
 }
@@ -114,9 +114,9 @@ adjmatrix::vertex_value_t adjmatrix::edge(vertex_t from, vertex_t to) const
 /// Returns a list of vertices. This function is for convinience only.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list adjmatrix::vertices() const
+adjmatrix::vertex_list_t adjmatrix::vertices() const
 {
-	vertex_list v(size());
+	vertex_list_t v(size());
 	for (vertex_t i = 0; i < n; ++i)
 		v[i] = i;
 	return v;
@@ -125,9 +125,9 @@ adjmatrix::vertex_list adjmatrix::vertices() const
 /// Returns a list of neighbors of v
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list adjmatrix::neighbors_of(vertex_t v) const
+adjmatrix::vertex_list_t adjmatrix::neighbors_of(vertex_t v) const
 {
-	vertex_list result;
+	vertex_list_t result;
 	for (vertex_t to = 0; to < n; ++to) {
 		if (to != v) {
 			if (edge(v, to)) {
@@ -141,9 +141,9 @@ adjmatrix::vertex_list adjmatrix::neighbors_of(vertex_t v) const
 /// Returns a list of edges defined by the matrix.
 ///
 /// Complexity: O(n^2)
-adjmatrix::edge_list adjmatrix::edges() const
+adjmatrix::edge_list_t adjmatrix::edges() const
 {
-	edge_list vec;
+	edge_list_t vec;
 	for (vertex_t from = 0; from < n; ++from)
 		for (vertex_t to = 0; to < n; ++to)
 			if (edge(from, to))
@@ -154,9 +154,9 @@ adjmatrix::edge_list adjmatrix::edges() const
 /// Returns a list of nodes from where an edge exists.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list adjmatrix::incoming(vertex_t to) const
+adjmatrix::vertex_list_t adjmatrix::incoming(vertex_t to) const
 {
-	vertex_list v;
+	vertex_list_t v;
 	if (to >= n)
 		return v;
 	for (vertex_t i = 0; i < n; ++i)
@@ -168,9 +168,9 @@ adjmatrix::vertex_list adjmatrix::incoming(vertex_t to) const
 /// Returns a list of nodes to where an edge exists.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list adjmatrix::outgoing(vertex_t from) const
+adjmatrix::vertex_list_t adjmatrix::outgoing(vertex_t from) const
 {
-	vertex_list v;
+	vertex_list_t v;
 	if (from >= n)
 		return v;
 	for (vertex_t i = 0; i < n; ++i)
@@ -182,8 +182,8 @@ adjmatrix::vertex_list adjmatrix::outgoing(vertex_t from) const
 /// Returns the total number of edges within the matrix.
 ///
 /// Complexity: O(n^2)
-adjmatrix::vertex_t adjmatrix::num_edges() const noexcept
+adjmatrix::vertex_t adjmatrix::count_edges() const noexcept
 {
-	return std::count(m.begin(), m.end(), 1);
+	return std::count_if(m.begin(), m.end(), [](auto const v) { return v != 0; });
 }
 }

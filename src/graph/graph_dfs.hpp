@@ -10,7 +10,7 @@ namespace detail
 {
 template <class Visitor>
 static void recursive_dfs(const adjmatrix & adj, adjmatrix::vertex_t id,
-	Visitor & visitor, adjmatrix::visited_list & visited)
+	Visitor & visitor, adjmatrix::visited_list_t & visited)
 {
 	// guard
 	if (id >= adj.size())
@@ -40,7 +40,7 @@ static void recursive_dfs(const adjmatrix & adj, adjmatrix::vertex_t id,
 template <class Visitor>
 Visitor depth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor visitor)
 {
-	adjmatrix::visited_list visited(m.size(), false);
+	adjmatrix::visited_list_t visited(m.size(), false);
 	detail::recursive_dfs(m, v, visitor, visited);
 	return visitor;
 }

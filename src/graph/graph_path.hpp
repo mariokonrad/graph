@@ -17,23 +17,23 @@ namespace graph
 ///
 /// Complexity: O(n^2)
 ///
-adjmatrix::vertex_list shortest_path_dijkstra(
+adjmatrix::vertex_list_t shortest_path_dijkstra(
 	const adjmatrix & m, adjmatrix::vertex_t start, adjmatrix::vertex_t destination)
 {
 	using namespace std;
 
 	// prepare list of predecessors
 	const adjmatrix::vertex_t undefined = -1;
-	adjmatrix::vertex_list predecessor(m.size());
+	adjmatrix::vertex_list_t predecessor(m.size());
 	fill(begin(predecessor), end(predecessor), undefined);
 
 	// prepare list of distances
-	adjmatrix::vertex_value_list distance(m.size());
+	adjmatrix::vertex_value_list_t distance(m.size());
 	fill(begin(distance), end(distance), numeric_limits<adjmatrix::vertex_value_t>::max());
 	distance[start] = 0;
 
 	// prepare list of nodes to process
-	adjmatrix::vertex_list q;
+	adjmatrix::vertex_list_t q;
 	q.reserve(m.size());
 	for (auto const & vertex : m.vertices())
 		q.push_back(vertex);
@@ -46,7 +46,7 @@ adjmatrix::vertex_list shortest_path_dijkstra(
 		current = undefined;
 		adjmatrix::vertex_t index_q = undefined;
 		adjmatrix::vertex_value_t dist_min = numeric_limits<adjmatrix::vertex_value_t>::max();
-		for (adjmatrix::vertex_list::size_type i = 0; i < q.size(); ++i) {
+		for (adjmatrix::vertex_list_t::size_type i = 0; i < q.size(); ++i) {
 			adjmatrix::vertex_value_t dist_q = distance[q[i]];
 			if ((dist_q >= 0) && (dist_q < dist_min)) {
 				dist_min = dist_q;
@@ -72,7 +72,7 @@ adjmatrix::vertex_list shortest_path_dijkstra(
 	}
 
 	// process predecessors into path
-	adjmatrix::vertex_list path;
+	adjmatrix::vertex_list_t path;
 	while (current != undefined) {
 		path.push_back(current);
 		current = predecessor[current];

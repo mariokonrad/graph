@@ -29,7 +29,7 @@ void test_toposort()
 {
 	using namespace graph;
 	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
-	adjmatrix::vertex_list v;
+	adjmatrix::vertex_list_t v;
 	bool success;
 	std::tie(v, success) = topological_sort(m);
 	std::cout << "Topological sorted  : ";

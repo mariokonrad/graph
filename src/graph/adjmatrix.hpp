@@ -19,7 +19,7 @@ namespace graph
 class adjmatrix
 {
 public:
-	/// Type of the vertex to identify it within the graph.
+	/// Vertex identifier.
 	using vertex_t = int;
 
 	/// Representation of vertices within the matrix
@@ -44,24 +44,20 @@ public:
 	};
 
 	/// Container type for a list of vertices.
-	using vertex_list = std::vector<vertex_t>;
+	using vertex_list_t = std::vector<vertex_t>;
 
 	/// Container type for a list of vertices.
-	using vertex_value_list = std::vector<vertex_value_t>;
+	using vertex_value_list_t = std::vector<vertex_value_t>;
 
 	/// Container type for a list of edges.
-	using edge_list = std::vector<edge_t>;
+	using edge_list_t = std::vector<edge_t>;
 
 	/// Internally used to keep track of visited vertices.
-	using visited_list = std::vector<bool>;
+	using visited_list_t = std::vector<bool>;
 
 private:
-	/// Type for the matrix itself.
-	using Matrix = std::vector<vertex_value_t>;
-
-private:
-	Matrix m; // adjacency matrix
 	const vertex_t n; // number of vertices
+	std::vector<vertex_value_t> m; // adjacency matrix
 
 private:
 	vertex_t edge_index(vertex_t from, vertex_t to) const noexcept;
@@ -77,6 +73,7 @@ public:
 	adjmatrix & operator=(adjmatrix &&) = default;
 
 	vertex_t size() const noexcept;
+	vertex_t count_edges() const noexcept;
 
 	bool add(vertex_t from, vertex_t to, bool bidirectional = false, vertex_value_t value = 1);
 
@@ -85,15 +82,12 @@ public:
 	vertex_value_t & edge(vertex_t from, vertex_t to);
 	vertex_value_t edge(vertex_t from, vertex_t to) const;
 
-	vertex_list vertices() const;
-	vertex_list neighbors_of(vertex_t v) const;
+	vertex_list_t vertices() const;
+	edge_list_t edges() const;
 
-	edge_list edges() const;
-
-	vertex_list incoming(vertex_t to) const;
-	vertex_list outgoing(vertex_t from) const;
-
-	vertex_t num_edges() const noexcept;
+	vertex_list_t neighbors_of(vertex_t v) const;
+	vertex_list_t incoming(vertex_t to) const;
+	vertex_list_t outgoing(vertex_t from) const;
 };
 
 bool operator<(const adjmatrix::edge_t & a, const adjmatrix::edge_t & b);

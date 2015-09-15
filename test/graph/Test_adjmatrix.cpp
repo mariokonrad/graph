@@ -10,27 +10,27 @@ TEST(Test_adjmatrix, default_construction_status)
 {
 	const graph::adjmatrix m{4};
 	EXPECT_EQ(4, m.size());
-	EXPECT_EQ(0, m.num_edges());
+	EXPECT_EQ(0, m.count_edges());
 }
 
 TEST(Test_adjmatrix, construction_initializer_list)
 {
 	const graph::adjmatrix m{4, {{0, 1}, {0, 2}, {1, 3}}};
 	EXPECT_EQ(4, m.size());
-	EXPECT_EQ(3, m.num_edges());
+	EXPECT_EQ(3, m.count_edges());
 }
 
 TEST(Test_adjmatrix, add_edges)
 {
 	graph::adjmatrix m{4};
 
-	EXPECT_EQ(0, m.num_edges());
+	EXPECT_EQ(0, m.count_edges());
 	m.add(0, 1);
-	EXPECT_EQ(1, m.num_edges());
+	EXPECT_EQ(1, m.count_edges());
 	m.add(1, 2);
-	EXPECT_EQ(2, m.num_edges());
+	EXPECT_EQ(2, m.count_edges());
 	m.add(2, 3);
-	EXPECT_EQ(3, m.num_edges());
+	EXPECT_EQ(3, m.count_edges());
 }
 
 TEST(Test_adjmatrix, add_edges_out_of_range)
@@ -46,7 +46,7 @@ TEST(Test_adjmatrix, add_edges_bidirectional)
 	graph::adjmatrix m{2};
 
 	EXPECT_TRUE(m.add(0, 1, true));
-	EXPECT_EQ(2, m.num_edges());
+	EXPECT_EQ(2, m.count_edges());
 }
 
 TEST(Test_adjmatrix, neighbors_of)
