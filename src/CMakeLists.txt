@@ -9,12 +9,24 @@ add_library(libgraph
 	graph/graph_toposort.hpp
 	graph/property_map.hpp
 	utils/priority_queue.hpp
-	dummy.cpp
+	graph/dot.cpp
+	)
+
+install(
+	FILES
+		graph/adjmatrix.hpp
+		graph/dot.hpp
+		graph/graph_bfs.hpp
+		graph/graph_dfs.hpp
+		graph/graph_mst.hpp
+		graph/graph_path.hpp
+		graph/graph_toposort.hpp
+		graph/property_map.hpp
+	DESTINATION include/graph
 	)
 
 install(
 	DIRECTORY
-		graph
 		utils
 	DESTINATION include
 	)
