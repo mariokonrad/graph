@@ -12,6 +12,7 @@ add_executable(testrunner
 	graph/Test_mst.cpp
 	graph/Test_dot.cpp
 	graph/Test_path.cpp
+	graph/Test_property_map.cpp
 	)
 
 target_link_libraries(testrunner

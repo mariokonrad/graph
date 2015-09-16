@@ -49,6 +49,8 @@ public:
 
 		edge_t reverse() const;
 
+		bool operator==(const edge_t & other) const;
+		bool operator!=(const edge_t & other) const;
 		bool operator<(const edge_t & other) const;
 	};
 

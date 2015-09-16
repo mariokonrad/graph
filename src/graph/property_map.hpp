@@ -3,6 +3,7 @@
 
 #include <map>
 #include <stdexcept>
+#include <algorithm>
 #include "adjmatrix.hpp"
 
 namespace graph
@@ -18,12 +19,8 @@ public:
 	using Element = typename Container::value_type;
 
 private:
-	/// Type of the property map.
-	using PMap = std::map<Element, T>;
-
-private:
 	const adjmatrix::vertex_t n; // size of the graph / number of vertices
-	PMap properties; // the properties
+	std::map<Element, T> properties; // the properties
 
 public:
 	/// Constructor to initialize the property map according to
@@ -54,9 +51,10 @@ public:
 	/// the entry does not exist.
 	const T & prop(const Element & i) const
 	{
-		if (properties.find(i) == properties.end())
+		auto const it = properties.find(i);
+		if (it == properties.end())
 			throw std::out_of_range{"element not in map"};
-		return properties[i];
+		return it->second;
 	}
 
 	/// Read/Write accessor for the the property of the specified entry.
@@ -75,11 +73,10 @@ public:
 	template <class Predicate> Container collect_if(Predicate pred) const
 	{
 		Container result;
-		for_each(properties.begin(), properties.end(),
-			[&result, pred](const typename PMap::value_type & v) {
-				if (pred(v.to))
-					result.push_back(v);
-			});
+		for_each(properties.begin(), properties.end(), [&result, pred](const auto & v) {
+			if (pred(v.second))
+				result.push_back(v.first);
+		});
 		return result;
 	}
 };
