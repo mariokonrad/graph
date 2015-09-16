@@ -1,22 +1,27 @@
 #include "path.hpp"
 #include <algorithm>
+#include <iostream>
 
 namespace graph
 {
 
 /// Finds and returns the shortest path from the start to the destination
-/// node within the specified graph.
-///
-/// The graph must have a shortest path. The edges within the graph
-/// must specify their length.
-/// @todo Add checks wheather or not a path is possible
+/// node within the specified graph. If the destination is not reachable,
+/// the second return value will indicate this with being \c false.
 ///
 /// This implementation is not optimized, also it is a rather naive implementation,
 /// but sufficient for demonstration.
 ///
 /// Complexity: O(n^2)
 ///
-adjmatrix::vertex_list_t shortest_path_dijkstra(
+/// \param[in] m The graph
+/// \param[in] start The staring node
+/// \param[in] destination The destination node
+/// \return A tuple with the following information:
+///   - list of vertices from start to destination (inclusive)
+///   - status about success, if false: destination not reachable
+///
+std::tuple<adjmatrix::vertex_list_t, bool> shortest_path_dijkstra(
 	const adjmatrix & m, adjmatrix::vertex_t start, adjmatrix::vertex_t destination)
 {
 	using namespace std;
@@ -53,8 +58,11 @@ adjmatrix::vertex_list_t shortest_path_dijkstra(
 				current = q[i];
 			}
 		}
+		if (index_q == undefined)
+			return std::make_tuple(adjmatrix::vertex_list_t{}, false);
 		q.erase(begin(q) + index_q);
 
+		// destination reached?
 		if (current == destination)
 			break;
 
@@ -78,6 +86,6 @@ adjmatrix::vertex_list_t shortest_path_dijkstra(
 	}
 	reverse(begin(path), end(path));
 
-	return path;
+	return std::make_tuple(path, true);
 }
 }
