@@ -60,13 +60,45 @@ std::tie(v, has_cycle) = topological_sort(g);
 ~~~~~
 
 
+
+Requirements
+------------
+
+This chapter describes the requirements in order to build the library.
+Tools and their versions are listed below, newer/older/other tools
+(i.e. compilers, etc.) may work, but not tested.
+
+Compiler which supports C++14:
+- GCC 4.9.2
+- GCC 5.1.0
+- Clang 3.6
+- Clang 3.7
+
+Tools needed to build the library:
+- cmake 3.0
+
+Tools needed to develop the library:
+- git
+- clang-format 3.7
+
+Tools needed to build the documentation:
+- doxygen
+- graphviz
+
+Optional used for development:
+- lcov / genhtml, c++filt
+- cppcheck
+- clang-analyze (3.7 or newer)
+- ctags, cscope
+
+
+
 License
 -------
 
 See file [LICENSE](LICENSE)
 
 (BSD)
-
 
 	Copyright (c) 2015, Mario Konrad
 	All rights reserved.
