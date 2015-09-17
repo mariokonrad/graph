@@ -1,6 +1,8 @@
 graph
 =====
 
+[![Build Status](https://travis-ci.org/mariokonrad/graph.svg?branch=master)](https://travis-ci.org/mariokonrad/graph)
+
 Copyright (c) 2015 Mario Konrad (mario.konrad@gmx.net)
 
 
