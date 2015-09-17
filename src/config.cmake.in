@@ -1,4 +1,4 @@
 @PACKAGE_INIT@
 
-set_and_check(libgraph_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
+set_and_check(graph_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
 

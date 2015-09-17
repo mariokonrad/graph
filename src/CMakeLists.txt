@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-add_library(libgraph
+add_library(graph
 	graph/bfs.hpp
 	graph/dfs.hpp
 	graph/property_map.hpp
@@ -10,6 +10,17 @@ add_library(libgraph
 	graph/toposort.cpp
 	graph/path.cpp
 	graph/mst.cpp
+	)
+
+set_target_properties(graph
+	PROPERTIES VERSION "${PROJECT_VERSION}"
+	SOVERSION "${PROJECT_VERSION}"
+	)
+
+install(
+	TARGETS graph
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
 	)
 
 install(

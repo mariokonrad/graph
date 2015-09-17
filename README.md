@@ -1,5 +1,5 @@
-libgraph
-========
+graph
+=====
 
 Copyright (c) 2015 Mario Konrad (mario.konrad@gmx.net)
 
@@ -9,6 +9,10 @@ Abstract
 
 Small C++ library for graphs represented as adjecent matrix and related
 algorithms.
+
+Yes, there are already implementations for this, for example boost::graph.
+This library is not only to have fun with the stuff, but also to have
+solution with less dependencies.
 
 
 
@@ -90,6 +94,39 @@ Optional used for development:
 - cppcheck
 - clang-analyze (3.7 or newer)
 - ctags, cscope
+
+
+
+Build
+-----
+
+Build library (with examples) and test it:
+
+~~~~~
+mkdir build
+cd build
+cmake ..
+make -j 8
+make unittest
+~~~~~
+
+Build documentation:
+
+~~~~~
+mkdir build
+cd build
+cmake ..
+make doc
+~~~~~
+
+Build for code coverage:
+
+~~~~~
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Coverage ..
+make coverage
+~~~~~
 
 
 

@@ -16,7 +16,7 @@ add_executable(testrunner
 	)
 
 target_link_libraries(testrunner
-	libgraph
+	graph
 	gmock
 	pthread
 	)

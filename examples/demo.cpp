@@ -73,7 +73,7 @@ void test_mst()
 		m.add(2, 3, adjmatrix::edge_type::bi, 3);
 
 		std::cout << "Minimum Spanning Tree (Prim):\n";
-		for (auto const & edge : graph::minimum_spanning_tree_prim(m)) {
+		for (auto const & edge : minimum_spanning_tree_prim(m)) {
 			std::cout << "  " << edge.from << " -> " << edge.to << "\n";
 		}
 	}
@@ -91,7 +91,7 @@ void test_mst()
 		m.add(4, 5, adjmatrix::edge_type::bi, 7);
 
 		std::cout << "Minimum Spanning Tree (Prim):\n";
-		for (auto const & edge : graph::minimum_spanning_tree_prim(m)) {
+		for (auto const & edge : minimum_spanning_tree_prim(m)) {
 			std::cout << "  " << edge.from << " -> " << edge.to << "\n";
 		}
 	}
@@ -112,7 +112,7 @@ void test_path()
 	m.add(4, 5, adjmatrix::edge_type::bi, 7);
 
 	std::cout << "Shortest Path (Dijkstra):";
-	for (auto const & v : graph::shortest_path_dijkstra(m, 0, 2)) {
+	for (auto const & v : std::get<0>(shortest_path_dijkstra(m, 0, 2))) {
 		std::cout << " " << v;
 	}
 	std::cout << "\n";
