@@ -15,7 +15,8 @@ std::string dot(const adjmatrix & m)
 	std::ostringstream s;
 
 	s << "digraph G {\n";
-	s << "\t" << "node [shape=circle];\n";
+	s << "\t"
+	  << "node [shape=circle];\n";
 	for (auto const & e : m.edges()) {
 		s << "\t" << e.from << " -> " << e.to << ";\n";
 	}
@@ -23,5 +24,4 @@ std::string dot(const adjmatrix & m)
 
 	return s.str();
 }
-
 }

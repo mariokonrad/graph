@@ -28,7 +28,7 @@ std::tuple<adjmatrix::vertex_list_t, bool> shortest_path_dijkstra(
 	using namespace std;
 
 	// prepare list of predecessors
-	const adjmatrix::vertex_t undefined = -1;
+	constexpr adjmatrix::vertex_t undefined = -1;
 	adjmatrix::vertex_list_t predecessor(m.size());
 	fill(begin(predecessor), end(predecessor), undefined);
 

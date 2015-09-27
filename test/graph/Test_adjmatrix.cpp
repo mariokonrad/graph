@@ -97,4 +97,13 @@ TEST(Test_adjmatrix, remove)
 	EXPECT_EQ(4, m.size());
 	EXPECT_EQ(4, m.count_edges());
 }
+
+TEST(Test_adjmatrix, vertices)
+{
+	graph::adjmatrix m{4};
+
+	const auto v = m.vertices();
+
+	EXPECT_EQ((graph::adjmatrix::vertex_list_t{0, 1, 2, 3}), v);
+}
 }

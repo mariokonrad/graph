@@ -139,8 +139,7 @@ const adjmatrix::vertex_value_t & adjmatrix::operator[](adjmatrix::edge_t e) con
 adjmatrix::vertex_list_t adjmatrix::vertices() const
 {
 	vertex_list_t v(size());
-	for (vertex_t i = 0; i < n; ++i)
-		v[i] = i;
+	std::iota(v.begin(), v.end(), 0);
 	return v;
 }
 

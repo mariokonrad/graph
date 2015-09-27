@@ -5,12 +5,11 @@
 
 namespace graph
 {
-
 namespace detail
 {
 template <class Visitor>
-static void recursive_dfs(const adjmatrix & adj, adjmatrix::vertex_t id,
-	Visitor & visitor, adjmatrix::visited_list_t & visited)
+static void recursive_dfs(const adjmatrix & adj, adjmatrix::vertex_t id, Visitor & visitor,
+	adjmatrix::visited_list_t & visited)
 {
 	// guard
 	if (id >= adj.size())

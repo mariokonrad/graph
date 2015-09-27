@@ -34,8 +34,7 @@ adjmatrix::edge_list_t minimum_spanning_tree_prim(const adjmatrix & m)
 
 	// setup queue of nodes to visit, initially all of them
 	adjmatrix::vertex_list_t q(m.size());
-	for (adjmatrix::vertex_t i = 0; i < m.size(); ++i)
-		q[i] = i;
+	std::iota(begin(q), end(q), 0);
 
 	// actual algorithm, start with the first node
 	cost[0] = 0;
