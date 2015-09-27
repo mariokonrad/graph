@@ -12,10 +12,7 @@ bool adjmatrix::edge_t::operator==(const edge_t & other) const
 	return (this == &other) || ((from == other.from) && (to == other.to));
 }
 
-bool adjmatrix::edge_t::operator!=(const edge_t & other) const
-{
-	return !(*this == other);
-}
+bool adjmatrix::edge_t::operator!=(const edge_t & other) const { return !(*this == other); }
 
 bool adjmatrix::edge_t::operator<(const adjmatrix::edge_t & other) const
 {
@@ -37,10 +34,7 @@ adjmatrix::edge_t::edge_t(const std::initializer_list<vertex_t> v)
 	assert(v.size() == 2);
 }
 
-adjmatrix::vertex_t adjmatrix::edge_index(edge_t e) const noexcept
-{
-	return e.from + e.to * n;
-}
+adjmatrix::vertex_t adjmatrix::edge_index(edge_t e) const noexcept { return e.from + e.to * n; }
 
 /// Constructor to set the size of the matrix and initialize it
 /// with no edges.
@@ -109,19 +103,13 @@ bool adjmatrix::remove(edge_t e, edge_type type)
 /// \note The call 'edge(e)=1' is the same as 'add(e)'.
 ///
 /// Complexity: O(1)
-adjmatrix::vertex_value_t & adjmatrix::edge(edge_t e)
-{
-	return m[edge_index(e)];
-}
+adjmatrix::vertex_value_t & adjmatrix::edge(edge_t e) { return m[edge_index(e)]; }
 
 /// Accessor for edges. This method provides read only access
 /// to the matrix and is not boundary checked.
 ///
 /// Complexity: O(1)
-adjmatrix::vertex_value_t adjmatrix::edge(edge_t e) const
-{
-	return m[edge_index(e)];
-}
+adjmatrix::vertex_value_t adjmatrix::edge(edge_t e) const { return m[edge_index(e)]; }
 
 adjmatrix::vertex_value_t & adjmatrix::operator[](adjmatrix::edge_t e)
 {

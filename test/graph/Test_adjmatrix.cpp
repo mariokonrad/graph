@@ -92,7 +92,7 @@ TEST(Test_adjmatrix, remove)
 	EXPECT_EQ(4, m.size());
 	EXPECT_EQ(5, m.count_edges());
 
-	m.remove({0,1});
+	m.remove({0, 1});
 
 	EXPECT_EQ(4, m.size());
 	EXPECT_EQ(4, m.count_edges());

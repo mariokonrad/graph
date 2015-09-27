@@ -129,8 +129,7 @@ public:
 	/// Constructs items in the queue.
 	///
 	/// Complexity: O(log n)
-	template <class... Args>
-	void emplace(Args&&... args)
+	template <class... Args> void emplace(Args &&... args)
 	{
 		data.emplace_back(std::forward<Args...>(args)...);
 		std::push_heap(std::begin(data), std::end(data), comp);
