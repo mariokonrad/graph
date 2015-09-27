@@ -13,6 +13,8 @@ namespace graph
 /// a quite naive implementation. For demonstration purposes
 /// sufficient.
 ///
+/// \todo Implement algorithm using priority queue
+///
 /// complexity: O(n^2)
 ///
 adjmatrix::edge_list_t minimum_spanning_tree_prim(const adjmatrix & m)

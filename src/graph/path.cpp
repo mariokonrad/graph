@@ -1,6 +1,5 @@
 #include "path.hpp"
 #include <algorithm>
-#include <iostream>
 
 namespace graph
 {
@@ -11,6 +10,8 @@ namespace graph
 ///
 /// This implementation is not optimized, also it is a rather naive implementation,
 /// but sufficient for demonstration.
+///
+/// \todo Implement algorithm using priority queue
 ///
 /// Complexity: O(n^2)
 ///
