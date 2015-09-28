@@ -15,7 +15,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	message(STATUS "Compiler settings for GNU")
 
 	if(ENABLE_PROFILING)
-		set(CXX_PROFILE_FLAGS "-pg")
+		set(CXX_PROFILE_FLAGS "-pg -fno-omit-frame-pointer")
 	endif()
 
 	set(GNU_CXX_WARNING_FLAGS "-Wall -Wextra -pedantic-errors")
