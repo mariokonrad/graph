@@ -20,7 +20,7 @@ install:
   - if [ "$CXX" = "clang++" ] ; then export CXX="clang++-3.6" CC="clang-3.6" ; fi
 
   # install a recent cmake
-  - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz
+  - curl -O https://cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz
   - tar -xf cmake-3.2.3-Linux-x86_64.tar.gz
   - rm -f cmake-3.2.3-Linux-x86_64.tar.gz
   - export PATH=${PWD}/cmake-3.2.3-Linux-x86_64/bin:${PATH}
