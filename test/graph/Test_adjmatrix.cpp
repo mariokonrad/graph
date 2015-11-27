@@ -45,7 +45,7 @@ TEST(Test_adjmatrix, add_edges_bidirectional)
 {
 	graph::adjmatrix m{2};
 
-	EXPECT_TRUE(m.add(0, 1, graph::adjmatrix::edge_type::bi));
+	EXPECT_TRUE(m.add(0, 1, graph::edge::type::bi));
 	EXPECT_EQ(2, m.count_edges());
 }
 
@@ -104,6 +104,6 @@ TEST(Test_adjmatrix, vertices)
 
 	const auto v = m.vertices();
 
-	EXPECT_EQ((graph::adjmatrix::vertex_list_t{0, 1, 2, 3}), v);
+	EXPECT_EQ((graph::adjmatrix::vertex_list{0, 1, 2, 3}), v);
 }
 }

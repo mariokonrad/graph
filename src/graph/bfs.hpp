@@ -6,7 +6,6 @@
 
 namespace graph
 {
-
 /// This algorithm searches the graph and calls the visitor for each
 /// vertex. The strategy is 'breadth first'.
 ///
@@ -16,14 +15,14 @@ namespace graph
 /// \return The visitor functor
 ///
 template <class Visitor>
-Visitor breadth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor visitor)
+Visitor breadth_first_search(const adjmatrix & m, vertex v, Visitor visitor)
 {
 	if (v >= m.size())
 		return visitor;
 
-	std::queue<adjmatrix::vertex_t> q;
-	adjmatrix::visited_list_t gray(m.size(), false);
-	adjmatrix::visited_list_t black(m.size(), false);
+	std::queue<vertex> q;
+	adjmatrix::visited_list gray(m.size(), false);
+	adjmatrix::visited_list black(m.size(), false);
 
 	// starting vertex is gray and put into queue
 	gray[v] = true;
@@ -31,12 +30,12 @@ Visitor breadth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor
 
 	while (q.size() > 0) {
 		// remove first in queue
-		adjmatrix::vertex_t u = q.front();
+		vertex u = q.front();
 		q.pop();
 
 		// all white successors of u
-		for (adjmatrix::vertex_t i = 0; i < m.size(); ++i) {
-			if (!gray[i] && !black[i] && m.edge(u, i)) {
+		for (vertex i = 0; i < m.size(); ++i) {
+			if (!gray[i] && !black[i] && m.get(u, i)) {
 				gray[i] = true;
 				q.push(i);
 			}
@@ -44,7 +43,7 @@ Visitor breadth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor
 
 		// visit and mark vertex
 		black[u] = true;
-		visitor(u);
+		visitor(m, u);
 	}
 	return visitor;
 }

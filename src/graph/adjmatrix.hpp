@@ -5,6 +5,40 @@
 
 namespace graph
 {
+/// Vertex identifier. Also used as index within adjacency matrices.
+using vertex = int;
+
+/// Type for the edge, connection two vertices.
+struct edge {
+	enum class type {
+		uni, ///< unidirectional
+		bi ///< bidirectional
+	};
+
+	const vertex from;
+	const vertex to;
+
+	constexpr edge(vertex from, vertex to) noexcept : from(from), to(to) {}
+
+	edge(const std::initializer_list<vertex> v);
+
+	edge(const edge &) noexcept = default;
+	edge(edge &&) noexcept = default;
+
+	edge & operator=(const edge &) = default;
+	edge & operator=(edge &&) noexcept = default;
+
+	constexpr edge reverse() const { return edge(to, from); }
+
+	bool operator<(const edge & other) const;
+};
+
+constexpr bool operator==(const edge & a, const edge & b)
+{
+	return (&a == &b) || ((a.from == b.from) && (a.to == b.to));
+}
+
+constexpr bool operator!=(const edge & a, const edge & b) { return !(a == b); }
 
 /// This class represents a graph, implemented as adjacency matrix
 /// and provides simple accessors to the graph.
@@ -19,63 +53,38 @@ namespace graph
 class adjmatrix
 {
 public:
-	/// Vertex identifier.
-	using vertex_t = int;
+	using size_type = int;
 
 	/// Representation of vertices within the matrix
-	using vertex_value_t = int;
-
-	static constexpr vertex_value_t no_value = 0;
-
-	enum class edge_type {
-		uni, ///< unidirectional
-		bi ///< bidirectional
-	};
-
-	/// Type for the edge, connection two vertices.
-	struct edge_t {
-		const vertex_t from;
-		const vertex_t to;
-
-		explicit edge_t(vertex_t from, vertex_t to) noexcept;
-
-		edge_t(const std::initializer_list<vertex_t> v);
-
-		edge_t(const edge_t &) noexcept = default;
-		edge_t(edge_t &&) noexcept = default;
-
-		edge_t & operator=(const edge_t &) = default;
-		edge_t & operator=(edge_t &&) noexcept = default;
-
-		edge_t reverse() const;
-
-		bool operator==(const edge_t & other) const;
-		bool operator!=(const edge_t & other) const;
-		bool operator<(const edge_t & other) const;
-	};
+	using value_type = int;
 
 	/// Container type for a list of vertices.
-	using vertex_list_t = std::vector<vertex_t>;
+	using vertex_list = std::vector<vertex>;
 
 	/// Container type for a list of vertices.
-	using vertex_value_list_t = std::vector<vertex_value_t>;
+	using value_list = std::vector<value_type>;
 
 	/// Container type for a list of edges.
-	using edge_list_t = std::vector<edge_t>;
+	using edge_list = std::vector<edge>;
 
 	/// Internally used to keep track of visited vertices.
-	using visited_list_t = std::vector<bool>;
+	using visited_list = std::vector<bool>;
+
+	/// Indicates no edge between vertices.
+	static constexpr value_type no_value = 0;
+
+	/// Indicates an edge between vertices.
+	static constexpr value_type edge_value = 1;
 
 private:
-	const vertex_t n; // number of vertices
-	std::vector<vertex_value_t> m; // adjacency matrix
+	const size_type n; // number of vertices
+	std::vector<value_type> m; // adjacency matrix
 
-private:
-	vertex_t edge_index(edge_t e) const noexcept;
+	vertex edge_index(edge e) const noexcept;
 
 public:
-	adjmatrix(vertex_t n);
-	adjmatrix(vertex_t n, std::initializer_list<edge_t> edges);
+	adjmatrix(size_type n);
+	adjmatrix(size_type n, std::initializer_list<edge> edges);
 
 	adjmatrix(const adjmatrix &) = default;
 	adjmatrix(adjmatrix &&) = default;
@@ -83,37 +92,40 @@ public:
 	adjmatrix & operator=(const adjmatrix &) = default;
 	adjmatrix & operator=(adjmatrix &&) = default;
 
-	vertex_t size() const noexcept;
-	vertex_t count_edges() const noexcept;
+	size_type size() const noexcept;
+	size_type count_edges() const noexcept;
 
-	bool add(edge_t e, edge_type type = edge_type::uni, vertex_value_t value = 1);
-	bool add(
-		vertex_t from, vertex_t to, edge_type type = edge_type::uni, vertex_value_t value = 1)
+	bool add(edge e, edge::type type = edge::type::uni, value_type value = edge_value);
+	bool add(vertex from, vertex to, edge::type type = edge::type::uni,
+		value_type value = edge_value)
 	{
 		return add({from, to}, type, value);
 	}
 
-	bool remove(edge_t e, edge_type type = edge_type::uni);
-	bool remove(vertex_t from, vertex_t to, edge_type type = edge_type::uni)
+	bool remove(edge e, edge::type type = edge::type::uni);
+	bool remove(vertex from, vertex to, edge::type type = edge::type::uni)
 	{
 		return remove({from, to}, type);
 	}
 
-	vertex_value_t & edge(edge_t e);
-	vertex_value_t edge(edge_t e) const;
+	value_type & get(edge e);
+	value_type get(edge e) const;
 
-	vertex_value_t & edge(vertex_t from, vertex_t to) { return edge({from, to}); }
-	vertex_value_t edge(vertex_t from, vertex_t to) const { return edge({from, to}); }
+	/// convenience function
+	value_type & get(vertex from, vertex to) { return get({from, to}); }
 
-	vertex_value_t & operator[](edge_t e);
-	const vertex_value_t & operator[](edge_t e) const;
+	/// convenience function
+	value_type get(vertex from, vertex to) const { return get({from, to}); }
 
-	vertex_list_t vertices() const;
-	edge_list_t edges() const;
+	value_type & operator[](edge e);
+	value_type operator[](edge e) const;
 
-	vertex_list_t neighbors_of(vertex_t v) const;
-	vertex_list_t incoming(vertex_t to) const;
-	vertex_list_t outgoing(vertex_t from) const;
+	vertex_list vertices() const;
+	edge_list edges() const;
+
+	vertex_list neighbors_of(vertex v) const;
+	vertex_list incoming(vertex to) const;
+	vertex_list outgoing(vertex from) const;
 };
 }
 

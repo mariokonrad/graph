@@ -17,23 +17,23 @@ namespace graph
 ///
 /// complexity: O(n^2)
 ///
-adjmatrix::edge_list_t minimum_spanning_tree_prim(const adjmatrix & m)
+adjmatrix::edge_list minimum_spanning_tree_prim(const adjmatrix & m)
 {
-	static const adjmatrix::vertex_t invalid = -1;
+	static const vertex invalid = -1;
 
-	adjmatrix::edge_list_t tree;
+	adjmatrix::edge_list tree;
 	tree.reserve(m.size());
 
 	// cost (weight) of an edge to a certain node
-	std::vector<adjmatrix::vertex_value_t> cost(m.size());
-	fill(begin(cost), end(cost), std::numeric_limits<adjmatrix::vertex_value_t>::max());
+	std::vector<adjmatrix::value_type> cost(m.size());
+	fill(begin(cost), end(cost), std::numeric_limits<adjmatrix::value_type>::max());
 
 	// node from which a certain node is reachable by cost[]
-	adjmatrix::vertex_list_t low_cost_edge(m.size());
+	adjmatrix::vertex_list low_cost_edge(m.size());
 	fill(begin(low_cost_edge), end(low_cost_edge), invalid);
 
 	// setup queue of nodes to visit, initially all of them
-	adjmatrix::vertex_list_t q(m.size());
+	adjmatrix::vertex_list q(m.size());
 	std::iota(begin(q), end(q), 0);
 
 	// actual algorithm, start with the first node
@@ -41,12 +41,11 @@ adjmatrix::edge_list_t minimum_spanning_tree_prim(const adjmatrix & m)
 	while (!q.empty()) {
 
 		// find node with minimal (valid) cost from still available nodes q
-		adjmatrix::vertex_t current = invalid;
-		adjmatrix::vertex_t index_q = invalid;
-		adjmatrix::vertex_value_t cost_min
-			= std::numeric_limits<adjmatrix::vertex_value_t>::max();
-		for (adjmatrix::vertex_list_t::size_type i = 0; i < q.size(); ++i) {
-			adjmatrix::vertex_value_t cost_q = cost[q[i]];
+		vertex current = invalid;
+		vertex index_q = invalid;
+		adjmatrix::value_type cost_min = std::numeric_limits<adjmatrix::value_type>::max();
+		for (adjmatrix::vertex_list::size_type i = 0; i < q.size(); ++i) {
+			adjmatrix::value_type cost_q = cost[q[i]];
 			if ((cost_q >= 0) && (cost_q < cost_min)) {
 				cost_min = cost_q;
 				index_q = i;
@@ -59,8 +58,8 @@ adjmatrix::edge_list_t minimum_spanning_tree_prim(const adjmatrix & m)
 		tree.emplace_back(low_cost_edge[current], current);
 
 		// from the current node, update all costs to adjacent nodes
-		for (adjmatrix::vertex_t node = 0; node < m.size(); ++node) {
-			const adjmatrix::vertex_value_t w = m.edge(current, node);
+		for (vertex node = 0; node < m.size(); ++node) {
+			const adjmatrix::value_type w = m.get(current, node);
 			if (w > 0) {
 				if (find(begin(q), end(q), node) != end(q)) {
 					if (w < cost[node]) {

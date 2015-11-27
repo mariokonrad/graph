@@ -4,7 +4,7 @@
 namespace
 {
 using namespace graph;
-using vl = adjmatrix::vertex_list_t;
+using vl = adjmatrix::vertex_list;
 
 class Test_path : public ::testing::Test
 {
@@ -12,42 +12,42 @@ public:
 	static adjmatrix create_simple_uni()
 	{
 		adjmatrix g{5};
-		g.add(0, 1, adjmatrix::edge_type::uni, 1);
-		g.add(0, 2, adjmatrix::edge_type::uni, 2);
-		g.add(1, 2, adjmatrix::edge_type::uni, 2);
-		g.add(1, 3, adjmatrix::edge_type::uni, 3);
-		g.add(2, 3, adjmatrix::edge_type::uni, 1);
-		g.add(2, 4, adjmatrix::edge_type::uni, 5);
-		g.add(3, 4, adjmatrix::edge_type::uni, 1);
+		g.add(0, 1, edge::type::uni, 1);
+		g.add(0, 2, edge::type::uni, 2);
+		g.add(1, 2, edge::type::uni, 2);
+		g.add(1, 3, edge::type::uni, 3);
+		g.add(2, 3, edge::type::uni, 1);
+		g.add(2, 4, edge::type::uni, 5);
+		g.add(3, 4, edge::type::uni, 1);
 		return g;
 	}
 
 	static adjmatrix create_cycle_uni()
 	{
 		adjmatrix g{5};
-		g.add(0, 1, adjmatrix::edge_type::uni, 1);
-		g.add(0, 2, adjmatrix::edge_type::uni, 2);
-		g.add(1, 2, adjmatrix::edge_type::uni, 2);
-		g.add(1, 3, adjmatrix::edge_type::uni, 3);
-		g.add(2, 3, adjmatrix::edge_type::uni, 1);
-		g.add(2, 4, adjmatrix::edge_type::uni, 5);
-		g.add(3, 4, adjmatrix::edge_type::uni, 1);
-		g.add(4, 0, adjmatrix::edge_type::uni, 4);
-		g.add(3, 0, adjmatrix::edge_type::uni, 2);
-		g.add(3, 1, adjmatrix::edge_type::uni, 1);
+		g.add(0, 1, edge::type::uni, 1);
+		g.add(0, 2, edge::type::uni, 2);
+		g.add(1, 2, edge::type::uni, 2);
+		g.add(1, 3, edge::type::uni, 3);
+		g.add(2, 3, edge::type::uni, 1);
+		g.add(2, 4, edge::type::uni, 5);
+		g.add(3, 4, edge::type::uni, 1);
+		g.add(4, 0, edge::type::uni, 4);
+		g.add(3, 0, edge::type::uni, 2);
+		g.add(3, 1, edge::type::uni, 1);
 		return g;
 	}
 
 	static adjmatrix create_simple_bi()
 	{
 		adjmatrix g{5};
-		g.add(0, 1, adjmatrix::edge_type::bi, 1);
-		g.add(0, 2, adjmatrix::edge_type::bi, 2);
-		g.add(1, 2, adjmatrix::edge_type::bi, 2);
-		g.add(1, 3, adjmatrix::edge_type::bi, 3);
-		g.add(2, 3, adjmatrix::edge_type::bi, 1);
-		g.add(2, 4, adjmatrix::edge_type::bi, 5);
-		g.add(3, 4, adjmatrix::edge_type::bi, 1);
+		g.add(0, 1, edge::type::bi, 1);
+		g.add(0, 2, edge::type::bi, 2);
+		g.add(1, 2, edge::type::bi, 2);
+		g.add(1, 3, edge::type::bi, 3);
+		g.add(2, 3, edge::type::bi, 1);
+		g.add(2, 4, edge::type::bi, 5);
+		g.add(3, 4, edge::type::bi, 1);
 		return g;
 	}
 };
@@ -96,11 +96,11 @@ TEST_F(Test_path, unreachable_destination)
 {
 	adjmatrix g{4, {{0, 1}, {1, 2}}}; // node 3 not reachable
 
-	adjmatrix::vertex_list_t v;
+	adjmatrix::vertex_list v;
 	bool reachable;
 	std::tie(v, reachable) = shortest_path_dijkstra(g, 0, 3);
 
 	EXPECT_FALSE(reachable);
-	EXPECT_EQ((adjmatrix::vertex_list_t{}), v);
+	EXPECT_EQ((adjmatrix::vertex_list{}), v);
 }
 }

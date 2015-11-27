@@ -51,7 +51,7 @@ Depth first search with printing the visited nodes:
 using namespace graph;
 
 adjmatrix g{4, {{0, 1}, {0, 2}, {1, 2}, {2, 3}}};
-depth_first_search(g, [](adjmatrix::vertex_t v) { std::cout << v << "\n"; });
+depth_first_search(g, [](const auto &, vertex v) { std::cout << v << "\n"; });
 ~~~~~
 
 Topological Sorting:
@@ -60,7 +60,7 @@ Topological Sorting:
 using namespace graph;
 
 adjmatrix g{4, {{0, 1}, {0, 2}, {1, 2}, {2, 3}}};
-adjmatrix::vertex_list_t v;
+adjmatrix::vertex_list v;
 bool has_cycle;
 std::tie(v, has_cycle) = topological_sort(g);
 ~~~~~

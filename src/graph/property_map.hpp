@@ -13,13 +13,16 @@ namespace detail
 {
 /// This template provides a property map for graph related
 /// entities (edges, vertices) of an adjacency matrix.
+///
+/// Uses a std::map to store the mapping.
+///
 template <class T, class Container> class property_map
 {
 public:
 	using Element = typename Container::value_type;
 
 private:
-	const adjmatrix::vertex_t n; // size of the graph / number of vertices
+	const adjmatrix::size_type n; // size of the graph / number of vertices
 	std::map<Element, T> properties; // the properties
 
 public:
@@ -36,12 +39,16 @@ public:
 	property_map & operator=(const property_map &) = default;
 	property_map & operator=(property_map &&) = default;
 
+	/// Returns true if a property for the specified element exists, otherwise
+	/// it returns false.
+	bool exists(const Element & i) const { return properties.find(i) != properties.end(); }
+
 	/// Read/Write access to an existing property.
 	/// This method checks boundaries and throws an exception if
 	/// the entry does not exist.
 	T & prop(const Element & i)
 	{
-		if (properties.find(i) == properties.end())
+		if (!exists(i))
 			throw std::out_of_range{"element not in map"};
 		return properties[i];
 	}
@@ -82,9 +89,11 @@ public:
 };
 }
 
-template <class T> using edge_property_map = detail::property_map<T, adjmatrix::edge_list_t>;
-template <class T>
-using vertex_property_map = detail::property_map<T, adjmatrix::vertex_list_t>;
+/// Maps configurable property to a list of edges.
+template <class T> using edge_property_map = detail::property_map<T, adjmatrix::edge_list>;
+
+/// Maps configurable property to a list of vertices.
+template <class T> using vertex_property_map = detail::property_map<T, adjmatrix::vertex_list>;
 }
 
 #endif

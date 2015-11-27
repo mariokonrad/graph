@@ -5,49 +5,39 @@
 namespace graph
 {
 
-constexpr adjmatrix::vertex_value_t adjmatrix::no_value;
+constexpr adjmatrix::value_type adjmatrix::no_value;
+constexpr adjmatrix::value_type adjmatrix::edge_value;
 
-bool adjmatrix::edge_t::operator==(const edge_t & other) const
-{
-	return (this == &other) || ((from == other.from) && (to == other.to));
-}
-
-bool adjmatrix::edge_t::operator!=(const edge_t & other) const { return !(*this == other); }
-
-bool adjmatrix::edge_t::operator<(const adjmatrix::edge_t & other) const
+bool edge::operator<(const edge & other) const
 {
 	if (from < other.from)
 		return true;
 	if (from == other.from)
-		return (to < other.to);
+		return to < other.to;
 	return false;
 }
 
-adjmatrix::edge_t::edge_t(vertex_t from, vertex_t to) noexcept : from(from), to(to) {}
-
-adjmatrix::edge_t adjmatrix::edge_t::reverse() const { return {to, from}; }
-
-adjmatrix::edge_t::edge_t(const std::initializer_list<vertex_t> v)
+edge::edge(const std::initializer_list<vertex> v)
 	: from(*v.begin())
 	, to(*(v.begin() + 1))
 {
 	assert(v.size() == 2);
 }
 
-adjmatrix::vertex_t adjmatrix::edge_index(edge_t e) const noexcept { return e.from + e.to * n; }
+vertex adjmatrix::edge_index(edge e) const noexcept { return e.from + e.to * n; }
 
 /// Constructor to set the size of the matrix and initialize it
 /// with no edges.
 ///
 /// \param[in] n Size of the matrix.
-adjmatrix::adjmatrix(vertex_t n)
+adjmatrix::adjmatrix(size_type n)
 	: n(n)
 	, m(n * n, no_value)
 {
 	assert(n > 0);
 }
 
-adjmatrix::adjmatrix(vertex_t n, std::initializer_list<edge_t> edges)
+adjmatrix::adjmatrix(size_type n, std::initializer_list<edge> edges)
 	: adjmatrix(n)
 {
 	assert(n > 0);
@@ -56,7 +46,7 @@ adjmatrix::adjmatrix(vertex_t n, std::initializer_list<edge_t> edges)
 }
 
 /// Returns the size of the matrix (number of vertices).
-adjmatrix::vertex_t adjmatrix::size() const noexcept { return n; }
+adjmatrix::size_type adjmatrix::size() const noexcept { return n; }
 
 /// Adds an edge to the matrix.
 ///
@@ -68,13 +58,13 @@ adjmatrix::vertex_t adjmatrix::size() const noexcept { return n; }
 /// \return true on success, false otherwise
 ///
 /// \note This function performs boundary check.
-bool adjmatrix::add(edge_t e, edge_type type, vertex_value_t value)
+bool adjmatrix::add(edge e, edge::type type, value_type value)
 {
 	if ((e.from >= n) || (e.to >= n))
 		return false;
-	edge(e) = value;
-	if (type == edge_type::bi)
-		edge(e.reverse()) = value;
+	get(e) = value;
+	if (type == edge::type::bi)
+		get(e.reverse()) = value;
 	return true;
 }
 
@@ -87,46 +77,40 @@ bool adjmatrix::add(edge_t e, edge_type type, vertex_value_t value)
 /// \return true on success, false otherwise
 ///
 /// \note This function performs boundary check.
-bool adjmatrix::remove(edge_t e, edge_type type)
+bool adjmatrix::remove(edge e, edge::type type)
 {
 	if ((e.from >= n) || (e.to >= n))
 		return false;
-	edge(e) = no_value;
-	if (type == edge_type::bi)
-		edge(e.reverse()) = no_value;
+	get(e) = no_value;
+	if (type == edge::type::bi)
+		get(e.reverse()) = no_value;
 	return true;
 }
 
 /// Accessor for edges. This method provides writing access to
 /// the matrix and is not boundary checked.
 ///
-/// \note The call 'edge(e)=1' is the same as 'add(e)'.
+/// \note The call 'get(e)=edge_value' is the same as 'add(e)'.
 ///
 /// Complexity: O(1)
-adjmatrix::vertex_value_t & adjmatrix::edge(edge_t e) { return m[edge_index(e)]; }
+adjmatrix::value_type & adjmatrix::get(edge e) { return m[edge_index(e)]; }
 
 /// Accessor for edges. This method provides read only access
 /// to the matrix and is not boundary checked.
 ///
 /// Complexity: O(1)
-adjmatrix::vertex_value_t adjmatrix::edge(edge_t e) const { return m[edge_index(e)]; }
+adjmatrix::value_type adjmatrix::get(edge e) const { return m[edge_index(e)]; }
 
-adjmatrix::vertex_value_t & adjmatrix::operator[](adjmatrix::edge_t e)
-{
-	return m[edge_index(e)];
-}
+adjmatrix::value_type & adjmatrix::operator[](edge e) { return m[edge_index(e)]; }
 
-const adjmatrix::vertex_value_t & adjmatrix::operator[](adjmatrix::edge_t e) const
-{
-	return m[edge_index(e)];
-}
+adjmatrix::value_type adjmatrix::operator[](edge e) const { return m[edge_index(e)]; }
 
 /// Returns a list of vertices. This function is for convinience only.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list_t adjmatrix::vertices() const
+adjmatrix::vertex_list adjmatrix::vertices() const
 {
-	vertex_list_t v(size());
+	vertex_list v(size());
 	std::iota(v.begin(), v.end(), 0);
 	return v;
 }
@@ -134,12 +118,12 @@ adjmatrix::vertex_list_t adjmatrix::vertices() const
 /// Returns a list of neighbors of v
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list_t adjmatrix::neighbors_of(vertex_t v) const
+adjmatrix::vertex_list adjmatrix::neighbors_of(vertex v) const
 {
-	vertex_list_t result;
-	for (vertex_t to = 0; to < n; ++to) {
+	vertex_list result;
+	for (vertex to = 0; to < n; ++to) {
 		if (to != v) {
-			if (edge({v, to})) {
+			if (get({v, to})) {
 				result.push_back(to);
 			}
 		}
@@ -150,12 +134,12 @@ adjmatrix::vertex_list_t adjmatrix::neighbors_of(vertex_t v) const
 /// Returns a list of edges defined by the matrix.
 ///
 /// Complexity: O(n^2)
-adjmatrix::edge_list_t adjmatrix::edges() const
+adjmatrix::edge_list adjmatrix::edges() const
 {
-	edge_list_t vec;
-	for (vertex_t from = 0; from < n; ++from)
-		for (vertex_t to = 0; to < n; ++to)
-			if (edge({from, to}))
+	edge_list vec;
+	for (vertex from = 0; from < n; ++from)
+		for (vertex to = 0; to < n; ++to)
+			if (get({from, to}))
 				vec.emplace_back(from, to);
 	return vec;
 }
@@ -163,13 +147,13 @@ adjmatrix::edge_list_t adjmatrix::edges() const
 /// Returns a list of nodes from where an edge exists.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list_t adjmatrix::incoming(vertex_t to) const
+adjmatrix::vertex_list adjmatrix::incoming(vertex to) const
 {
-	vertex_list_t v;
+	vertex_list v;
 	if (to >= n)
 		return v;
-	for (vertex_t i = 0; i < n; ++i)
-		if (edge({i, to}))
+	for (vertex i = 0; i < n; ++i)
+		if (get({i, to}))
 			v.push_back(i);
 	return v;
 }
@@ -177,13 +161,13 @@ adjmatrix::vertex_list_t adjmatrix::incoming(vertex_t to) const
 /// Returns a list of nodes to where an edge exists.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list_t adjmatrix::outgoing(vertex_t from) const
+adjmatrix::vertex_list adjmatrix::outgoing(vertex from) const
 {
-	vertex_list_t v;
+	vertex_list v;
 	if (from >= n)
 		return v;
-	for (vertex_t i = 0; i < n; ++i)
-		if (edge({from, i}))
+	for (vertex i = 0; i < n; ++i)
+		if (get({from, i}))
 			v.push_back(from);
 	return v;
 }
@@ -191,7 +175,7 @@ adjmatrix::vertex_list_t adjmatrix::outgoing(vertex_t from) const
 /// Returns the total number of edges within the matrix.
 ///
 /// Complexity: O(n^2)
-adjmatrix::vertex_t adjmatrix::count_edges() const noexcept
+adjmatrix::size_type adjmatrix::count_edges() const noexcept
 {
 	return std::count_if(m.begin(), m.end(), [](auto const v) { return v != no_value; });
 }

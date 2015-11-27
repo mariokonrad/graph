@@ -35,6 +35,6 @@ TEST(Test_property_map, vertex_map_int__collect_if)
 	const auto container = pm.collect_if([](auto const v) { return v % 2 == 0; });
 
 	EXPECT_EQ(2u, container.size());
-	EXPECT_EQ((graph::adjmatrix::vertex_list_t{0, 2}), container);
+	EXPECT_EQ((graph::adjmatrix::vertex_list{0, 2}), container);
 }
 }

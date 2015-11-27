@@ -5,11 +5,12 @@
 
 namespace graph
 {
+/// \cond DEV
 namespace detail
 {
 template <class Visitor>
-static void recursive_dfs(const adjmatrix & adj, adjmatrix::vertex_t id, Visitor & visitor,
-	adjmatrix::visited_list_t & visited)
+static void recursive_dfs(
+	const adjmatrix & adj, vertex id, Visitor & visitor, adjmatrix::visited_list & visited)
 {
 	// guard
 	if (id >= adj.size())
@@ -19,14 +20,15 @@ static void recursive_dfs(const adjmatrix & adj, adjmatrix::vertex_t id, Visitor
 
 	// visit
 	visited[id] = true;
-	visitor(id);
+	visitor(adj, id);
 
 	// search deeper
-	for (adjmatrix::vertex_t i = 0; i < adj.size(); ++i)
-		if ((i != id) && adj.edge(id, i))
+	for (vertex i = 0; i < adj.size(); ++i)
+		if ((i != id) && adj.get(id, i))
 			recursive_dfs(adj, i, visitor, visited);
 }
 }
+/// \endcond
 
 /// This algorithm searches the graph and calls the visitor for each
 /// vertex. The strategy is 'depth first'.
@@ -37,9 +39,9 @@ static void recursive_dfs(const adjmatrix & adj, adjmatrix::vertex_t id, Visitor
 /// \return The visitor functor
 ///
 template <class Visitor>
-Visitor depth_first_search(const adjmatrix & m, adjmatrix::vertex_t v, Visitor visitor)
+Visitor depth_first_search(const adjmatrix & m, vertex v, Visitor visitor)
 {
-	adjmatrix::visited_list_t visited(m.size(), false);
+	adjmatrix::visited_list visited(m.size(), false);
 	detail::recursive_dfs(m, v, visitor, visited);
 	return visitor;
 }
