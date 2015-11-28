@@ -19,11 +19,11 @@ namespace graph
 ///
 /// complexity: O(n^2)
 ///
-adjmatrix::edge_list minimum_spanning_tree_prim(const adjmatrix & g)
+edge_list minimum_spanning_tree_prim(const adjmatrix & g)
 {
 	static const vertex invalid = -1;
 
-	adjmatrix::edge_list tree;
+	edge_list tree;
 	tree.reserve(g.size());
 
 	// cost (weight) of an edge to a certain node
@@ -31,11 +31,11 @@ adjmatrix::edge_list minimum_spanning_tree_prim(const adjmatrix & g)
 	fill(begin(cost), end(cost), std::numeric_limits<adjmatrix::value_type>::max());
 
 	// node from which a certain node is reachable by cost[]
-	adjmatrix::vertex_list low_cost_edge(g.size());
+	vertex_list low_cost_edge(g.size());
 	fill(begin(low_cost_edge), end(low_cost_edge), invalid);
 
 	// setup queue of nodes to visit, initially all of them
-	adjmatrix::vertex_list q(g.size());
+	vertex_list q(g.size());
 	std::iota(begin(q), end(q), 0);
 
 	// actual algorithm, start with the first node
@@ -46,7 +46,7 @@ adjmatrix::edge_list minimum_spanning_tree_prim(const adjmatrix & g)
 		vertex current = invalid;
 		vertex index_q = invalid;
 		adjmatrix::value_type cost_min = std::numeric_limits<adjmatrix::value_type>::max();
-		for (adjmatrix::vertex_list::size_type i = 0; i < q.size(); ++i) {
+		for (vertex_list::size_type i = 0; i < q.size(); ++i) {
 			adjmatrix::value_type cost_q = cost[q[i]];
 			if ((cost_q >= 0) && (cost_q < cost_min)) {
 				cost_min = cost_q;

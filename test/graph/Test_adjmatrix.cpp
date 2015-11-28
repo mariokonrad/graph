@@ -104,6 +104,6 @@ TEST(Test_adjmatrix, vertices)
 
 	const auto v = m.vertices();
 
-	EXPECT_EQ((graph::adjmatrix::vertex_list{0, 1, 2, 3}), v);
+	EXPECT_EQ((graph::vertex_list{0, 1, 2, 3}), v);
 }
 }

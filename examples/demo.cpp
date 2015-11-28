@@ -38,7 +38,7 @@ void test_toposort()
 {
 	using namespace graph;
 	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
-	adjmatrix::vertex_list v;
+	vertex_list v;
 	bool success;
 	std::tie(v, success) = topological_sort(m);
 	std::cout << "Topological sorted  : ";
@@ -119,7 +119,7 @@ void test_path()
 	m.add(3, 4, edge::type::bi, 4);
 	m.add(4, 5, edge::type::bi, 7);
 
-	adjmatrix::vertex_list path;
+	vertex_list path;
 	bool exists;
 	std::tie(path, exists) = shortest_path_dijkstra(m, 0, 2);
 	std::cout << "Shortest Path (Dijkstra):";

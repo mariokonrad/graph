@@ -8,24 +8,6 @@ namespace graph
 constexpr adjmatrix::value_type adjmatrix::no_value;
 constexpr adjmatrix::value_type adjmatrix::edge_value;
 
-bool edge::operator<(const edge & other) const
-{
-	if (from < other.from)
-		return true;
-	if (from == other.from)
-		return to < other.to;
-	return false;
-}
-
-edge::edge(const std::initializer_list<vertex> v)
-	: from(*v.begin())
-	, to(*(v.begin() + 1))
-{
-	assert(v.size() == 2);
-}
-
-vertex adjmatrix::edge_index(edge e) const noexcept { return e.from + e.to * n; }
-
 /// Constructor to set the size of the matrix and initialize it
 /// with no edges.
 ///
@@ -101,24 +83,26 @@ adjmatrix::value_type & adjmatrix::get(edge e) { return m[edge_index(e)]; }
 /// Complexity: O(1)
 adjmatrix::value_type adjmatrix::get(edge e) const { return m[edge_index(e)]; }
 
+/// \see get(edge)
 adjmatrix::value_type & adjmatrix::operator[](edge e) { return m[edge_index(e)]; }
 
+/// \see get(edge) const
 adjmatrix::value_type adjmatrix::operator[](edge e) const { return m[edge_index(e)]; }
 
 /// Returns a list of vertices. This function is for convinience only.
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list adjmatrix::vertices() const
+vertex_list adjmatrix::vertices() const
 {
 	vertex_list v(size());
 	std::iota(v.begin(), v.end(), 0);
 	return v;
 }
 
-/// Returns a list of neighbors of v
+/// Returns a list of neighbors of `v`
 ///
 /// Complexity: O(n)
-adjmatrix::vertex_list adjmatrix::neighbors_of(vertex v) const
+vertex_list adjmatrix::neighbors_of(vertex v) const
 {
 	vertex_list result;
 	for (vertex to = 0; to < n; ++to) {
@@ -134,7 +118,7 @@ adjmatrix::vertex_list adjmatrix::neighbors_of(vertex v) const
 /// Returns a list of edges defined by the matrix.
 ///
 /// Complexity: O(n^2)
-adjmatrix::edge_list adjmatrix::edges() const
+edge_list adjmatrix::edges() const
 {
 	edge_list vec;
 	for (vertex from = 0; from < n; ++from)
@@ -146,8 +130,10 @@ adjmatrix::edge_list adjmatrix::edges() const
 
 /// Returns a list of nodes from where an edge exists.
 ///
+/// If the specified vertex is invalid, an empty list will return.
+///
 /// Complexity: O(n)
-adjmatrix::vertex_list adjmatrix::incoming(vertex to) const
+vertex_list adjmatrix::incoming(vertex to) const
 {
 	vertex_list v;
 	if (to >= n)
@@ -160,8 +146,10 @@ adjmatrix::vertex_list adjmatrix::incoming(vertex to) const
 
 /// Returns a list of nodes to where an edge exists.
 ///
+/// If the specified vertex is invalid, an empty list will return.
+///
 /// Complexity: O(n)
-adjmatrix::vertex_list adjmatrix::outgoing(vertex from) const
+vertex_list adjmatrix::outgoing(vertex from) const
 {
 	vertex_list v;
 	if (from >= n)

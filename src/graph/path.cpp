@@ -21,14 +21,14 @@ namespace graph
 ///   - list of vertices from start to destination (inclusive)
 ///   - status about success, if false: destination not reachable
 ///
-std::tuple<adjmatrix::vertex_list, bool> shortest_path_dijkstra(
+std::tuple<vertex_list, bool> shortest_path_dijkstra(
 	const adjmatrix & g, vertex start, vertex destination)
 {
 	using namespace std;
 
 	// prepare list of predecessors
 	constexpr vertex undefined = -1;
-	adjmatrix::vertex_list predecessor(g.size());
+	vertex_list predecessor(g.size());
 	fill(begin(predecessor), end(predecessor), undefined);
 
 	// prepare list of distances
@@ -37,7 +37,7 @@ std::tuple<adjmatrix::vertex_list, bool> shortest_path_dijkstra(
 	distance[start] = 0;
 
 	// prepare list of nodes to process
-	adjmatrix::vertex_list q;
+	vertex_list q;
 	q.reserve(g.size());
 	for (auto const & vertex : g.vertices())
 		q.push_back(vertex);
@@ -50,7 +50,7 @@ std::tuple<adjmatrix::vertex_list, bool> shortest_path_dijkstra(
 		current = undefined;
 		vertex index_q = undefined;
 		adjmatrix::value_type dist_min = numeric_limits<adjmatrix::value_type>::max();
-		for (adjmatrix::vertex_list::size_type i = 0; i < q.size(); ++i) {
+		for (vertex_list::size_type i = 0; i < q.size(); ++i) {
 			adjmatrix::value_type dist_q = distance[q[i]];
 			if ((dist_q >= 0) && (dist_q < dist_min)) {
 				dist_min = dist_q;
@@ -59,7 +59,7 @@ std::tuple<adjmatrix::vertex_list, bool> shortest_path_dijkstra(
 			}
 		}
 		if (index_q == undefined)
-			return std::make_tuple(adjmatrix::vertex_list{}, false);
+			return std::make_tuple(vertex_list{}, false);
 		q.erase(begin(q) + index_q);
 
 		// destination reached?
@@ -79,7 +79,7 @@ std::tuple<adjmatrix::vertex_list, bool> shortest_path_dijkstra(
 	}
 
 	// process predecessors into path
-	adjmatrix::vertex_list path;
+	vertex_list path;
 	while (current != undefined) {
 		path.push_back(current);
 		current = predecessor[current];

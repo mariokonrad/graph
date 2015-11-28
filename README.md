@@ -38,7 +38,7 @@ Features
   - depth first search
   - breadth first search
   - topological sorting
-  - rendering to dot (graphviz)
+  - rudimentary rendering to dot (graphviz)
 
 
 
@@ -60,7 +60,7 @@ Topological Sorting:
 using namespace graph;
 
 adjmatrix g{4, {{0, 1}, {0, 2}, {1, 2}, {2, 3}}};
-adjmatrix::vertex_list v;
+vertex_list v;
 bool has_cycle;
 std::tie(v, has_cycle) = topological_sort(g);
 ~~~~~

@@ -4,7 +4,7 @@
 namespace
 {
 using namespace graph;
-using vl = adjmatrix::vertex_list;
+using vl = vertex_list;
 
 class Test_path : public ::testing::Test
 {
@@ -96,11 +96,11 @@ TEST_F(Test_path, unreachable_destination)
 {
 	adjmatrix g{4, {{0, 1}, {1, 2}}}; // node 3 not reachable
 
-	adjmatrix::vertex_list v;
+	vertex_list v;
 	bool reachable;
 	std::tie(v, reachable) = shortest_path_dijkstra(g, 0, 3);
 
 	EXPECT_FALSE(reachable);
-	EXPECT_EQ((adjmatrix::vertex_list{}), v);
+	EXPECT_EQ((vertex_list{}), v);
 }
 }

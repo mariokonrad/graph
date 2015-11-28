@@ -8,9 +8,6 @@
 
 namespace graph
 {
-
-namespace detail
-{
 /// This template provides a property map for graph related
 /// entities (edges, vertices) of an adjacency matrix.
 ///
@@ -87,13 +84,12 @@ public:
 		return result;
 	}
 };
-}
 
 /// Maps configurable property to a list of edges.
-template <class T> using edge_property_map = detail::property_map<T, adjmatrix::edge_list>;
+template <class T> using edge_property_map = property_map<T, edge_list>;
 
 /// Maps configurable property to a list of vertices.
-template <class T> using vertex_property_map = detail::property_map<T, adjmatrix::vertex_list>;
+template <class T> using vertex_property_map = property_map<T, vertex_list>;
 }
 
 #endif

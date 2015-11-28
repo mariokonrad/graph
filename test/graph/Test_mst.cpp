@@ -6,7 +6,7 @@ namespace
 class Test_mst : public ::testing::Test
 {
 public:
-	using el = graph::adjmatrix::edge_list;
+	using el = graph::edge_list;
 
 	static graph::adjmatrix create_simple_bi()
 	{
