@@ -9,20 +9,22 @@ namespace graph
 /// This algorithm searches the graph and calls the visitor for each
 /// vertex. The strategy is 'breadth first'.
 ///
-/// \param[in] m The adjacency matrix to visit.
+/// \tparam Graph The graph type to visit.
+/// \tparam Visitor The visitor type.
+/// \param[in] g The adjacency matrix to visit.
 /// \param[in] v The starting vertex.
 /// \param[in] visitor Visitor which gets called for each found vertex.
 /// \return The visitor functor
 ///
-template <class Visitor>
-Visitor breadth_first_search(const adjmatrix & m, vertex v, Visitor visitor)
+template <class Graph, class Visitor>
+Visitor breadth_first_search(const Graph & g, vertex v, Visitor visitor)
 {
-	if (v >= m.size())
+	if (v >= g.size())
 		return visitor;
 
 	std::queue<vertex> q;
-	adjmatrix::visited_list gray(m.size(), false);
-	adjmatrix::visited_list black(m.size(), false);
+	adjmatrix::visited_list gray(g.size(), false);
+	adjmatrix::visited_list black(g.size(), false);
 
 	// starting vertex is gray and put into queue
 	gray[v] = true;
@@ -34,8 +36,8 @@ Visitor breadth_first_search(const adjmatrix & m, vertex v, Visitor visitor)
 		q.pop();
 
 		// all white successors of u
-		for (vertex i = 0; i < m.size(); ++i) {
-			if (!gray[i] && !black[i] && m.get(u, i)) {
+		for (vertex i = 0; i < g.size(); ++i) {
+			if (!gray[i] && !black[i] && g.get(u, i)) {
 				gray[i] = true;
 				q.push(i);
 			}
@@ -43,7 +45,7 @@ Visitor breadth_first_search(const adjmatrix & m, vertex v, Visitor visitor)
 
 		// visit and mark vertex
 		black[u] = true;
-		visitor(m, u);
+		visitor(g, u);
 	}
 	return visitor;
 }

@@ -4,7 +4,6 @@
 
 namespace graph
 {
-
 /// Renders the specified graph to a string in the Dot (graphviz)
 /// format.
 ///

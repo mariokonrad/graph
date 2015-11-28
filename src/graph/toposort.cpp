@@ -8,19 +8,19 @@ namespace graph
 ///
 /// Complexity: O(V + E)
 ///
-/// \param[in] m The adjacency matrix.
+/// \param[in] g The adjacency matrix.
 /// \return A tuple containing the list and a status which is:
 ///   - \c true : sorting successful
 ///   - \c false : graph contains cycles
 ///
-std::tuple<adjmatrix::vertex_list, bool> topological_sort(const adjmatrix & m)
+std::tuple<adjmatrix::vertex_list, bool> topological_sort(const adjmatrix & g)
 {
 	// copy of matrix to work on (remove edges)
-	adjmatrix tm(m);
+	adjmatrix tm(g);
 
 	// all nodes with no incoming edges
 	adjmatrix::vertex_list Q;
-	for (vertex i = 0; i < m.size(); ++i)
+	for (vertex i = 0; i < g.size(); ++i)
 		if (tm.incoming(i).empty())
 			Q.push_back(i);
 

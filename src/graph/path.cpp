@@ -3,7 +3,6 @@
 
 namespace graph
 {
-
 /// Finds and returns the shortest path from the start to the destination
 /// node within the specified graph. If the destination is not reachable,
 /// the second return value will indicate this with being \c false.
@@ -15,7 +14,7 @@ namespace graph
 ///
 /// Complexity: O(n^2)
 ///
-/// \param[in] m The graph
+/// \param[in] g The graph
 /// \param[in] start The staring node
 /// \param[in] destination The destination node
 /// \return A tuple with the following information:
@@ -23,24 +22,24 @@ namespace graph
 ///   - status about success, if false: destination not reachable
 ///
 std::tuple<adjmatrix::vertex_list, bool> shortest_path_dijkstra(
-	const adjmatrix & m, vertex start, vertex destination)
+	const adjmatrix & g, vertex start, vertex destination)
 {
 	using namespace std;
 
 	// prepare list of predecessors
 	constexpr vertex undefined = -1;
-	adjmatrix::vertex_list predecessor(m.size());
+	adjmatrix::vertex_list predecessor(g.size());
 	fill(begin(predecessor), end(predecessor), undefined);
 
 	// prepare list of distances
-	adjmatrix::value_list distance(m.size());
+	adjmatrix::value_list distance(g.size());
 	fill(begin(distance), end(distance), numeric_limits<adjmatrix::value_type>::max());
 	distance[start] = 0;
 
 	// prepare list of nodes to process
 	adjmatrix::vertex_list q;
-	q.reserve(m.size());
-	for (auto const & vertex : m.vertices())
+	q.reserve(g.size());
+	for (auto const & vertex : g.vertices())
 		q.push_back(vertex);
 
 	// the actual algorithm
@@ -68,9 +67,9 @@ std::tuple<adjmatrix::vertex_list, bool> shortest_path_dijkstra(
 			break;
 
 		// check all remaining neighbors of current node and update distances
-		for (auto const & node : m.neighbors_of(current)) {
+		for (auto const & node : g.neighbors_of(current)) {
 			if (find(begin(q), end(q), node) != end(q)) {
-				const adjmatrix::value_type d = distance[current] + m.get(current, node);
+				const adjmatrix::value_type d = distance[current] + g.get(current, node);
 				if (d < distance[node]) {
 					distance[node] = d;
 					predecessor[node] = current;

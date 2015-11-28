@@ -7,7 +7,7 @@
 namespace graph
 {
 std::tuple<adjmatrix::vertex_list, bool> shortest_path_dijkstra(
-	const adjmatrix & m, vertex start, vertex destination);
+	const adjmatrix & g, vertex start, vertex destination);
 }
 
 #endif

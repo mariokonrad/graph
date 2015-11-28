@@ -6,7 +6,7 @@
 
 namespace graph
 {
-std::tuple<adjmatrix::vertex_list, bool> topological_sort(const adjmatrix & m);
+std::tuple<adjmatrix::vertex_list, bool> topological_sort(const adjmatrix & g);
 }
 
 #endif
