@@ -20,17 +20,32 @@ void test_bfs()
 void test_dfs()
 {
 	using namespace graph;
-	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+	const adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+
+	// simple
 	std::cout << "Depth First Search  : ";
 	depth_first_search(m, 0, [](auto const &, auto const & v) { std::cout << " " << v; });
 	std::cout << "\n";
 
+	// using the graph to obtain more information about nodes
 	std::cout << "Depth First Search with neighbors:\n";
 	depth_first_search(m, 0, [](auto const & m, auto const & v) {
 		std::cout << " " << v << " (";
 		for (auto neighbor : m.neighbors_of(v))
 			std::cout << " " << neighbor;
 		std::cout << " )\n";
+	});
+
+	// using property_map
+	vertex_property_map<std::string> names{m};
+	names[0] = "A";
+	names[1] = "B";
+	names[2] = "C";
+	names[3] = "D";
+	names[4] = "E";
+	std::cout << "Depth First Search with property map:\n";
+	depth_first_search(m, 0, [&names](auto const &, auto const & v) {
+		std::cout << " " << v << " : " << names[v] << "\n";
 	});
 }
 
