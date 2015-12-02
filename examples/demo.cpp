@@ -11,9 +11,16 @@
 void test_bfs()
 {
 	using namespace graph;
+
 	const adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	std::cout << "Breadth First Search: ";
 	breadth_first_search(m, 0, [](auto const &, auto const & v) { std::cout << " " << v; });
+	std::cout << "\n";
+
+	// without named objects
+	std::cout << "Breadth First Search (no named objects): ";
+	breadth_first_search(adjmatrix{5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}}},
+		0, [](auto const &, auto const & v) { std::cout << " " << v; });
 	std::cout << "\n";
 }
 
