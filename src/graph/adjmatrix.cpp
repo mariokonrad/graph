@@ -128,6 +128,22 @@ edge_list adjmatrix::edges() const
 	return vec;
 }
 
+/// Returns the number of incoming edges to the specified vertex.
+///
+/// If the specified vertex is invalid the function returns 0.
+///
+/// Complexity: O(n)
+adjmatrix::size_type adjmatrix::count_incoming(vertex to) const
+{
+	if (to >= n)
+		return 0;
+	size_type num = 0;
+	for (vertex i = 0; i < n; ++i)
+		if (get({i, to}))
+			++num;
+	return num;
+}
+
 /// Returns a list of nodes from where an edge exists.
 ///
 /// If the specified vertex is invalid, an empty list will return.
@@ -142,6 +158,22 @@ vertex_list adjmatrix::incoming(vertex to) const
 		if (get({i, to}))
 			v.push_back(i);
 	return v;
+}
+
+/// Returns the number of outgoing edges of the specified vertex.
+///
+/// If the specified vertex is invalid the function returns 0.
+///
+/// Complexity: O(n)
+adjmatrix::size_type adjmatrix::count_outgoing(vertex from) const
+{
+	if (from >= n)
+		return 0;
+	size_type num = 0;
+	for (vertex i = 0; i < n; ++i)
+		if (get({from, i}))
+			++num;
+	return num;
 }
 
 /// Returns a list of nodes to where an edge exists.

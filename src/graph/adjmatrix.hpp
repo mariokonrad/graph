@@ -112,24 +112,18 @@ private:
 
 public:
 	/// \{
-
 	adjmatrix(size_type n);
 	adjmatrix(size_type n, std::initializer_list<edge> edges);
-
 	adjmatrix(const adjmatrix &) = default;
 	adjmatrix(adjmatrix &&) = default;
-
 	/// \}
 
 	/// \{
-
 	adjmatrix & operator=(const adjmatrix &) = default;
 	adjmatrix & operator=(adjmatrix &&) = default;
-
 	/// \}
 
 	/// \{
-
 	bool add(edge e, edge::type type = edge::type::uni, value_type value = edge_value);
 
 	bool add(vertex from, vertex to, edge::type type = edge::type::uni,
@@ -137,22 +131,18 @@ public:
 	{
 		return add({from, to}, type, value);
 	}
-
 	/// \}
 
 	/// \{
-
 	bool remove(edge e, edge::type type = edge::type::uni);
 
 	bool remove(vertex from, vertex to, edge::type type = edge::type::uni)
 	{
 		return remove({from, to}, type);
 	}
-
 	/// \}
 
 	/// \{
-
 	value_type & get(edge e);
 	value_type get(edge e) const;
 
@@ -164,24 +154,21 @@ public:
 
 	value_type & operator[](edge e);
 	value_type operator[](edge e) const;
-
 	/// \}
 
 	/// \{
-
 	size_type size() const noexcept;
 	vertex_list vertices() const;
 	vertex_list neighbors_of(vertex v) const;
+	size_type count_incoming(vertex to) const;
 	vertex_list incoming(vertex to) const;
+	size_type count_outgoing(vertex to) const;
 	vertex_list outgoing(vertex from) const;
-
 	/// \}
 
 	/// \{
-
 	size_type count_edges() const noexcept;
 	edge_list edges() const;
-
 	/// \}
 };
 }

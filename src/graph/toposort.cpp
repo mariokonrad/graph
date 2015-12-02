@@ -21,7 +21,7 @@ std::tuple<vertex_list, bool> topological_sort(const adjmatrix & g)
 	// all nodes with no incoming edges
 	vertex_list Q;
 	for (vertex i = 0; i < g.size(); ++i)
-		if (tm.incoming(i).empty())
+		if (tm.count_incoming(i) == 0)
 			Q.push_back(i);
 
 	vertex_list v;
@@ -42,7 +42,7 @@ std::tuple<vertex_list, bool> topological_sort(const adjmatrix & g)
 				tm.remove(node, i); // remove edge from graph
 
 				// has i other incoming edges?
-				if (tm.incoming(i).empty())
+				if (tm.count_incoming(i) == 0)
 					Q.push_back(i);
 			}
 		}
