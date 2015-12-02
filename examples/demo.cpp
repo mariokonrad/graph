@@ -11,7 +11,7 @@
 void test_bfs()
 {
 	using namespace graph;
-	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+	const adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	std::cout << "Breadth First Search: ";
 	breadth_first_search(m, 0, [](auto const &, auto const & v) { std::cout << " " << v; });
 	std::cout << "\n";
@@ -36,18 +36,25 @@ void test_dfs()
 		std::cout << " )\n";
 	});
 
-	// using property map
+	// using std::map as property map
 	const std::map<vertex, std::string> names{{0, "A"}, {1, "B"}, {2, "C"}, {3, "D"}, {4, "E"}};
 	std::cout << "Depth First Search with property map:\n";
 	depth_first_search(m, 0, [&names](auto const &, auto const & v) {
 		std::cout << " " << v << " : " << names.at(v) << "\n";
+	});
+
+	// using std::vector as property map (for nodes)
+	const std::vector<int> data{100, 200, 300, 400, 500};
+	std::cout << "Depth First Search with property data:\n";
+	depth_first_search(m, 0, [&data](auto const &, auto const & v) {
+		std::cout << " " << v << " : " << data[v] << "\n";
 	});
 }
 
 void test_toposort()
 {
 	using namespace graph;
-	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+	const adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 	vertex_list v;
 	bool success;
 	std::tie(v, success) = topological_sort(m);
@@ -63,15 +70,9 @@ void test_toposort()
 void test_edge_prop_map()
 {
 	using namespace graph;
-	adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
-	std::map<edge, float> ep;
-	ep[{0, 1}] = 0.1;
-	ep[{0, 2}] = 0.2;
-	ep[{0, 3}] = 0.3;
-	ep[{1, 2}] = 0.4;
-	ep[{1, 3}] = 0.5;
-	ep[{2, 4}] = 0.6;
-	ep[{3, 4}] = 0.7;
+	const adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+	const std::map<edge, float> ep{{{0, 1}, 0.1}, {{0, 2}, 0.2}, {{0, 3}, 0.3}, {{1, 2}, 0.4},
+		{{1, 3}, 0.5}, {{2, 4}, 0.6}, {{3, 4}, 0.7}};
 
 	std::cout << "Edge Properties:\n";
 	for (auto const & edge : m.edges()) {
