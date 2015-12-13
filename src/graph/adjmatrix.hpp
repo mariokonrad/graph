@@ -26,9 +26,6 @@ public:
 	/// Representation of vertices within the matrix
 	using value_type = int;
 
-	/// Container type for a list of vertices.
-	using value_list = std::vector<value_type>;
-
 	/// Default values for states within the adjacency matrix.
 	enum : value_type {
 		/// Indicates no edge between vertices.

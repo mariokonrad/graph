@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include <map>
+#include <unordered_map>
 #include <graph/path.hpp>
 #include <graph/adjmatrix.hpp>
 
@@ -103,5 +105,59 @@ TEST_F(Test_path, unreachable_destination)
 
 	EXPECT_FALSE(reachable);
 	EXPECT_EQ((vertex_list{}), v);
+}
+
+TEST_F(Test_path, distances_with_property_map_int)
+{
+	const adjmatrix g{
+		5, {{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
+
+	const std::map<edge, int> distances{
+		{{0, 1}, 1}, {{0, 2}, 2}, {{1, 2}, 2}, {{1, 3}, 3}, {{2, 3}, 1}, {{2, 4}, 5},
+		{{3, 4}, 1}, {{4, 0}, 4}, {{3, 0}, 2}, {{3, 1}, 1},
+	};
+
+	vertex_list v;
+	bool reachable;
+	std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
+
+	EXPECT_TRUE(reachable);
+	EXPECT_EQ((vl{2, 3, 4}), v);
+}
+
+TEST_F(Test_path, distances_with_property_map_unordered_map_int)
+{
+	const adjmatrix g{
+		5, {{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
+
+	const std::unordered_map<edge, int, graph::edge_hash> distances{
+		{{0, 1}, 1}, {{0, 2}, 2}, {{1, 2}, 2}, {{1, 3}, 3}, {{2, 3}, 1}, {{2, 4}, 5},
+		{{3, 4}, 1}, {{4, 0}, 4}, {{3, 0}, 2}, {{3, 1}, 1},
+	};
+
+	vertex_list v;
+	bool reachable;
+	std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
+
+	EXPECT_TRUE(reachable);
+	EXPECT_EQ((vl{2, 3, 4}), v);
+}
+
+TEST_F(Test_path, distances_with_property_map_float)
+{
+	const adjmatrix g{
+		5, {{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
+
+	const std::map<edge, float> distances{
+		{{0, 1}, 1.0}, {{0, 2}, 2.0}, {{1, 2}, 2.0}, {{1, 3}, 3.0}, {{2, 3}, 1.0},
+		{{2, 4}, 5.0}, {{3, 4}, 1.0}, {{4, 0}, 4.0}, {{3, 0}, 2.0}, {{3, 1}, 1.0},
+	};
+
+	vertex_list v;
+	bool reachable;
+	std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
+
+	EXPECT_TRUE(reachable);
+	EXPECT_EQ((vl{2, 3, 4}), v);
 }
 }

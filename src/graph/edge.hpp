@@ -2,6 +2,7 @@
 #define __GRAPH__EDGE__HPP__
 
 #include <vector>
+#include <functional>
 #include <graph/vertex.hpp>
 
 namespace graph
@@ -66,6 +67,17 @@ struct edge {
 
 /// Container type for a list of edges.
 using edge_list = std::vector<edge>;
+
+/// Default hash function for edges.
+///
+/// Please note: it does not claim to be a good hash.
+struct edge_hash {
+	std::size_t operator()(const graph::edge & e) const
+	{
+		std::hash<graph::vertex> h;
+		return 0xabcdef123 + h(e.from) + (h(e.from) << 4) + (h(e.to) << 3);
+	}
+};
 }
 
 #endif
