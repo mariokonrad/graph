@@ -2,6 +2,8 @@
 #define __GRAPH__ADJMATRIX__HPP__
 
 #include <vector>
+#include <algorithm>
+#include <cassert>
 
 namespace graph
 {
@@ -96,11 +98,14 @@ public:
 	/// Internally used to keep track of visited vertices.
 	using visited_list = std::vector<bool>;
 
-	/// Indicates no edge between vertices.
-	static constexpr value_type no_value = 0;
+	/// Default values for states within the adjacency matrix.
+	enum : value_type {
+		/// Indicates no edge between vertices.
+		no_value = 0,
 
-	/// Indicates an edge between vertices.
-	static constexpr value_type edge_value = 1;
+		/// Indicates an edge between vertices.
+		edge_value = 1,
+	};
 
 private:
 	const size_type n; // number of vertices
@@ -112,8 +117,25 @@ private:
 
 public:
 	/// \{
-	adjmatrix(size_type n);
-	adjmatrix(size_type n, std::initializer_list<edge> edges);
+	/// Constructor to set the size of the matrix and initialize it
+	/// with no edges.
+	///
+	/// \param[in] n Size of the matrix.
+	adjmatrix(size_type n)
+		: n(n)
+		, m(n * n, no_value)
+	{
+		assert(n > 0);
+	}
+
+	adjmatrix(size_type n, std::initializer_list<edge> edges)
+		: adjmatrix(n)
+	{
+		assert(n > 0);
+		for (auto const & e : edges)
+			add(e);
+	}
+
 	adjmatrix(const adjmatrix &) = default;
 	adjmatrix(adjmatrix &&) = default;
 	/// \}
@@ -124,8 +146,27 @@ public:
 	/// \}
 
 	/// \{
-	bool add(edge e, edge::type type = edge::type::uni, value_type value = edge_value);
+	/// Adds an edge to the matrix.
+	///
+	/// Complexity: O(1)
+	///
+	/// \param[in] e The edge to add
+	/// \param[in] type Type of edge to add
+	/// \param[in] value Value for the specified edge
+	/// \return true on success, false otherwise
+	///
+	/// \note This function performs boundary check.
+	bool add(edge e, edge::type type = edge::type::uni, value_type value = edge_value)
+	{
+		if ((e.from >= n) || (e.to >= n))
+			return false;
+		get(e) = value;
+		if (type == edge::type::bi)
+			get(e.reverse()) = value;
+		return true;
+	}
 
+	/// \see add()
 	bool add(vertex from, vertex to, edge::type type = edge::type::uni,
 		value_type value = edge_value)
 	{
@@ -134,8 +175,26 @@ public:
 	/// \}
 
 	/// \{
-	bool remove(edge e, edge::type type = edge::type::uni);
+	/// Removes an edge from the matrix.
+	///
+	/// Complexity: O(1)
+	///
+	/// \param[in] e Edge to remove
+	/// \param[in] type Type of edge to add
+	/// \return true on success, false otherwise
+	///
+	/// \note This function performs boundary check.
+	bool remove(edge e, edge::type type = edge::type::uni)
+	{
+		if ((e.from >= n) || (e.to >= n))
+			return false;
+		get(e) = no_value;
+		if (type == edge::type::bi)
+			get(e.reverse()) = no_value;
+		return true;
+	}
 
+	/// \see remove
 	bool remove(vertex from, vertex to, edge::type type = edge::type::uni)
 	{
 		return remove({from, to}, type);
@@ -143,8 +202,19 @@ public:
 	/// \}
 
 	/// \{
-	value_type & get(edge e);
-	value_type get(edge e) const;
+	/// Accessor for edges. This method provides writing access to
+	/// the matrix and is not boundary checked.
+	///
+	/// \note The call 'get(e)=edge_value' is the same as 'add(e)'.
+	///
+	/// Complexity: O(1)
+	value_type & get(edge e) { return m[edge_index(e)]; }
+
+	/// Accessor for edges. This method provides read only access
+	/// to the matrix and is not boundary checked.
+	///
+	/// Complexity: O(1)
+	value_type get(edge e) const { return m[edge_index(e)]; }
 
 	/// Convenience function. See \see get(edge)
 	value_type & get(vertex from, vertex to) { return get({from, to}); }
@@ -152,23 +222,129 @@ public:
 	/// Convenience function. See \see get(edge) const
 	value_type get(vertex from, vertex to) const { return get({from, to}); }
 
-	value_type & operator[](edge e);
-	value_type operator[](edge e) const;
+	/// \see get(edge)
+	value_type & operator[](edge e) { return m[edge_index(e)]; }
+
+	/// \see get(edge) const
+	value_type operator[](edge e) const { return m[edge_index(e)]; }
 	/// \}
 
 	/// \{
-	size_type size() const noexcept;
-	vertex_list vertices() const;
-	vertex_list neighbors_of(vertex v) const;
-	size_type count_incoming(vertex to) const;
-	vertex_list incoming(vertex to) const;
-	size_type count_outgoing(vertex to) const;
-	vertex_list outgoing(vertex from) const;
+	/// Returns the size of the matrix (number of vertices).
+	size_type size() const noexcept { return n; }
+
+	/// Returns a list of vertices. This function is for convinience only.
+	///
+	/// Complexity: O(n)
+	vertex_list vertices() const
+	{
+		vertex_list v(size());
+		std::iota(v.begin(), v.end(), 0);
+		return v;
+	}
+
+	/// Returns a list of neighbors of `v`
+	///
+	/// Complexity: O(n)
+	vertex_list neighbors_of(vertex v) const
+	{
+		vertex_list result;
+		for (vertex to = 0; to < n; ++to) {
+			if (to != v) {
+				if (get({v, to})) {
+					result.push_back(to);
+				}
+			}
+		}
+		return result;
+	}
+
+	/// Returns the number of incoming edges to the specified vertex.
+	///
+	/// If the specified vertex is invalid the function returns 0.
+	///
+	/// Complexity: O(n)
+	size_type count_incoming(vertex to) const
+	{
+		if (to >= n)
+			return 0;
+		size_type num = 0;
+		for (vertex i = 0; i < n; ++i)
+			if (get({i, to}))
+				++num;
+		return num;
+	}
+
+	/// Returns a list of nodes from where an edge exists.
+	///
+	/// If the specified vertex is invalid, an empty list will return.
+	///
+	/// Complexity: O(n)
+	vertex_list incoming(vertex to) const
+	{
+		vertex_list v;
+		if (to >= n)
+			return v;
+		for (vertex i = 0; i < n; ++i)
+			if (get({i, to}))
+				v.push_back(i);
+		return v;
+	}
+
+	/// Returns the number of outgoing edges of the specified vertex.
+	///
+	/// If the specified vertex is invalid the function returns 0.
+	///
+	/// Complexity: O(n)
+	size_type count_outgoing(vertex from) const
+	{
+		if (from >= n)
+			return 0;
+		size_type num = 0;
+		for (vertex i = 0; i < n; ++i)
+			if (get({from, i}))
+				++num;
+		return num;
+	}
+
+	/// Returns a list of nodes to where an edge exists.
+	///
+	/// If the specified vertex is invalid, an empty list will return.
+	///
+	/// Complexity: O(n)
+	vertex_list outgoing(vertex from) const
+	{
+		vertex_list v;
+		if (from >= n)
+			return v;
+		for (vertex i = 0; i < n; ++i)
+			if (get({from, i}))
+				v.push_back(from);
+		return v;
+	}
 	/// \}
 
 	/// \{
-	size_type count_edges() const noexcept;
-	edge_list edges() const;
+	/// Returns the total number of edges within the matrix.
+	///
+	/// Complexity: O(n^2)
+	size_type count_edges() const noexcept
+	{
+		return std::count_if(m.begin(), m.end(), [](auto const v) { return v != no_value; });
+	}
+
+	/// Returns a list of edges defined by the matrix.
+	///
+	/// Complexity: O(n^2)
+	edge_list edges() const
+	{
+		edge_list vec;
+		for (vertex from = 0; from < n; ++from)
+			for (vertex to = 0; to < n; ++to)
+				if (get({from, to}))
+					vec.emplace_back(from, to);
+		return vec;
+	}
 	/// \}
 };
 }

@@ -9,7 +9,7 @@ Copyright (c) 2015 Mario Konrad (mario.konrad@gmx.net)
 Abstract
 --------
 
-Small C++ library for graphs represented as adjecent matrix and related
+Small C++ header-only library for graphs represented as adjecent matrix and related
 algorithms.
 
 Yes, there are already implementations for this, for example boost::graph.

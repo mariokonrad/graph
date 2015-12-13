@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(gmock)
+project(gmock CXX)
 message(STATUS "TARGET: gmock 1.7.0")
 
 if(UNIX)

@@ -1,36 +1,12 @@
 cmake_minimum_required(VERSION 3.0)
 
-add_library(graph
-	graph/bfs.hpp
-	graph/dfs.hpp
-	utils/priority_queue.hpp
-	graph/adjmatrix.cpp
-	graph/dot.cpp
-	graph/toposort.cpp
-	graph/path.cpp
-	graph/mst.cpp
-	)
+file(GLOB_RECURSE HEADERS graph/*.hpp)
 
-set_target_properties(graph
-	PROPERTIES VERSION "${PROJECT_VERSION}"
-	SOVERSION "${PROJECT_VERSION}"
-	)
-
-install(
-	TARGETS graph
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
-	)
+add_library(graph INTERFACE)
 
 install(
 	FILES
-		graph/adjmatrix.hpp
-		graph/dot.hpp
-		graph/bfs.hpp
-		graph/dfs.hpp
-		graph/mst.hpp
-		graph/path.hpp
-		graph/toposort.hpp
+		${HEADERS}
 	DESTINATION include/graph
 	)
 

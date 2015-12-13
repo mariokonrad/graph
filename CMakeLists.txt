@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(graph)
+project(graph CXX)
 
 set(VERSION_MAJOR "0")
 set(VERSION_MINOR "1")
