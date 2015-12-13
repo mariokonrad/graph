@@ -29,10 +29,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 	distance[start] = Value{};
 
 	// prepare list of nodes to process
-	vertex_list q;
-	q.reserve(g.size());
-	for (auto const & vertex : g.vertices())
-		q.push_back(vertex);
+	vertex_list q = g.vertices();
 
 	// the actual algorithm
 	vertex current = undefined;
@@ -96,11 +93,12 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 ///
 /// \tparam Graph The graph type to visit.
 ///   Must provide the following features:
-///   - a type `value_type` which represents a single value within the graph (length of an edge)
-///   - `size()` which returns the number of nodes in the graph
-///   - `at(edge)` which returns the status of the specified edge.
-///   - `vertices()` which returns a `vertex_list` of all nodes
-///   - `neighbors_of(node)` which returns a `vertex_list` of all neighbors of the specified node
+///   - type `value_type` which represents a single value within the graph (length of an edge)
+///   - function `size()` which returns the number of nodes in the graph
+///   - function `at(edge)` which returns the status of the specified edge.
+///   - function `vertices()` which returns a `vertex_list` of all nodes
+///   - function `neighbors_of(node)` which returns a `vertex_list` of all neighbors of the
+///     specified node
 ///
 /// \param[in] g The graph
 /// \param[in] start The staring node
@@ -125,9 +123,10 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 ///
 /// \tparam Graph The graph type to visit.
 ///   Must provide the following features:
-///   - `size()` which returns the number of nodes in the graph
-///   - `vertices()` which returns a `vertex_list` of all nodes
-///   - `neighbors_of(node)` which returns a `vertex_list` of all neighbors of the specified node
+///   - function `size()` which returns the number of nodes in the graph
+///   - function `vertices()` which returns a `vertex_list` of all nodes
+///   - function `neighbors_of(node)` which returns a `vertex_list` of all neighbors of the
+///     specified node
 ///
 /// \tparam PropertyMap The mapping of edge to distance, must provide following features:
 ///   - type `mapped_type` which represents the distance type of an edge
