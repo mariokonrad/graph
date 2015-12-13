@@ -64,7 +64,7 @@ edge_list minimum_spanning_tree_prim(const adjmatrix & g)
 
 		// from the current node, update all costs to adjacent nodes
 		for (vertex node = 0; node < g.size(); ++node) {
-			const adjmatrix::value_type w = g.get(current, node);
+			const adjmatrix::value_type w = g.at(current, node);
 			if (w > 0) {
 				if (find(begin(q), end(q), node) != end(q)) {
 					if (w < cost[node]) {

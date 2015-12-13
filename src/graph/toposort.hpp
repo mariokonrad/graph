@@ -42,7 +42,7 @@ std::tuple<vertex_list, bool> topological_sort(const adjmatrix & g)
 		for (vertex i = 0; i < tm.size(); ++i) {
 			if (i == node)
 				continue; // not to self
-			if (tm.get(node, i)) {
+			if (tm.at(node, i)) {
 				tm.remove(node, i); // remove edge from graph
 
 				// has i other incoming edges?

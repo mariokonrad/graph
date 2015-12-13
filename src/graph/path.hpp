@@ -73,7 +73,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 		// check all remaining neighbors of current node and update distances
 		for (auto const & node : g.neighbors_of(current)) {
 			if (find(begin(q), end(q), node) != end(q)) {
-				const adjmatrix::value_type d = distance[current] + g.get(current, node);
+				const adjmatrix::value_type d = distance[current] + g.at(current, node);
 				if (d < distance[node]) {
 					distance[node] = d;
 					predecessor[node] = current;

@@ -160,9 +160,9 @@ public:
 	{
 		if ((e.from >= n) || (e.to >= n))
 			return false;
-		get(e) = value;
+		at(e) = value;
 		if (type == edge::type::bi)
-			get(e.reverse()) = value;
+			at(e.reverse()) = value;
 		return true;
 	}
 
@@ -188,9 +188,9 @@ public:
 	{
 		if ((e.from >= n) || (e.to >= n))
 			return false;
-		get(e) = no_value;
+		at(e) = no_value;
 		if (type == edge::type::bi)
-			get(e.reverse()) = no_value;
+			at(e.reverse()) = no_value;
 		return true;
 	}
 
@@ -205,27 +205,27 @@ public:
 	/// Accessor for edges. This method provides writing access to
 	/// the matrix and is not boundary checked.
 	///
-	/// \note The call 'get(e)=edge_value' is the same as 'add(e)'.
+	/// \note The call 'at(e)=edge_value' is the same as 'add(e)'.
 	///
 	/// Complexity: O(1)
-	value_type & get(edge e) { return m[edge_index(e)]; }
+	value_type & at(edge e) { return m[edge_index(e)]; }
 
 	/// Accessor for edges. This method provides read only access
 	/// to the matrix and is not boundary checked.
 	///
 	/// Complexity: O(1)
-	value_type get(edge e) const { return m[edge_index(e)]; }
+	value_type at(edge e) const { return m[edge_index(e)]; }
 
-	/// Convenience function. See \see get(edge)
-	value_type & get(vertex from, vertex to) { return get({from, to}); }
+	/// Convenience function. See \see at(edge)
+	value_type & at(vertex from, vertex to) { return at({from, to}); }
 
-	/// Convenience function. See \see get(edge) const
-	value_type get(vertex from, vertex to) const { return get({from, to}); }
+	/// Convenience function. See \see at(edge) const
+	value_type at(vertex from, vertex to) const { return at({from, to}); }
 
-	/// \see get(edge)
+	/// Accessor for edges, uses index operator.
 	value_type & operator[](edge e) { return m[edge_index(e)]; }
 
-	/// \see get(edge) const
+	/// Accessor for edges, uses index operator.
 	value_type operator[](edge e) const { return m[edge_index(e)]; }
 	/// \}
 
@@ -251,7 +251,7 @@ public:
 		vertex_list result;
 		for (vertex to = 0; to < n; ++to) {
 			if (to != v) {
-				if (get({v, to})) {
+				if (at({v, to})) {
 					result.push_back(to);
 				}
 			}
@@ -270,7 +270,7 @@ public:
 			return 0;
 		size_type num = 0;
 		for (vertex i = 0; i < n; ++i)
-			if (get({i, to}))
+			if (at({i, to}))
 				++num;
 		return num;
 	}
@@ -286,7 +286,7 @@ public:
 		if (to >= n)
 			return v;
 		for (vertex i = 0; i < n; ++i)
-			if (get({i, to}))
+			if (at({i, to}))
 				v.push_back(i);
 		return v;
 	}
@@ -302,7 +302,7 @@ public:
 			return 0;
 		size_type num = 0;
 		for (vertex i = 0; i < n; ++i)
-			if (get({from, i}))
+			if (at({from, i}))
 				++num;
 		return num;
 	}
@@ -318,7 +318,7 @@ public:
 		if (from >= n)
 			return v;
 		for (vertex i = 0; i < n; ++i)
-			if (get({from, i}))
+			if (at({from, i}))
 				v.push_back(from);
 		return v;
 	}
@@ -341,7 +341,7 @@ public:
 		edge_list vec;
 		for (vertex from = 0; from < n; ++from)
 			for (vertex to = 0; to < n; ++to)
-				if (get({from, to}))
+				if (at({from, to}))
 					vec.emplace_back(from, to);
 		return vec;
 	}

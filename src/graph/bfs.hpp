@@ -37,7 +37,7 @@ Visitor breadth_first_search(const Graph & g, vertex v, Visitor visitor)
 
 		// all white successors of u
 		for (vertex i = 0; i < g.size(); ++i) {
-			if (!gray[i] && !black[i] && g.get(u, i)) {
+			if (!gray[i] && !black[i] && g.at({u, i})) {
 				gray[i] = true;
 				q.push(i);
 			}

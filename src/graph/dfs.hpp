@@ -24,7 +24,7 @@ static void recursive_dfs(
 
 	// search deeper
 	for (vertex i = 0; i < g.size(); ++i)
-		if ((i != id) && g.get(id, i))
+		if ((i != id) && g.at({id, i}))
 			recursive_dfs(g, i, visitor, visited);
 }
 }
