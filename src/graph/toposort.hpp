@@ -2,7 +2,7 @@
 #define __GRAPH__TOPOSORT__HPP__
 
 #include <tuple>
-#include <graph/adjmatrix.hpp>
+#include <graph/edge.hpp>
 
 namespace graph
 {
@@ -12,15 +12,24 @@ namespace graph
 ///
 /// Complexity: O(V + E)
 ///
+/// \tparam Graph The graph type to visit.
+///   Must provide the following features:
+///   - copy constructible
+///   - `size()` which returns the number of nodes in the graph
+///   - `at(edge)` which returns the status of the specified edge.
+///   - `remove(edge)` which removes an edge from the graph
+///   - `count_incoming(node)` which returns the number of incoming edges for a node
+///   - `count_edges()` which returns the number of edges within the graph
+///
 /// \param[in] g The adjacency matrix.
 /// \return A tuple containing the list and a status which is:
 ///   - \c true : sorting successful
 ///   - \c false : graph contains cycles
 ///
-std::tuple<vertex_list, bool> topological_sort(const adjmatrix & g)
+template <class Graph> std::tuple<vertex_list, bool> topological_sort(const Graph & g)
 {
 	// copy of matrix to work on (remove edges)
-	adjmatrix tm(g);
+	Graph tm(g);
 
 	// all nodes with no incoming edges
 	vertex_list Q;
@@ -42,8 +51,8 @@ std::tuple<vertex_list, bool> topological_sort(const adjmatrix & g)
 		for (vertex i = 0; i < tm.size(); ++i) {
 			if (i == node)
 				continue; // not to self
-			if (tm.at(node, i)) {
-				tm.remove(node, i); // remove edge from graph
+			if (tm.at({node, i})) {
+				tm.remove({node, i}); // remove edge from graph
 
 				// has i other incoming edges?
 				if (tm.count_incoming(i) == 0)

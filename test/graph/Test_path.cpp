@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <graph/path.hpp>
+#include <graph/adjmatrix.hpp>
 
 namespace
 {

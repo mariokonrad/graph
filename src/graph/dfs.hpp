@@ -1,7 +1,7 @@
 #ifndef __GRAPH__DFS__HPP__
 #define __GRAPH__DFS__HPP__
 
-#include "adjmatrix.hpp"
+#include <graph/edge.hpp>
 
 namespace graph
 {
@@ -10,7 +10,7 @@ namespace detail
 {
 template <class Graph, class Visitor>
 static void recursive_dfs(
-	const Graph & g, vertex id, Visitor & visitor, adjmatrix::visited_list & visited)
+	const Graph & g, vertex id, Visitor & visitor, visited_vertex_list & visited)
 {
 	// guard
 	if (id >= g.size())
@@ -34,7 +34,11 @@ static void recursive_dfs(
 /// vertex. The strategy is 'depth first'.
 ///
 /// \tparam Graph The graph type.
+///   Must provide the following features:
+///   - `size()` which returns the number of nodes in the graph
+///   - `at(edge)` which returns the status of the specified edge.
 /// \tparam Visitor The visitor type for the search.
+///
 /// \param[in] g The graph to visit.
 /// \param[in] v The starting vertex.
 /// \param[in] visitor Visitor which gets called for each found vertex.
@@ -43,7 +47,7 @@ static void recursive_dfs(
 template <class Graph, class Visitor>
 Visitor depth_first_search(const Graph & g, vertex v, Visitor visitor)
 {
-	adjmatrix::visited_list visited(g.size(), false);
+	visited_vertex_list visited(g.size(), false);
 	detail::recursive_dfs(g, v, visitor, visited);
 	return visitor;
 }

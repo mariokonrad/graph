@@ -24,7 +24,7 @@ public:
 
 TEST_F(Test_mst, simple_bidirectional)
 {
-	EXPECT_EQ((el{{-1, 0}, {0, 1}, {0, 2}, {2, 3}, {3, 4}}),
+	EXPECT_EQ((el{{graph::vertex_invalid, 0}, {0, 1}, {0, 2}, {2, 3}, {3, 4}}),
 		graph::minimum_spanning_tree_prim(create_simple_bi()));
 }
 }

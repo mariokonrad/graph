@@ -2,7 +2,7 @@
 #define __GRAPH__BFS__HPP__
 
 #include <queue>
-#include "adjmatrix.hpp"
+#include <graph/edge.hpp>
 
 namespace graph
 {
@@ -10,7 +10,11 @@ namespace graph
 /// vertex. The strategy is 'breadth first'.
 ///
 /// \tparam Graph The graph type to visit.
+///   Must provide the following features:
+///   - `size()` which returns the number of nodes in the graph
+///   - `at(edge)` which returns the status of the specified edge.
 /// \tparam Visitor The visitor type.
+///
 /// \param[in] g The adjacency matrix to visit.
 /// \param[in] v The starting vertex.
 /// \param[in] visitor Visitor which gets called for each found vertex.
@@ -23,8 +27,8 @@ Visitor breadth_first_search(const Graph & g, vertex v, Visitor visitor)
 		return visitor;
 
 	std::queue<vertex> q;
-	adjmatrix::visited_list gray(g.size(), false);
-	adjmatrix::visited_list black(g.size(), false);
+	visited_vertex_list gray(g.size(), false);
+	visited_vertex_list black(g.size(), false);
 
 	// starting vertex is gray and put into queue
 	gray[v] = true;

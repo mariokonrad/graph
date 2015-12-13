@@ -51,7 +51,22 @@ Depth first search with printing the visited nodes:
 using namespace graph;
 
 adjmatrix g{4, {{0, 1}, {0, 2}, {1, 2}, {2, 3}}};
-depth_first_search(g, [](const auto &, vertex v) { std::cout << v << "\n"; });
+depth_first_search(g, 0, [](const auto &, vertex v) { std::cout << v << "\n"; });
+~~~~~
+
+Depth first search with printing the neighbors of visited nodes:
+
+~~~~~cpp
+using namespace graph;
+
+const adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
+std::cout << "Depth First Search with neighbors:\n";
+depth_first_search(m, 0, [](auto const & m, auto const & v) {
+	std::cout << " " << v << " (";
+	for (auto neighbor : m.neighbors_of(v))
+		std::cout << " " << neighbor;
+	std::cout << " )\n";
+});
 ~~~~~
 
 Topological Sorting:

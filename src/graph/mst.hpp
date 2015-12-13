@@ -24,18 +24,18 @@ namespace graph
 ///
 edge_list minimum_spanning_tree_prim(const adjmatrix & g)
 {
-	static const vertex invalid = -1;
+	using value_type = typename adjmatrix::value_type;
 
 	edge_list tree;
 	tree.reserve(g.size());
 
 	// cost (weight) of an edge to a certain node
-	std::vector<adjmatrix::value_type> cost(g.size());
-	fill(begin(cost), end(cost), std::numeric_limits<adjmatrix::value_type>::max());
+	std::vector<value_type> cost(g.size());
+	fill(begin(cost), end(cost), std::numeric_limits<value_type>::max());
 
 	// node from which a certain node is reachable by cost[]
 	vertex_list low_cost_edge(g.size());
-	fill(begin(low_cost_edge), end(low_cost_edge), invalid);
+	fill(begin(low_cost_edge), end(low_cost_edge), vertex_invalid);
 
 	// setup queue of nodes to visit, initially all of them
 	vertex_list q(g.size());
@@ -46,11 +46,11 @@ edge_list minimum_spanning_tree_prim(const adjmatrix & g)
 	while (!q.empty()) {
 
 		// find node with minimal (valid) cost from still available nodes q
-		vertex current = invalid;
-		vertex index_q = invalid;
-		adjmatrix::value_type cost_min = std::numeric_limits<adjmatrix::value_type>::max();
+		vertex current = vertex_invalid;
+		vertex index_q = vertex_invalid;
+		value_type cost_min = std::numeric_limits<value_type>::max();
 		for (vertex_list::size_type i = 0; i < q.size(); ++i) {
-			adjmatrix::value_type cost_q = cost[q[i]];
+			value_type cost_q = cost[q[i]];
 			if ((cost_q >= 0) && (cost_q < cost_min)) {
 				cost_min = cost_q;
 				index_q = i;
@@ -64,7 +64,7 @@ edge_list minimum_spanning_tree_prim(const adjmatrix & g)
 
 		// from the current node, update all costs to adjacent nodes
 		for (vertex node = 0; node < g.size(); ++node) {
-			const adjmatrix::value_type w = g.at(current, node);
+			const value_type w = g.at({current, node});
 			if (w > 0) {
 				if (find(begin(q), end(q), node) != end(q)) {
 					if (w < cost[node]) {

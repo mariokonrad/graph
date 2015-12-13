@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <graph/dfs.hpp>
+#include <graph/adjmatrix.hpp>
 
 namespace
 {
