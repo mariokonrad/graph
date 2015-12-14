@@ -38,7 +38,7 @@ void test_dfs()
 	std::cout << "Depth First Search with neighbors:\n";
 	depth_first_search(m, 0, [](auto const & m, auto const & v) {
 		std::cout << " " << v << " (";
-		for (auto neighbor : m.neighbors_of(v))
+		for (auto neighbor : m.outgoing(v))
 			std::cout << " " << neighbor;
 		std::cout << " )\n";
 	});

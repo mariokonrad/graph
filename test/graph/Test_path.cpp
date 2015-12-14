@@ -3,11 +3,11 @@
 #include <unordered_map>
 #include <graph/path.hpp>
 #include <graph/adjmatrix.hpp>
+#include <graph/adjlist.hpp>
 
 namespace
 {
 using namespace graph;
-using vl = vertex_list;
 
 class Test_path : public ::testing::Test
 {
@@ -53,46 +53,140 @@ public:
 		g.add(3, 4, edge::type::bi, 1);
 		return g;
 	}
+
+	template <class Graph> void test_distances_with_property_map_int() const
+	{
+		const Graph g{5,
+			{{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
+
+		const std::map<edge, int> distances{
+			{{0, 1}, 1}, {{0, 2}, 2}, {{1, 2}, 2}, {{1, 3}, 3}, {{2, 3}, 1}, {{2, 4}, 5},
+			{{3, 4}, 1}, {{4, 0}, 4}, {{3, 0}, 2}, {{3, 1}, 1},
+		};
+
+		vertex_list v;
+		bool reachable;
+		std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
+
+		EXPECT_TRUE(reachable);
+		EXPECT_EQ((vertex_list{2, 3, 4}), v);
+	}
+
+	template <class Graph> void test_distances_with_property_map_unordered_map_int() const
+	{
+		const Graph g{5,
+			{{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
+
+		const std::unordered_map<edge, int, graph::edge_hash> distances{
+			{{0, 1}, 1}, {{0, 2}, 2}, {{1, 2}, 2}, {{1, 3}, 3}, {{2, 3}, 1}, {{2, 4}, 5},
+			{{3, 4}, 1}, {{4, 0}, 4}, {{3, 0}, 2}, {{3, 1}, 1},
+		};
+
+		vertex_list v;
+		bool reachable;
+		std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
+
+		EXPECT_TRUE(reachable);
+		EXPECT_EQ((vertex_list{2, 3, 4}), v);
+	}
+
+	template <class Graph> void test_distances_with_property_map_float()
+	{
+		const Graph g{5,
+			{{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
+
+		const std::map<edge, float> distances{
+			{{0, 1}, 1.0}, {{0, 2}, 2.0}, {{1, 2}, 2.0}, {{1, 3}, 3.0}, {{2, 3}, 1.0},
+			{{2, 4}, 5.0}, {{3, 4}, 1.0}, {{4, 0}, 4.0}, {{3, 0}, 2.0}, {{3, 1}, 1.0},
+		};
+
+		vertex_list v;
+		bool reachable;
+		std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
+
+		EXPECT_TRUE(reachable);
+		EXPECT_EQ((vertex_list{2, 3, 4}), v);
+	}
 };
 
 TEST_F(Test_path, simple_bidirectional_0_3)
 {
-	EXPECT_EQ((vl{0, 2, 3}), std::get<0>(shortest_path_dijkstra(create_simple_bi(), 0, 3)));
+	vertex_list v;
+	bool success;
+	std::tie(v, success) = shortest_path_dijkstra(create_simple_bi(), 0, 3);
+
+	EXPECT_TRUE(success);
+	EXPECT_EQ((vertex_list{0, 2, 3}), v);
 }
 
 TEST_F(Test_path, simple_bidirectional_0_4)
 {
-	EXPECT_EQ((vl{0, 2, 3, 4}), std::get<0>(shortest_path_dijkstra(create_simple_bi(), 0, 4)));
+	vertex_list v;
+	bool success;
+	std::tie(v, success) = shortest_path_dijkstra(create_simple_bi(), 0, 4);
+
+	EXPECT_TRUE(success);
+	EXPECT_EQ((vertex_list{0, 2, 3, 4}), v);
 }
 
 TEST_F(Test_path, simple_bidirectional_2_4)
 {
-	EXPECT_EQ((vl{2, 3, 4}), std::get<0>(shortest_path_dijkstra(create_simple_bi(), 2, 4)));
+	vertex_list v;
+	bool success;
+	std::tie(v, success) = shortest_path_dijkstra(create_simple_bi(), 2, 4);
+
+	EXPECT_TRUE(success);
+	EXPECT_EQ((vertex_list{2, 3, 4}), v);
 }
 
 TEST_F(Test_path, simple_unidirectional_0_3)
 {
-	EXPECT_EQ((vl{0, 2, 3}), std::get<0>(shortest_path_dijkstra(create_simple_uni(), 0, 3)));
+	vertex_list v;
+	bool success;
+	std::tie(v, success) = shortest_path_dijkstra(create_simple_uni(), 0, 3);
+
+	EXPECT_TRUE(success);
+	EXPECT_EQ((vertex_list{0, 2, 3}), v);
 }
 
 TEST_F(Test_path, simple_unidirectional_0_4)
 {
-	EXPECT_EQ((vl{0, 2, 3, 4}), std::get<0>(shortest_path_dijkstra(create_simple_uni(), 0, 4)));
+	vertex_list v;
+	bool success;
+	std::tie(v, success) = shortest_path_dijkstra(create_simple_uni(), 0, 4);
+
+	EXPECT_TRUE(success);
+	EXPECT_EQ((vertex_list{0, 2, 3, 4}), v);
 }
 
 TEST_F(Test_path, simple_unidirectional_2_4)
 {
-	EXPECT_EQ((vl{2, 3, 4}), std::get<0>(shortest_path_dijkstra(create_simple_uni(), 2, 4)));
+	vertex_list v;
+	bool success;
+	std::tie(v, success) = shortest_path_dijkstra(create_simple_uni(), 2, 4);
+
+	EXPECT_TRUE(success);
+	EXPECT_EQ((vertex_list{2, 3, 4}), v);
 }
 
 TEST_F(Test_path, cycle_unidirectional_2_0)
 {
-	EXPECT_EQ((vl{2, 3, 0}), std::get<0>(shortest_path_dijkstra(create_cycle_uni(), 2, 0)));
+	vertex_list v;
+	bool success;
+	std::tie(v, success) = shortest_path_dijkstra(create_cycle_uni(), 2, 0);
+
+	EXPECT_TRUE(success);
+	EXPECT_EQ((vertex_list{2, 3, 0}), v);
 }
 
 TEST_F(Test_path, cycle_unidirectional_3_2)
 {
-	EXPECT_EQ((vl{3, 1, 2}), std::get<0>(shortest_path_dijkstra(create_cycle_uni(), 3, 2)));
+	vertex_list v;
+	bool success;
+	std::tie(v, success) = shortest_path_dijkstra(create_cycle_uni(), 3, 2);
+
+	EXPECT_TRUE(success);
+	EXPECT_EQ((vertex_list{3, 1, 2}), v);
 }
 
 TEST_F(Test_path, unreachable_destination)
@@ -107,57 +201,33 @@ TEST_F(Test_path, unreachable_destination)
 	EXPECT_EQ((vertex_list{}), v);
 }
 
-TEST_F(Test_path, distances_with_property_map_int)
+TEST_F(Test_path, adjmatrix_distances_with_property_map_int)
 {
-	const adjmatrix g{
-		5, {{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
-
-	const std::map<edge, int> distances{
-		{{0, 1}, 1}, {{0, 2}, 2}, {{1, 2}, 2}, {{1, 3}, 3}, {{2, 3}, 1}, {{2, 4}, 5},
-		{{3, 4}, 1}, {{4, 0}, 4}, {{3, 0}, 2}, {{3, 1}, 1},
-	};
-
-	vertex_list v;
-	bool reachable;
-	std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
-
-	EXPECT_TRUE(reachable);
-	EXPECT_EQ((vl{2, 3, 4}), v);
+	test_distances_with_property_map_int<adjmatrix>();
 }
 
-TEST_F(Test_path, distances_with_property_map_unordered_map_int)
+TEST_F(Test_path, adjmatrix_distances_with_property_map_unordered_map_int)
 {
-	const adjmatrix g{
-		5, {{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
-
-	const std::unordered_map<edge, int, graph::edge_hash> distances{
-		{{0, 1}, 1}, {{0, 2}, 2}, {{1, 2}, 2}, {{1, 3}, 3}, {{2, 3}, 1}, {{2, 4}, 5},
-		{{3, 4}, 1}, {{4, 0}, 4}, {{3, 0}, 2}, {{3, 1}, 1},
-	};
-
-	vertex_list v;
-	bool reachable;
-	std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
-
-	EXPECT_TRUE(reachable);
-	EXPECT_EQ((vl{2, 3, 4}), v);
+	test_distances_with_property_map_unordered_map_int<adjmatrix>();
 }
 
-TEST_F(Test_path, distances_with_property_map_float)
+TEST_F(Test_path, adjmatrix_distances_with_property_map_float)
 {
-	const adjmatrix g{
-		5, {{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}, {2, 4}, {3, 4}, {4, 0}, {3, 0}, {3, 1}}};
+	test_distances_with_property_map_float<adjmatrix>();
+}
 
-	const std::map<edge, float> distances{
-		{{0, 1}, 1.0}, {{0, 2}, 2.0}, {{1, 2}, 2.0}, {{1, 3}, 3.0}, {{2, 3}, 1.0},
-		{{2, 4}, 5.0}, {{3, 4}, 1.0}, {{4, 0}, 4.0}, {{3, 0}, 2.0}, {{3, 1}, 1.0},
-	};
+TEST_F(Test_path, adjlist_distances_with_property_map_int)
+{
+	test_distances_with_property_map_int<adjlist>();
+}
 
-	vertex_list v;
-	bool reachable;
-	std::tie(v, reachable) = shortest_path_dijkstra(g, distances, 2, 4);
+TEST_F(Test_path, adjlist_distances_with_property_map_unordered_map_int)
+{
+	test_distances_with_property_map_unordered_map_int<adjlist>();
+}
 
-	EXPECT_TRUE(reachable);
-	EXPECT_EQ((vl{2, 3, 4}), v);
+TEST_F(Test_path, adjlist_distances_with_property_map_float)
+{
+	test_distances_with_property_map_float<adjlist>();
 }
 }

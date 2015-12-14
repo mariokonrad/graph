@@ -49,22 +49,6 @@ TEST(Test_adjmatrix, add_edges_bidirectional)
 	EXPECT_EQ(2u, m.count_edges());
 }
 
-TEST(Test_adjmatrix, neighbors_of)
-{
-	graph::adjmatrix m{4};
-
-	m.add(0, 1);
-	m.add(0, 2);
-	m.add(0, 3);
-	m.add(1, 0);
-	m.add(1, 2);
-
-	EXPECT_EQ(3u, m.neighbors_of(0).size());
-	EXPECT_EQ(2u, m.neighbors_of(1).size());
-	EXPECT_EQ(0u, m.neighbors_of(2).size());
-	EXPECT_EQ(0u, m.neighbors_of(3).size());
-}
-
 TEST(Test_adjmatrix, incoming)
 {
 	graph::adjmatrix m{4, {{0, 1}, {0, 2}, {0, 3}, {1, 0}, {1, 2}}};

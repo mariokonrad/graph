@@ -56,7 +56,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 			break;
 
 		// check all remaining neighbors of current node and update distances
-		for (auto const & node : g.neighbors_of(current)) {
+		for (auto const & node : g.outgoing(current)) {
 			if (find(begin(q), end(q), node) != end(q)) {
 				const Value d = distance[current] + access({current, node});
 				if (d < distance[node]) {
@@ -97,7 +97,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 ///   - function `size()` which returns the number of nodes in the graph
 ///   - function `at(edge)` which returns the status of the specified edge.
 ///   - function `vertices()` which returns a `vertex_list` of all nodes
-///   - function `neighbors_of(node)` which returns a `vertex_list` of all neighbors of the
+///   - function `outgoing(node)` which returns a `vertex_list` of all neighbors of the
 ///     specified node
 ///
 /// \param[in] g The graph
@@ -125,7 +125,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 ///   Must provide the following features:
 ///   - function `size()` which returns the number of nodes in the graph
 ///   - function `vertices()` which returns a `vertex_list` of all nodes
-///   - function `neighbors_of(node)` which returns a `vertex_list` of all neighbors of the
+///   - function `outgoing(node)` which returns a `vertex_list` of all neighbors of the
 ///     specified node
 ///
 /// \tparam PropertyMap The mapping of edge to distance, must provide following features:

@@ -9,8 +9,8 @@ Copyright (c) 2015 Mario Konrad (mario.konrad@gmx.net)
 Abstract
 --------
 
-Small C++ header-only library for graphs represented as adjecent matrix and related
-algorithms.
+Small C++ header-only library for graphs represented as adjecency matrix
+or adjacency list and related algorithms.
 
 Yes, there are already implementations for this, for example boost::graph.
 This library is not only to have fun with the stuff, but also to have
@@ -30,6 +30,9 @@ Goals
 Features
 --------
 
+- Two representations for graphs:
+  - adjacency matrix
+  - adjacency list
 - Uni- and bidirectional graphs
 - properties for nodes and edges
 - algorithms:
@@ -47,7 +50,7 @@ Examples
 
 Depth first search with printing the visited nodes:
 
-~~~~~cpp
+~~~~~{cpp}
 using namespace graph;
 
 adjmatrix g{4, {{0, 1}, {0, 2}, {1, 2}, {2, 3}}};
@@ -56,7 +59,7 @@ depth_first_search(g, 0, [](const auto &, vertex v) { std::cout << v << "\n"; })
 
 Depth first search with printing the neighbors of visited nodes:
 
-~~~~~cpp
+~~~~~{cpp}
 using namespace graph;
 
 const adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
@@ -71,7 +74,7 @@ depth_first_search(m, 0, [](auto const & m, auto const & v) {
 
 Topological Sorting:
 
-~~~~~cpp
+~~~~~{cpp}
 using namespace graph;
 
 adjmatrix g{4, {{0, 1}, {0, 2}, {1, 2}, {2, 3}}};

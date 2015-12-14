@@ -122,7 +122,7 @@ public:
 		return true;
 	}
 
-	/// \see remove
+	/// \see remove()
 	bool remove(vertex from, vertex to, edge::type type = edge::type::uni)
 	{
 		return remove({from, to}, type);
@@ -171,22 +171,6 @@ public:
 		return v;
 	}
 
-	/// Returns a list of neighbors of `v`
-	///
-	/// Complexity: O(n)
-	vertex_list neighbors_of(vertex v) const
-	{
-		vertex_list result;
-		for (vertex to = 0; to < n; ++to) {
-			if (to != v) {
-				if (at({v, to})) {
-					result.push_back(to);
-				}
-			}
-		}
-		return result;
-	}
-
 	/// Returns the number of incoming edges to the specified vertex.
 	///
 	/// If the specified vertex is invalid the function returns 0.
@@ -197,8 +181,8 @@ public:
 		if (to >= n)
 			return 0;
 		size_type num = 0;
-		for (vertex i = 0; i < n; ++i)
-			if (at({i, to}))
+		for (vertex from = 0; from < n; ++from)
+			if (at({from, to}))
 				++num;
 		return num;
 	}
@@ -213,9 +197,9 @@ public:
 		vertex_list v;
 		if (to >= n)
 			return v;
-		for (vertex i = 0; i < n; ++i)
-			if (at({i, to}))
-				v.push_back(i);
+		for (vertex from = 0; from < n; ++from)
+			if (at({from, to}))
+				v.push_back(from);
 		return v;
 	}
 
@@ -229,8 +213,8 @@ public:
 		if (from >= n)
 			return 0;
 		size_type num = 0;
-		for (vertex i = 0; i < n; ++i)
-			if (at({from, i}))
+		for (vertex to = 0; to < n; ++to)
+			if (at({from, to}))
 				++num;
 		return num;
 	}
@@ -245,9 +229,9 @@ public:
 		vertex_list v;
 		if (from >= n)
 			return v;
-		for (vertex i = 0; i < n; ++i)
-			if (at({from, i}))
-				v.push_back(from);
+		for (vertex to = 0; to < n; ++to)
+			if (at({from, to}))
+				v.push_back(to);
 		return v;
 	}
 	/// \}
