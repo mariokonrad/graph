@@ -61,30 +61,17 @@ TEST_F(Test_bfs, adjmatrix_graph_start_3)
 
 TEST_F(Test_bfs, adjmatrix_graph_start_4) { test_bfs<adjmatrix>(vertex_list{4}, 4); }
 
-
 TEST_F(Test_bfs, adjlist_empty_graph) { test_empty_graph<adjlist>(); }
 
 TEST_F(Test_bfs, adjlist_invalid_node) { test_invalid_node<adjlist>(); }
 
-TEST_F(Test_bfs, adjlist_graph_start_0)
-{
-	test_bfs<adjlist>(vertex_list{0, 1, 3, 2, 4}, 0);
-}
+TEST_F(Test_bfs, adjlist_graph_start_0) { test_bfs<adjlist>(vertex_list{0, 1, 3, 2, 4}, 0); }
 
-TEST_F(Test_bfs, adjlist_graph_start_1)
-{
-	test_bfs<adjlist>(vertex_list{1, 3, 0, 2, 4}, 1);
-}
+TEST_F(Test_bfs, adjlist_graph_start_1) { test_bfs<adjlist>(vertex_list{1, 3, 0, 2, 4}, 1); }
 
-TEST_F(Test_bfs, adjlist_graph_start_2)
-{
-	test_bfs<adjlist>(vertex_list{2, 3, 4, 0, 1}, 2);
-}
+TEST_F(Test_bfs, adjlist_graph_start_2) { test_bfs<adjlist>(vertex_list{2, 3, 4, 0, 1}, 2); }
 
-TEST_F(Test_bfs, adjlist_graph_start_3)
-{
-	test_bfs<adjlist>(vertex_list{3, 0, 2, 4, 1}, 3);
-}
+TEST_F(Test_bfs, adjlist_graph_start_3) { test_bfs<adjlist>(vertex_list{3, 0, 2, 4, 1}, 3); }
 
 TEST_F(Test_bfs, adjlist_graph_start_4) { test_bfs<adjlist>(vertex_list{4}, 4); }
 }

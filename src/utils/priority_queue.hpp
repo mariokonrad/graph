@@ -53,7 +53,7 @@ namespace utils
 /// - configurable container
 /// - swap
 ///
-/// \tparam The data type to manage.
+/// \tparam T The data type to manage.
 /// \tparam Compare Type of the comparison functionality, must be
 ///   default constructible.
 ///
@@ -65,6 +65,7 @@ public:
 	using size_type = typename container::size_type;
 	using const_iterator = typename container::const_iterator;
 
+	/// \{
 	/// Construction of the queue using (copying) existing data.
 	///
 	/// \param[in] comp The comparison functor
@@ -90,42 +91,30 @@ public:
 
 	priority_queue(const priority_queue &) = default;
 	priority_queue(priority_queue &&) noexcept = default;
+	/// \}
 
+	/// \{
 	~priority_queue() {}
+	/// \}
 
+	/// \{
 	priority_queue & operator=(const priority_queue &) = default;
 	priority_queue & operator=(priority_queue &&) noexcept = default;
+	/// \}
 
+	/// \{
 	size_type size() const { return data.size(); }
 	bool empty() const { return data.empty(); }
+	/// \}
 
-	const_reference top() const { return data.front(); }
-
+	/// \{
 	const_iterator begin() const { return data.begin(); }
 	const_iterator end() const { return data.end(); }
 	const_iterator cbegin() const { return data.begin(); }
 	const_iterator cend() const { return data.end(); }
+	/// \}
 
-	/// Finds an entry using an unary predicate.
-	///
-	/// This function is useful if you like to find a particular value.
-	///
-	/// Complexity: O(n)
-	///
-	/// \tparam UnaryPredicate The predicate to find something in
-	///   in the container.
-	/// \param[in] p The predicate instance.
-	/// \return The index in the container at which the predicate
-	///   became \c true. If the predicate did not find any match,
-	///   numeric_limits<size_type>::max() will returned.
-	template <class UnaryPredicate> size_type find_if(UnaryPredicate p) const
-	{
-		auto i = std::find_if(std::begin(data), std::end(data), p);
-		if (i == std::end(data))
-			return std::numeric_limits<size_type>::max();
-		return std::distance(std::begin(data), i);
-	}
-
+	/// \{
 	/// Constructs items in the queue.
 	///
 	/// Complexity: O(log n)
@@ -152,6 +141,10 @@ public:
 		data.push_back(std::move(t));
 		std::push_heap(std::begin(data), std::end(data), comp);
 	}
+	/// \}
+
+	/// \{
+	const_reference top() const { return data.front(); }
 
 	/// Pops the top value from the queue.
 	///
@@ -161,7 +154,9 @@ public:
 		std::pop_heap(std::begin(data), std::end(data), comp);
 		data.pop_back();
 	}
+	/// \}
 
+	/// \{
 	/// Update of a specific value within the container. The heap will
 	/// be created newly.
 	///
@@ -170,13 +165,14 @@ public:
 	/// \param[in] i Index at which position the element should be updated.
 	/// \param[in] t The data to write to the specified index. The old
 	///   value at the specified index will be overwritten.
-	void update(size_type i, const_reference t)
+	void update(const_iterator i, const_reference t)
 	{
-		if (i >= data.size())
+		if (i >= data.cend())
 			return;
-		data[i] = t;
+		data[std::distance(data.cbegin(), i)] = t;
 		std::make_heap(std::begin(data), std::end(data), comp);
 	}
+	/// \}
 
 private:
 	Compare comp;

@@ -67,10 +67,14 @@ TEST(Test_utils_priority_queue, find_if)
 	pq.push(1);
 	pq.push(8);
 
-	EXPECT_EQ(3u, pq.find_if([](int value) { return value == 0; }));
-	EXPECT_EQ(2u, pq.find_if([](int value) { return value == 1; }));
-	EXPECT_EQ(1u, pq.find_if([](int value) { return value == 8; }));
-	EXPECT_EQ(0u, pq.find_if([](int value) { return value == 9; }));
+	EXPECT_EQ(std::begin(pq) + 3u,
+		find_if(std::begin(pq), std::end(pq), [](int value) { return value == 0; }));
+	EXPECT_EQ(std::begin(pq) + 2u,
+		find_if(std::begin(pq), std::end(pq), [](int value) { return value == 1; }));
+	EXPECT_EQ(std::begin(pq) + 1u,
+		find_if(std::begin(pq), std::end(pq), [](int value) { return value == 8; }));
+	EXPECT_EQ(std::begin(pq) + 0u,
+		find_if(std::begin(pq), std::end(pq), [](int value) { return value == 9; }));
 }
 
 TEST(Test_utils_priority_queue, update)
@@ -82,7 +86,7 @@ TEST(Test_utils_priority_queue, update)
 	pq.push(1);
 	pq.push(2);
 
-	auto i = pq.find_if([](int value) { return value == 2; });
+	auto i = find_if(std::begin(pq), std::end(pq), [](int value) { return value == 2; });
 	pq.update(i, 4);
 
 	EXPECT_EQ(4u, pq.size());

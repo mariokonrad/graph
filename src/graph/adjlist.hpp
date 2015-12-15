@@ -172,10 +172,7 @@ public:
 	/// to the graph and is not boundary checked.
 	///
 	/// Complexity: O(m)
-	bool at(edge e) const
-	{
-		return contains(m[e.from], e.to);
-	}
+	bool at(edge e) const { return contains(m[e.from], e.to); }
 
 	/// Convenience function. See \see at(edge) const
 	bool at(vertex from, vertex to) const { return at({from, to}); }
