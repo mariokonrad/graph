@@ -107,4 +107,41 @@ TEST(Test_utils_priority_queue, update)
 	pq.pop();
 	EXPECT_EQ(0u, pq.size());
 }
+
+TEST(Test_utils_priority_queue, custom_type)
+{
+	struct item {
+		int id;
+		std::string name;
+
+		bool operator==(const item & other) const
+		{
+			return (this == &other) || ((id == other.id) && (name == other.name));
+		};
+
+		bool operator<(const item & other) const { return id < other.id; }
+	};
+
+	struct cmp {
+		bool operator()(const item & a, const item & b) const { return a.id < b.id; }
+	};
+
+	utils::priority_queue<item, cmp> pq;
+
+	pq.push({1, "A"});
+	pq.push({2, "B"});
+	pq.push({3, "C"});
+	pq.push({4, "D"});
+
+	EXPECT_EQ(4u, pq.size());
+
+	EXPECT_TRUE((item{4, "D"} == pq.top()));
+	pq.pop();
+	EXPECT_TRUE((item{3, "C"} == pq.top()));
+	pq.pop();
+	EXPECT_TRUE((item{2, "B"} == pq.top()));
+	pq.pop();
+	EXPECT_TRUE((item{1, "A"} == pq.top()));
+	pq.pop();
+}
 }

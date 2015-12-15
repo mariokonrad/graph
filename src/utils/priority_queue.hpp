@@ -70,7 +70,7 @@ public:
 	///
 	/// \param[in] comp The comparison functor
 	/// \param[in] data A container to initialize the queue, may contain data
-	priority_queue(const Compare & comp, const container & data)
+	priority_queue(Compare comp, const container & data)
 		: comp(comp)
 		, data(data)
 	{
