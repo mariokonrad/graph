@@ -2,7 +2,6 @@
 #define __GRAPH__ADJLIST__HPP__
 
 #include <algorithm>
-#include <set>
 #include <vector>
 #include <cassert>
 #include <graph/edge.hpp>
@@ -16,6 +15,9 @@ namespace graph
 /// Once constructed, the size is constant. It is not possible to
 /// grow or shrink.
 ///
+/// Hits to complexity of member functions is in the form: `O(n + m)`
+/// with `n` as number of vertices and `m` as number of edges.
+///
 class adjlist
 {
 public:
@@ -24,8 +26,29 @@ public:
 private:
 	const size_type n; // number of vertices
 
-	// adjacency list, using set to prevent duplicates
-	std::vector<std::set<vertex>> m;
+	// adjacency list.
+	// a std::set is not being used, because it is (usually) not organized as
+	// container with consecutive data in memory.
+	std::vector<vertex_list> m;
+
+	/// Returns `true` if the specified vertex list contains the specified vertex.
+	static inline bool contains(const vertex_list & l, vertex v)
+	{
+		return std::find(std::begin(l), std::end(l), v) != std::end(l);
+	}
+
+	/// Appends the spcified vertex to the list, only if it is not already
+	/// in the list.
+	static inline void push_back_unique(vertex_list & l, vertex v)
+	{
+		if (!contains(l, v))
+			l.push_back(v);
+	}
+
+	static inline void remove_vertex(vertex_list & l, vertex v)
+	{
+		l.erase(std::remove(std::begin(l), std::end(l), v), std::end(l));
+	}
 
 public:
 	/// \{
@@ -37,12 +60,17 @@ public:
 		: n(n)
 		, m(n)
 	{
+		assert(n > 0);
 	}
 
+	/// Constructor which takes the number of vertices and an initializer list
+	/// of edges to initialize the adjacency list.
+	///
+	/// \param[in] n Number of vertices, i.e. the size of the graph.
+	/// \param[in] edges Edges to initialize the graph with.
 	adjlist(size_type n, std::initializer_list<edge> edges)
 		: adjlist(n)
 	{
-		assert(n > 0);
 		for (auto const & e : edges)
 			add(e);
 	}
@@ -59,7 +87,7 @@ public:
 	/// \{
 	/// Adds an edge to the graph.
 	///
-	/// Complexity: O(1)
+	/// Complexity: O(m)
 	///
 	/// \param[in] e The edge to add
 	/// \param[in] type Type of edge to add
@@ -70,9 +98,9 @@ public:
 	{
 		if ((e.from >= n) || (e.to >= n))
 			return false;
-		m[e.from].insert(e.to);
+		push_back_unique(m[e.from], e.to);
 		if (type == edge::type::bi)
-			m[e.to].insert(e.from);
+			push_back_unique(m[e.to], e.from);
 		return true;
 	}
 
@@ -86,7 +114,7 @@ public:
 	/// \{
 	/// Removes an edge from the graph.
 	///
-	/// Complexity: O(1)
+	/// Complexity: O(m)
 	///
 	/// \param[in] e Edge to remove
 	/// \param[in] type Type of edge to add
@@ -97,9 +125,9 @@ public:
 	{
 		if ((e.from >= n) || (e.to >= n))
 			return false;
-		m[e.from].erase(m[e.from].find(e.to));
+		remove_vertex(m[e.from], e.to);
 		if (type == edge::type::bi)
-			m[e.to].erase(m[e.to].find(e.from));
+			remove_vertex(m[e.to], e.from);
 		return true;
 	}
 
@@ -113,11 +141,10 @@ public:
 	/// Accessor for edges. This method provides read only access
 	/// to the graph and is not boundary checked.
 	///
-	/// Complexity: O(1)
+	/// Complexity: O(m)
 	bool at(edge e) const
 	{
-		const auto & v = m[e.from];
-		return v.find(e.to) != v.end();
+		return contains(m[e.from], e.to);
 	}
 
 	/// Convenience function. See \see at(edge) const
@@ -150,10 +177,8 @@ public:
 	{
 		if (to >= n)
 			return 0;
-		size_type num = 0;
-		for (auto const & v : m)
-			num += (v.find(to) != v.end()) ? 1 : 0;
-		return num;
+		return std::count_if(
+			std::begin(m), std::end(m), [to](const auto & v) { return contains(v, to); });
 	}
 
 	/// Returns a list of nodes from where an edge exists.
@@ -167,7 +192,7 @@ public:
 		if (to >= n)
 			return v;
 		for (vertex i = 0; i < n; ++i)
-			if (m[i].find(to) != m[i].end())
+			if (contains(m[i], to))
 				v.push_back(i);
 		return v;
 	}
@@ -188,12 +213,8 @@ public:
 	///
 	/// If the specified vertex is invalid, an empty list will return.
 	///
-	/// Complexity: O(n)
-	vertex_list outgoing(vertex from) const
-	{
-		auto const & v = m[from];
-		return vertex_list(std::begin(v), std::end(v));
-	}
+	/// Complexity: O(1)
+	const vertex_list & outgoing(vertex from) const { return m[from]; }
 	/// \}
 
 	/// \{
