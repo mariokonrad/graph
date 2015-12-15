@@ -66,7 +66,7 @@ const adjmatrix m(5, {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 4}, {3, 4}});
 std::cout << "Depth First Search with neighbors:\n";
 depth_first_search(m, 0, [](auto const & m, auto const & v) {
 	std::cout << " " << v << " (";
-	for (auto neighbor : m.neighbors_of(v))
+	for (auto neighbor : m.outgoing(v))
 		std::cout << " " << neighbor;
 	std::cout << " )\n";
 });
