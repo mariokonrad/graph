@@ -157,6 +157,14 @@ public:
 	/// \}
 
 	/// \{
+	/// Re-creates the heap.
+	///
+	/// Complexity: O(log n) (same as std::make_heap)
+	void update()
+	{
+		std::make_heap(std::begin(data), std::end(data), comp);
+	}
+
 	/// Update of a specific value within the container. The heap will
 	/// be created newly.
 	///
@@ -170,7 +178,7 @@ public:
 		if (i >= data.cend())
 			return;
 		data[std::distance(data.cbegin(), i)] = t;
-		std::make_heap(std::begin(data), std::end(data), comp);
+		update();
 	}
 	/// \}
 

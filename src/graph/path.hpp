@@ -35,6 +35,7 @@
 #include <tuple>
 #include <vector>
 #include <graph/edge.hpp>
+#include <utils/priority_queue.hpp>
 
 namespace graph
 {
@@ -48,6 +49,12 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 {
 	using namespace std;
 
+	struct pq_cmp {
+		std::vector<Value> & dist;
+
+		bool operator()(const vertex u, const vertex v) const { return dist[u] > dist[v]; }
+	};
+
 	// prepare list of predecessors
 	constexpr vertex undefined = vertex_invalid;
 	vertex_list predecessor(g.size());
@@ -58,53 +65,42 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 	fill(begin(distance), end(distance), numeric_limits<Value>::max());
 	distance[start] = Value{};
 
-	// prepare list of nodes to process
-	vertex_list q = g.vertices();
+	// prepare priority queue
+	utils::priority_queue<vertex, pq_cmp> pq(pq_cmp{distance});
+	for (auto const & v : g.vertices())
+		pq.push(v);
 
-	// the actual algorithm
-	vertex current = undefined;
-	while (!q.empty()) {
+	vertex u = undefined;
+	while (!pq.empty()) {
+		u = pq.top();
+		pq.pop();
 
-		// find node with minimal distance from nodes q
-		current = undefined;
-		vertex index_q = undefined;
-		Value dist_min = numeric_limits<Value>::max();
-		for (vertex_list::size_type i = 0; i < q.size(); ++i) {
-			Value dist_q = distance[q[i]];
-			if ((dist_q >= 0) && (dist_q < dist_min)) {
-				dist_min = dist_q;
-				index_q = i;
-				current = q[i];
-			}
-		}
-		if (index_q == undefined)
-			return make_tuple(vertex_list{}, false);
-		q.erase(begin(q) + index_q);
-
-		// destination reached?
-		if (current == destination)
+		if (u == destination)
 			break;
 
-		// check all remaining neighbors of current node and update distances
-		for (auto const & node : g.outgoing(current)) {
-			if (find(begin(q), end(q), node) != end(q)) {
-				const Value d = distance[current] + access({current, node});
-				if (d < distance[node]) {
-					distance[node] = d;
-					predecessor[node] = current;
-				}
+		for (auto & v : g.outgoing(u)) {
+			const Value alt = distance[u] + access({u, v});
+			if (alt < distance[v]) {
+				distance[v] = alt;
+				predecessor[v] = u;
+				pq.update(); // priority criteria have been changed (distance)
 			}
 		}
 	}
 
-	// process predecessors into path
+	// create path
 	vertex_list path;
-	while (current != undefined) {
-		path.push_back(current);
-		current = predecessor[current];
+	while ((u != start) && (u != undefined)) {
+		path.push_back(u);
+		u = predecessor[u];
 	}
-	reverse(begin(path), end(path));
 
+	// path may not exist
+	if (u == undefined)
+		return make_tuple(vertex_list{}, false);
+
+	path.push_back(u);
+	reverse(begin(path), end(path));
 	return make_tuple(path, true);
 }
 }
@@ -115,11 +111,9 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 /// the second return value will indicate this with being \c false.
 ///
 /// This implementation is not optimized, also it is a rather naive implementation,
-/// but sufficient for demonstration.
+/// but sufficient for demonstration. At least it uses a priority queue.
 ///
-/// \todo Implement algorithm using priority queue
-///
-/// Complexity: O(n^2)
+/// Complexity: O(n * log(n))
 ///
 /// \tparam Graph The graph type to visit.
 ///   Must provide the following features:
