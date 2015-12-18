@@ -95,8 +95,10 @@ edge_list minimum_spanning_tree_prim(const Graph & g, vertex start, Accessor acc
 ///   Must provide the following features:
 ///   - type `value_type` which represents a single value within the graph (length of an edge)
 ///   - function `size()` which returns the number of nodes in the graph
-///   - function `at(edge)` which returns the status of the specified edge.
 ///   - function `vertices()` which returns a `vertex_list` of all nodes
+///   - function `outgoing(vertex)` which returns a `vertex_list` of all nodes
+///     reachable from the specified one
+///   - function `at(edge)` which returns the status of the specified edge.
 ///
 /// \param[in] g The graph to generate the minimum spanning tree for.
 /// \param[in] start Starting node.
@@ -123,8 +125,9 @@ template <class Graph> edge_list minimum_spanning_tree_prim(const Graph & g, ver
 /// \tparam Graph The graph type to visit.
 ///   Must provide the following features:
 ///   - function `size()` which returns the number of nodes in the graph
-///   - function `at(edge)` which returns the status of the specified edge.
 ///   - function `vertices()` which returns a `vertex_list` of all nodes
+///   - function `outgoing(vertex)` which returns a `vertex_list` of all nodes
+///     reachable from the specified one
 ///
 /// \tparam PropertyMap The mapping of edge to distance, must provide following features:
 ///   - type `mapped_type` which represents the distance type of an edge
