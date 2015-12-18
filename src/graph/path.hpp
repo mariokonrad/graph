@@ -47,43 +47,32 @@ template <class Value, class Graph, class Accessor>
 std::tuple<vertex_list, bool> shortest_path_dijkstra(
 	const Graph & g, Accessor access, vertex start, vertex destination)
 {
-	using namespace std;
-
-	struct pq_cmp {
-		std::vector<Value> & dist;
-
-		bool operator()(const vertex u, const vertex v) const { return dist[u] > dist[v]; }
-	};
-
 	// prepare list of predecessors
 	constexpr vertex undefined = vertex_invalid;
-	vertex_list predecessor(g.size());
-	fill(begin(predecessor), end(predecessor), undefined);
+	vertex_list predecessor(g.size(), undefined);
 
 	// prepare list of distances
-	vector<Value> distance(g.size());
-	fill(begin(distance), end(distance), numeric_limits<Value>::max());
+	std::vector<Value> distance(g.size(), std::numeric_limits<Value>::max());
 	distance[start] = Value{};
 
 	// prepare priority queue
-	utils::priority_queue<vertex, pq_cmp> pq(pq_cmp{distance});
-	for (auto const & v : g.vertices())
-		pq.push(v);
+	auto cmp = [&distance](vertex a, vertex b) -> bool { return distance[a] > distance[b]; };
+	utils::priority_queue<vertex, decltype(cmp)> q(cmp, g.vertices());
 
 	vertex u = undefined;
-	while (!pq.empty()) {
-		u = pq.top();
-		pq.pop();
+	while (!q.empty()) {
+		u = q.top();
+		q.pop();
 
 		if (u == destination)
 			break;
 
-		for (auto & v : g.outgoing(u)) {
+		for (auto const & v : g.outgoing(u)) {
 			const Value alt = distance[u] + access({u, v});
 			if (alt < distance[v]) {
 				distance[v] = alt;
 				predecessor[v] = u;
-				pq.update(); // priority criteria have been changed (distance)
+				q.update(); // priority criteria have been changed
 			}
 		}
 	}
@@ -97,11 +86,11 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 
 	// path may not exist
 	if (u == undefined)
-		return make_tuple(vertex_list{}, false);
+		return std::make_tuple(vertex_list{}, false);
 
 	path.push_back(u);
-	reverse(begin(path), end(path));
-	return make_tuple(path, true);
+	std::reverse(std::begin(path), std::end(path));
+	return std::make_tuple(path, true);
 }
 }
 /// \endcond

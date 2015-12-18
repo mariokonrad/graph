@@ -39,7 +39,7 @@ public:
 
 		const edge_list expected{{vertex_invalid, 0}, {0, 1}, {0, 2}, {2, 3}, {3, 4}};
 
-		auto const edges = minimum_spanning_tree_prim(g, p);
+		auto const edges = minimum_spanning_tree_prim(g, p, 0);
 
 		EXPECT_EQ(expected, edges);
 	}
@@ -48,7 +48,7 @@ public:
 TEST_F(Test_mst, simple_bidirectional)
 {
 	EXPECT_EQ((edge_list{{vertex_invalid, 0}, {0, 1}, {0, 2}, {2, 3}, {3, 4}}),
-		minimum_spanning_tree_prim(create_simple_bi()));
+		minimum_spanning_tree_prim(create_simple_bi(), 0));
 }
 
 TEST_F(Test_mst, adjmatrix_bidirectional_property_map_int)

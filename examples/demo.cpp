@@ -99,7 +99,7 @@ void test_mst()
 		m.add(2, 3, edge::type::bi, 3);
 
 		std::cout << "Minimum Spanning Tree (Prim):\n";
-		for (auto const & edge : minimum_spanning_tree_prim(m)) {
+		for (auto const & edge : minimum_spanning_tree_prim(m, 0)) {
 			if (edge.from == vertex_invalid) {
 				std::cout << "  @ -> " << edge.to << "\n";
 			} else {
@@ -121,7 +121,7 @@ void test_mst()
 		m.add(4, 5, edge::type::bi, 7);
 
 		std::cout << "Minimum Spanning Tree (Prim):\n";
-		for (auto const & edge : minimum_spanning_tree_prim(m)) {
+		for (auto const & edge : minimum_spanning_tree_prim(m, 0)) {
 			if (edge.from == vertex_invalid) {
 				std::cout << "  @ -> " << edge.to << "\n";
 			} else {

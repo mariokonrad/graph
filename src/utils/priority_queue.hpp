@@ -68,11 +68,11 @@ public:
 	/// \{
 	/// Construction of the queue using (copying) existing data.
 	///
-	/// \param[in] comp The comparison functor
-	/// \param[in] data A container to initialize the queue, may contain data
-	priority_queue(Compare comp, const container & data)
-		: comp(comp)
-		, data(data)
+	/// \param[in] cmp The comparison functor
+	/// \param[in] d A container to initialize the queue, may contain data
+	priority_queue(Compare cmp, const container & d)
+		: comp(cmp)
+		, data(d)
 	{
 		std::make_heap(std::begin(data), std::end(data), comp);
 	}
@@ -80,11 +80,11 @@ public:
 	/// Default constructor. Also provides to override default parameters.
 	/// Ability to move an existing container into the queue.
 	///
-	/// \param[in] comp The comparison functor
-	/// \param[in] data A container to initialize the queue, may contain data
-	explicit priority_queue(const Compare & comp = Compare(), container && data = container())
-		: comp(comp)
-		, data(data)
+	/// \param[in] cmp The comparison functor
+	/// \param[in] d A container to initialize the queue, may contain data
+	explicit priority_queue(const Compare & cmp = Compare{}, container && d = container{})
+		: comp(cmp)
+		, data(d)
 	{
 		std::make_heap(std::begin(data), std::end(data), comp);
 	}
@@ -160,10 +160,7 @@ public:
 	/// Re-creates the heap.
 	///
 	/// Complexity: O(log n) (same as std::make_heap)
-	void update()
-	{
-		std::make_heap(std::begin(data), std::end(data), comp);
-	}
+	void update() { std::make_heap(std::begin(data), std::end(data), comp); }
 
 	/// Update of a specific value within the container. The heap will
 	/// be created newly.

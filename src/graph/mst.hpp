@@ -35,6 +35,7 @@
 #include <limits>
 #include <vector>
 #include <graph/edge.hpp>
+#include <utils/priority_queue.hpp>
 
 namespace graph
 {
@@ -43,59 +44,40 @@ namespace detail
 {
 /// Detail implementation of the minimum spanning tree.
 template <class Value, class Graph, class Accessor>
-edge_list minimum_spanning_tree_prim(const Graph & g, Accessor access)
+edge_list minimum_spanning_tree_prim(const Graph & g, vertex start, Accessor access)
 {
-	using namespace std;
+	// prepare list of parents
+	vertex_list parent(g.size(), vertex_invalid);
 
-	edge_list tree;
-	tree.reserve(g.size());
+	// prepare container of costs
+	std::vector<Value> cost(g.size(), std::numeric_limits<Value>::max());
+	cost[start] = Value{};
 
-	// cost (weight) of an edge to a certain node
-	vector<Value> cost(g.size());
-	fill(begin(cost), end(cost), numeric_limits<Value>::max());
+	// prepare priority queue
+	auto cmp = [&cost](vertex a, vertex b) -> bool { return cost[a] > cost[b]; };
+	utils::priority_queue<vertex, decltype(cmp)> q(cmp, g.vertices());
 
-	// node from which a certain node is reachable by cost[]
-	vertex_list low_cost_edge(g.size());
-	fill(begin(low_cost_edge), end(low_cost_edge), vertex_invalid);
-
-	// setup queue of nodes to visit, initially all of them
-	vertex_list q = g.vertices();
-
-	// actual algorithm, start with the first node
-	cost[0] = 0;
 	while (!q.empty()) {
+		vertex u = q.top();
+		q.pop();
 
-		// find node with minimal (valid) cost from still available nodes q
-		vertex current = vertex_invalid;
-		vertex index_q = vertex_invalid;
-		Value cost_min = numeric_limits<Value>::max();
-		for (vertex_list::size_type i = 0; i < q.size(); ++i) {
-			Value cost_q = cost[q[i]];
-			if ((cost_q >= 0) && (cost_q < cost_min)) {
-				cost_min = cost_q;
-				index_q = i;
-				current = q[i];
-			}
-		}
-		q.erase(begin(q) + index_q);
-
-		// add node to tree
-		tree.emplace_back(low_cost_edge[current], current);
-
-		// from the current node, update all costs to adjacent nodes
-		for (vertex node = 0; node < g.size(); ++node) {
-			const Value w = access({current, node});
-			if (w > 0) {
-				if (find(begin(q), end(q), node) != end(q)) {
-					if (w < cost[node]) {
-						cost[node] = w;
-						low_cost_edge[node] = current;
-					}
-				}
+		for (auto const & v : g.outgoing(u)) {
+			if (std::find(std::begin(q), std::end(q), v) == std::end(q))
+				continue;
+			const Value alt = cost[u] + access({u, v});
+			if (alt < cost[v]) {
+				cost[v] = alt;
+				parent[v] = u;
+				q.update(); // priority criteria have been changed
 			}
 		}
 	}
 
+	// fill edge list with tree
+	edge_list tree;
+	tree.reserve(g.size());
+	for (auto const & v : g.vertices())
+		tree.push_back({parent[v], v});
 	return tree;
 }
 }
@@ -117,16 +99,15 @@ edge_list minimum_spanning_tree_prim(const Graph & g, Accessor access)
 ///   - function `vertices()` which returns a `vertex_list` of all nodes
 ///
 /// \param[in] g The graph to generate the minimum spanning tree for.
+/// \param[in] start Starting node.
 /// \return A list of edges found for the minimum spanning tree.
 ///
-/// \todo Implement algorithm using priority queue
+/// complexity: O(n log n)
 ///
-/// complexity: O(n^2)
-///
-template <class Graph> edge_list minimum_spanning_tree_prim(const Graph & g)
+template <class Graph> edge_list minimum_spanning_tree_prim(const Graph & g, vertex start)
 {
 	return detail::minimum_spanning_tree_prim<typename Graph::value_type>(
-		g, [&g](edge e) { return g.at(e); });
+		g, start, [&g](edge e) { return g.at(e); });
 }
 
 /// Computes the miminum spanning tree of the specified graph.
@@ -151,14 +132,15 @@ template <class Graph> edge_list minimum_spanning_tree_prim(const Graph & g)
 ///   - function `end()` returning an iterator to the end of the container
 ///
 /// \param[in] g The graph to generate the minimum spanning tree for.
+/// \param[in] start Starting node.
 /// \param[in] p The property mapping, containing the distances of the nodes
 /// \return A list of edges found for the minimum spanning tree.
 ///
 template <class Graph, class PropertyMap>
-edge_list minimum_spanning_tree_prim(const Graph & g, const PropertyMap & p)
+edge_list minimum_spanning_tree_prim(const Graph & g, const PropertyMap & p, vertex start)
 {
 	using Value = typename PropertyMap::mapped_type;
-	return detail::minimum_spanning_tree_prim<Value>(g, [&p](edge e) -> Value {
+	return detail::minimum_spanning_tree_prim<Value>(g, start, [&p](edge e) -> Value {
 		auto const i = p.find(e);
 		if (i != p.end())
 			return i->second;
