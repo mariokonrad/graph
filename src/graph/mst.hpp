@@ -35,6 +35,7 @@
 #include <limits>
 #include <vector>
 #include <graph/edge.hpp>
+#include <graph/type_traits.hpp>
 #include <utils/priority_queue.hpp>
 
 namespace graph
@@ -94,11 +95,12 @@ edge_list minimum_spanning_tree_prim(const Graph & g, vertex start, Accessor acc
 /// \tparam Graph The graph type to visit.
 ///   Must provide the following features:
 ///   - type `value_type` which represents a single value within the graph (length of an edge)
-///   - function `size()` which returns the number of nodes in the graph
-///   - function `vertices()` which returns a `vertex_list` of all nodes
-///   - function `outgoing(vertex)` which returns a `vertex_list` of all nodes
-///     reachable from the specified one
-///   - function `at(edge)` which returns the status of the specified edge.
+///   - type `size_type` which represents a size type for the graph
+///   - function `size_type size() const` which returns the number of nodes in the graph
+///   - function `vertex_list vertices() const` which returns a `vertex_list` of all nodes
+///   - function `vertex_list outgoing(vertex) const` which returns a `vertex_list` of
+///     all nodes reachable from the specified one
+///   - function `value_type at(edge) const` which returns the status of the specified edge.
 ///
 /// \param[in] g The graph to generate the minimum spanning tree for.
 /// \param[in] start Starting node.
@@ -106,7 +108,16 @@ edge_list minimum_spanning_tree_prim(const Graph & g, vertex start, Accessor acc
 ///
 /// complexity: O(n log n)
 ///
-template <class Graph> edge_list minimum_spanning_tree_prim(const Graph & g, vertex start)
+template <class Graph,
+	typename = typename std::enable_if<true
+		&& detail::has_t_value_type<Graph>::value
+		&& detail::has_t_size_type<Graph>::value
+		&& detail::has_f_size<Graph>::value
+		&& detail::has_f_at<Graph>::value
+		&& detail::has_f_vertices<Graph>::value
+		&& detail::has_f_outgoing<Graph>::value
+		, void>::type>
+edge_list minimum_spanning_tree_prim(const Graph & g, vertex start)
 {
 	return detail::minimum_spanning_tree_prim<typename Graph::value_type>(
 		g, start, [&g](edge e) { return g.at(e); });
@@ -124,22 +135,33 @@ template <class Graph> edge_list minimum_spanning_tree_prim(const Graph & g, ver
 ///
 /// \tparam Graph The graph type to visit.
 ///   Must provide the following features:
-///   - function `size()` which returns the number of nodes in the graph
-///   - function `vertices()` which returns a `vertex_list` of all nodes
-///   - function `outgoing(vertex)` which returns a `vertex_list` of all nodes
+///   - function `size_type size() const` which returns the number of nodes in the graph
+///   - function `vertex_list vertices() const` which returns a `vertex_list` of all nodes
+///   - function `vertex_list outgoing(vertex) const` which returns a `vertex_list` of all nodes
 ///     reachable from the specified one
 ///
 /// \tparam PropertyMap The mapping of edge to distance, must provide following features:
 ///   - type `mapped_type` which represents the distance type of an edge
-///   - function `find(edge)` returning an iterator (pair of key, value)
-///   - function `end()` returning an iterator to the end of the container
+///   - type `const_iterator`
+///   - function `const_iterator find(edge) const` returning an iterator (pair of key, value)
+///   - function `const_iterator end() const` returning an iterator to the end of the container
 ///
 /// \param[in] g The graph to generate the minimum spanning tree for.
 /// \param[in] start Starting node.
 /// \param[in] p The property mapping, containing the distances of the nodes
 /// \return A list of edges found for the minimum spanning tree.
 ///
-template <class Graph, class PropertyMap>
+template <class Graph, class PropertyMap,
+	typename = typename std::enable_if<true
+		&& detail::has_t_size_type<Graph>::value
+		&& detail::has_f_size<Graph>::value
+		&& detail::has_f_vertices<Graph>::value
+		&& detail::has_f_outgoing<Graph>::value
+		&& detail::has_t_mapped_type<PropertyMap>::value
+		&& detail::has_t_const_iterator<PropertyMap>::value
+		&& detail::has_f_find<PropertyMap>::value
+		&& detail::has_f_end<PropertyMap>::value
+		, void>::type>
 edge_list minimum_spanning_tree_prim(const Graph & g, const PropertyMap & p, vertex start)
 {
 	using Value = typename PropertyMap::mapped_type;
