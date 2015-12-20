@@ -38,28 +38,63 @@
 
 namespace graph
 {
-/// Renders the specified graph to a string in the Dot (graphviz)
-/// format.
+/// \cond DEV
+namespace detail
+{
+template <class T> struct DefaultPropertyMapAccess {
+	std::string operator()(const T &) const { return {}; }
+};
+}
+/// \endcond
+
+/// \brief Renders the specified graph to a string in the Dot (graphviz) format.
 ///
-/// \todo Extend parameters to support property map for vertices
-/// \todo Extend parameters to support property map for edges
+/// \todo SFINAE for property accessors
+///
+/// \tparam Graph Type of the graph to render
+/// \tparam VertexPropertyAccess Accessor for vertex properties
+/// \tparam EdgePropertyAccess Accessor for edge properties
 ///
 /// \param[in] g The graph to render
+/// \param[in] graph_prop Properties for the graph in general
+/// \param[in] node_prop Default properties for all nodes
+/// \param[in] edge_prop Default properties for all edges
+/// \param[in] vp Vertex property accessor
+/// \param[in] ep Edge property accessor
 /// \return The string, representing the graph in the Dot language
-template <class Graph, typename = typename std::enable_if<detail::has_f_vertices<Graph>::value
-							   && detail::has_f_edges<Graph>::value,
-						   void>::type>
-std::string dot(const Graph & g)
+///
+template <class Graph, class VertexPropertyAccess = detail::DefaultPropertyMapAccess<vertex>,
+	class EdgePropertyAccess = detail::DefaultPropertyMapAccess<edge>,
+	typename = typename std::enable_if<detail::has_f_vertices<Graph>::value
+			&& detail::has_f_edges<Graph>::value,
+		void>::type>
+std::string dot(const Graph & g, const std::string & graph_prop = "",
+	const std::string & node_prop = "", const std::string edge_prop = "",
+	VertexPropertyAccess vp = VertexPropertyAccess{},
+	EdgePropertyAccess ep = EdgePropertyAccess{})
 {
 	std::ostringstream s;
 
 	s << "digraph G {\n";
-	s << "\tnode [shape=circle];\n";
+	if (!graph_prop.empty())
+		s << "\t" << graph_prop << ";\n";
+	if (!node_prop.empty())
+		s << "\tnode [" << node_prop << "];\n";
+	if (!edge_prop.empty())
+		s << "\tedge [" << edge_prop << "];\n";
 	for (auto const & v : g.vertices()) {
-		s << "\t" << v << ";\n";
+		s << "\t" << v;
+		auto property = vp(v);
+		if (!property.empty())
+			s << " [" << property << "]";
+		s << ";\n";
 	}
 	for (auto const & e : g.edges()) {
-		s << "\t" << e.from << " -> " << e.to << ";\n";
+		s << "\t" << e.from << " -> " << e.to;
+		auto property = ep(e);
+		if (!property.empty())
+			s << " [" << property << "]";
+		s << ";\n";
 	}
 	s << "}\n";
 
