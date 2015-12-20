@@ -32,6 +32,7 @@
 #define __GRAPH__TOPOSORT__HPP__
 
 #include <tuple>
+#include <graph/type_traits.hpp>
 #include <graph/edge.hpp>
 
 namespace graph
@@ -45,18 +46,28 @@ namespace graph
 /// \tparam Graph The graph type to visit.
 ///   Must provide the following features:
 ///   - copy constructible
-///   - `size()` which returns the number of nodes in the graph
-///   - `at(edge)` which returns the status of the specified edge.
-///   - `remove(edge)` which removes an edge from the graph
-///   - `count_incoming(node)` which returns the number of incoming edges for a node
-///   - `count_edges()` which returns the number of edges within the graph
+///   - type 'size_type'
+///   - function `size_type size() const` which returns the number of nodes in the graph
+///   - function `bool at(edge) const` which returns the status of the specified edge.
+///   - function `void remove(edge)` which removes an edge from the graph
+///   - function `size_type count_incoming(vertex) const` which returns the number of incoming
+///     edges for a node
+///   - function `size_type count_edges() const` which returns the number of edges within the
+///   graph
 ///
 /// \param[in] g The adjacency matrix.
 /// \return A tuple containing the list and a status which is:
 ///   - \c true : sorting successful
 ///   - \c false : graph contains cycles
 ///
-template <class Graph> std::tuple<vertex_list, bool> topological_sort(const Graph & g)
+template <class Graph,
+	typename = typename std::enable_if<true && detail::has_t_size_type<Graph>::value
+			&& detail::has_f_remove<Graph>::value
+			&& detail::has_f_integral_type_at<Graph>::value
+			&& detail::has_f_count_incoming<Graph>::value
+			&& detail::has_f_count_edges<Graph>::value,
+		void>::type>
+std::tuple<vertex_list, bool> topological_sort(const Graph & g)
 {
 	// copy of matrix to work on (remove edges)
 	Graph tm(g);

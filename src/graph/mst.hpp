@@ -109,17 +109,15 @@ edge_list minimum_spanning_tree_prim(const Graph & g, vertex start, Accessor acc
 /// complexity: O(n log n)
 ///
 template <class Graph,
-	typename = typename std::enable_if<true
-		&& detail::has_t_value_type<Graph>::value
-		&& detail::has_t_size_type<Graph>::value
-		&& detail::has_f_size<Graph>::value
-		&& detail::has_f_at<Graph>::value
-		&& detail::has_f_vertices<Graph>::value
-		&& detail::has_f_outgoing<Graph>::value
-		, void>::type>
+	typename = typename std::enable_if<true && detail::has_t_value_type<Graph>::value
+			&& detail::has_t_size_type<Graph>::value && detail::has_f_size<Graph>::value
+			&& detail::has_f_at<Graph>::value && detail::has_f_vertices<Graph>::value
+			&& detail::has_f_outgoing<Graph>::value,
+		void>::type>
 edge_list minimum_spanning_tree_prim(const Graph & g, vertex start)
 {
-	return detail::minimum_spanning_tree_prim<typename Graph::value_type>(
+	using Value = typename Graph::value_type;
+	return detail::minimum_spanning_tree_prim<Value>(
 		g, start, [&g](edge e) { return g.at(e); });
 }
 
@@ -152,16 +150,13 @@ edge_list minimum_spanning_tree_prim(const Graph & g, vertex start)
 /// \return A list of edges found for the minimum spanning tree.
 ///
 template <class Graph, class PropertyMap,
-	typename = typename std::enable_if<true
-		&& detail::has_t_size_type<Graph>::value
-		&& detail::has_f_size<Graph>::value
-		&& detail::has_f_vertices<Graph>::value
-		&& detail::has_f_outgoing<Graph>::value
-		&& detail::has_t_mapped_type<PropertyMap>::value
-		&& detail::has_t_const_iterator<PropertyMap>::value
-		&& detail::has_f_find<PropertyMap>::value
-		&& detail::has_f_end<PropertyMap>::value
-		, void>::type>
+	typename = typename std::enable_if<true && detail::has_t_size_type<Graph>::value
+			&& detail::has_f_size<Graph>::value && detail::has_f_vertices<Graph>::value
+			&& detail::has_f_outgoing<Graph>::value
+			&& detail::has_t_mapped_type<PropertyMap>::value
+			&& detail::has_t_const_iterator<PropertyMap>::value
+			&& detail::has_f_find<PropertyMap>::value && detail::has_f_end<PropertyMap>::value,
+		void>::type>
 edge_list minimum_spanning_tree_prim(const Graph & g, const PropertyMap & p, vertex start)
 {
 	using Value = typename PropertyMap::mapped_type;

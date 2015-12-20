@@ -31,6 +31,7 @@
 #ifndef __GRAPH__DFS__HPP__
 #define __GRAPH__DFS__HPP__
 
+#include <graph/type_traits.hpp>
 #include <graph/edge.hpp>
 
 namespace graph
@@ -65,16 +66,22 @@ static void recursive_dfs(
 ///
 /// \tparam Graph The graph type.
 ///   Must provide the following features:
-///   - `size()` which returns the number of nodes in the graph
-///   - `at(edge)` which returns the status of the specified edge.
-/// \tparam Visitor The visitor type for the search.
+///   - function `size_type size() const` which returns the number of nodes in the graph
+///   - function `integral_type at(edge) const` which returns the status of the specified edge.
+///     integral types can implictly converted to `bool`, which is in fact a hard
+///     requirement.
+/// \tparam Visitor The visitor type. Must provide the ability to get called
+///   with a signature like `(Graph, vertex)`, e.g. `void visitor(const Graph &, vertex v)`.
 ///
 /// \param[in] g The graph to visit.
 /// \param[in] v The starting vertex.
 /// \param[in] visitor Visitor which gets called for each found vertex.
 /// \return The visitor functor
 ///
-template <class Graph, class Visitor>
+template <class Graph, class Visitor,
+	typename = typename std::enable_if<true && detail::has_t_size_type<Graph>::value
+			&& detail::has_f_size<Graph>::value && detail::has_f_integral_type_at<Graph>::value,
+		void>::type>
 Visitor depth_first_search(const Graph & g, vertex v, Visitor visitor)
 {
 	visited_vertex_list visited(g.size(), false);
