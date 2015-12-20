@@ -33,23 +33,32 @@
 
 #include <string>
 #include <sstream>
-#include <graph/adjmatrix.hpp>
+#include <graph/type_traits.hpp>
+#include <graph/edge.hpp>
 
 namespace graph
 {
 /// Renders the specified graph to a string in the Dot (graphviz)
 /// format.
 ///
-/// \param[in] m The graph to render
+/// \todo Extend parameters to support property map for vertices
+/// \todo Extend parameters to support property map for edges
+///
+/// \param[in] g The graph to render
 /// \return The string, representing the graph in the Dot language
-std::string dot(const adjmatrix & m)
+template <class Graph, typename = typename std::enable_if<detail::has_f_vertices<Graph>::value
+							   && detail::has_f_edges<Graph>::value,
+						   void>::type>
+std::string dot(const Graph & g)
 {
 	std::ostringstream s;
 
 	s << "digraph G {\n";
-	s << "\t"
-	  << "node [shape=circle];\n";
-	for (auto const & e : m.edges()) {
+	s << "\tnode [shape=circle];\n";
+	for (auto const & v : g.vertices()) {
+		s << "\t" << v << ";\n";
+	}
+	for (auto const & e : g.edges()) {
 		s << "\t" << e.from << " -> " << e.to << ";\n";
 	}
 	s << "}\n";

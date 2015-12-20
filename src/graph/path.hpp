@@ -123,7 +123,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 ///   - status about success, if false: destination not reachable
 ///
 template <class Graph,
-	typename = typename std::enable_if<true && detail::has_t_value_type<Graph>::value
+	typename = typename std::enable_if<detail::has_t_value_type<Graph>::value
 			&& detail::has_t_size_type<Graph>::value && detail::has_f_size<Graph>::value
 			&& detail::has_f_at<Graph>::value && detail::has_f_vertices<Graph>::value
 			&& detail::has_f_outgoing<Graph>::value,
@@ -164,7 +164,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 ///   - status about success, if false: destination not reachable
 ///
 template <class Graph, class PropertyMap,
-	typename = typename std::enable_if<true && detail::has_t_size_type<Graph>::value
+	typename = typename std::enable_if<detail::has_t_size_type<Graph>::value
 			&& detail::has_f_size<Graph>::value && detail::has_f_vertices<Graph>::value
 			&& detail::has_f_outgoing<Graph>::value
 			&& detail::has_t_mapped_type<PropertyMap>::value

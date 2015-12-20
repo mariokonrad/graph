@@ -79,7 +79,7 @@ static void recursive_dfs(
 /// \return The visitor functor
 ///
 template <class Graph, class Visitor,
-	typename = typename std::enable_if<true && detail::has_t_size_type<Graph>::value
+	typename = typename std::enable_if<detail::has_t_size_type<Graph>::value
 			&& detail::has_f_size<Graph>::value && detail::has_f_integral_type_at<Graph>::value,
 		void>::type>
 Visitor depth_first_search(const Graph & g, vertex v, Visitor visitor)

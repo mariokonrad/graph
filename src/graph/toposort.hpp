@@ -60,13 +60,12 @@ namespace graph
 ///   - \c true : sorting successful
 ///   - \c false : graph contains cycles
 ///
-template <class Graph,
-	typename = typename std::enable_if<true && detail::has_t_size_type<Graph>::value
-			&& detail::has_f_remove<Graph>::value
-			&& detail::has_f_integral_type_at<Graph>::value
-			&& detail::has_f_count_incoming<Graph>::value
-			&& detail::has_f_count_edges<Graph>::value,
-		void>::type>
+template <class Graph, typename = typename std::enable_if<detail::has_t_size_type<Graph>::value
+							   && detail::has_f_remove<Graph>::value
+							   && detail::has_f_integral_type_at<Graph>::value
+							   && detail::has_f_count_incoming<Graph>::value
+							   && detail::has_f_count_edges<Graph>::value,
+						   void>::type>
 std::tuple<vertex_list, bool> topological_sort(const Graph & g)
 {
 	// copy of matrix to work on (remove edges)

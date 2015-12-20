@@ -144,8 +144,21 @@ template <class T> class has_f_vertices
 {
 private:
 	template <typename U>
-	static auto test(int)
-		-> decltype(std::declval<const U>().vertices() == vertex_list{}, std::true_type{});
+	static auto test(int) -> decltype(
+		std::declval<const U>().vertices() == std::declval<vertex_list>(), std::true_type{});
+	template <typename> static std::false_type test(...);
+
+public:
+	enum { value = std::is_same<decltype(test<T>(0)), std::true_type>::value };
+};
+
+/// Checks for member function `edge_list edges() const`
+template <class T> class has_f_edges
+{
+private:
+	template <typename U>
+	static auto test(int) -> decltype(
+		std::declval<const U>().edges() == std::declval<edge_list>(), std::true_type{});
 	template <typename> static std::false_type test(...);
 
 public:

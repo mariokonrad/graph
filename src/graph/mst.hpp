@@ -109,7 +109,7 @@ edge_list minimum_spanning_tree_prim(const Graph & g, vertex start, Accessor acc
 /// complexity: O(n log n)
 ///
 template <class Graph,
-	typename = typename std::enable_if<true && detail::has_t_value_type<Graph>::value
+	typename = typename std::enable_if<detail::has_t_value_type<Graph>::value
 			&& detail::has_t_size_type<Graph>::value && detail::has_f_size<Graph>::value
 			&& detail::has_f_at<Graph>::value && detail::has_f_vertices<Graph>::value
 			&& detail::has_f_outgoing<Graph>::value,
@@ -150,7 +150,7 @@ edge_list minimum_spanning_tree_prim(const Graph & g, vertex start)
 /// \return A list of edges found for the minimum spanning tree.
 ///
 template <class Graph, class PropertyMap,
-	typename = typename std::enable_if<true && detail::has_t_size_type<Graph>::value
+	typename = typename std::enable_if<detail::has_t_size_type<Graph>::value
 			&& detail::has_f_size<Graph>::value && detail::has_f_vertices<Graph>::value
 			&& detail::has_f_outgoing<Graph>::value
 			&& detail::has_t_mapped_type<PropertyMap>::value
