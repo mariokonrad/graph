@@ -28,8 +28,8 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef __GRAPH__TYPE_TRAITS__HPP__
-#define __GRAPH__TYPE_TRAITS__HPP__
+#ifndef GRAPH__TYPE_TRAITS__HPP
+#define GRAPH__TYPE_TRAITS__HPP
 
 // This file and its content is needed as long as concepts are not
 // part of the language.

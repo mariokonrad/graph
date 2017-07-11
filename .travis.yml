@@ -8,7 +8,7 @@ git:
 matrix:
   include:
     - os: linux
-      env: COMPILER=g++-4.9 CMAKE_BUILD_TYPE=Debug
+      env: COMPILER=g++-4.9 CMAKE_BUILD_TYPE=Release
       compiler: gcc
       addons:
         apt:
@@ -17,17 +17,6 @@ matrix:
           packages:
           - gcc-4.9
           - g++-4.9
-
-    - os: linux
-      env: COMPILER=g++-5 CMAKE_BUILD_TYPE=Debug
-      compiler: gcc
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          packages:
-          - gcc-5
-          - g++-5
 
     - os: linux
       env: COMPILER=g++-5 CMAKE_BUILD_TYPE=Release
@@ -41,7 +30,29 @@ matrix:
           - g++-5
 
     - os: linux
-      env: COMPILER=clang++-3.6 CMAKE_BUILD_TYPE=Debug
+      env: COMPILER=g++-6 CMAKE_BUILD_TYPE=Release
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          packages:
+          - gcc-6
+          - g++-6
+
+    - os: linux
+      env: COMPILER=g++-7 CMAKE_BUILD_TYPE=Release
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          packages:
+          - gcc-7
+          - g++-7
+
+    - os: linux
+      env: COMPILER=clang++-3.6 CMAKE_BUILD_TYPE=Release
       compiler: clang
       addons:
         apt:
@@ -52,7 +63,7 @@ matrix:
           - clang-3.6
 
     - os: linux
-      env: COMPILER=clang++-3.7 CMAKE_BUILD_TYPE=Debug
+      env: COMPILER=clang++-3.7 CMAKE_BUILD_TYPE=Release
       compiler: clang
       addons:
         apt:
@@ -61,6 +72,39 @@ matrix:
           - llvm-toolchain-precise-3.7
           packages:
           - clang-3.7
+
+    - os: linux
+      env: COMPILER=clang++-3.8 CMAKE_BUILD_TYPE=Release
+      compiler: clang
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          - llvm-toolchain-precise-3.8
+          packages:
+          - clang-3.8
+
+    - os: linux
+      env: COMPILER=clang++-3.9 CMAKE_BUILD_TYPE=Release
+      compiler: clang
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          - llvm-toolchain-precise-3.9
+          packages:
+          - clang-3.9
+
+    - os: linux
+      env: COMPILER=clang++-4.0 CMAKE_BUILD_TYPE=Release
+      compiler: clang
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          - llvm-toolchain-precise-4.0
+          packages:
+          - clang-4.0
 
 install:
   # install a recent cmake

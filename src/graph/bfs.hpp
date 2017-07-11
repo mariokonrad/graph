@@ -28,8 +28,8 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef __GRAPH__BFS__HPP__
-#define __GRAPH__BFS__HPP__
+#ifndef GRAPH__BFS__HPP
+#define GRAPH__BFS__HPP
 
 #include <queue>
 #include <graph/type_traits.hpp>

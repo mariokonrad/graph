@@ -3,7 +3,7 @@ graph
 
 [![Build Status](https://travis-ci.org/mariokonrad/graph.svg?branch=master)](https://travis-ci.org/mariokonrad/graph)
 
-Copyright (c) 2015 Mario Konrad (mario.konrad@gmx.net)
+Copyright (c) 2017 Mario Konrad (mario.konrad@gmx.net)
 
 
 Abstract
@@ -94,13 +94,14 @@ Tools and their versions are listed below, newer/older/other tools
 
 Compiler which supports C++14:
 - GCC 4.9
-- GCC 5.1
-- GCC 5.2
-- Clang 3.6
-- Clang 3.7
+- GCC 5
+- GCC 6
+- GCC 7
+- Clang 3.9
+- Clang 4.0
 
 Tools needed to build the library:
-- cmake 3.0
+- cmake 3.2
 
 Tools needed to develop the library:
 - git
