@@ -36,6 +36,7 @@
 #include <vector>
 #include <graph/type_traits.hpp>
 #include <graph/edge.hpp>
+#include <graph/graph.hpp>
 #include <utils/priority_queue.hpp>
 
 namespace graph
@@ -50,15 +51,15 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 {
 	// prepare list of predecessors
 	constexpr vertex undefined = vertex_invalid;
-	vertex_list predecessor(g.size(), undefined);
+	vertex_list predecessor(size(g), undefined);
 
 	// prepare list of distances
-	std::vector<Value> distance(g.size(), std::numeric_limits<Value>::max());
+	std::vector<Value> distance(size(g), std::numeric_limits<Value>::max());
 	distance[start] = Value{};
 
 	// prepare priority queue
 	auto cmp = [&distance](vertex a, vertex b) -> bool { return distance[a] > distance[b]; };
-	utils::priority_queue<vertex, decltype(cmp)> q(cmp, g.vertices());
+	utils::priority_queue<vertex, decltype(cmp)> q(cmp, vertices(g));
 
 	vertex u = undefined;
 	while (!q.empty()) {
@@ -68,7 +69,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 		if (u == destination)
 			break;
 
-		for (auto const & v : g.outgoing(u)) {
+		for (auto const & v : outgoing(g, u)) {
 			const Value alt = distance[u] + access({u, v});
 			if (alt < distance[v]) {
 				distance[v] = alt;
@@ -111,8 +112,6 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 ///   - type `size_type` which represents a size type for the graph
 ///   - function `size_type size() const` which returns the number of nodes in the graph
 ///   - function `vertex_list vertices() const` which returns a `vertex_list` of all nodes
-///   - function `vertex_list outgoing(vertex) const` which returns a `vertex_list` of all
-///     neighbors of the specified node
 ///   - function `value_type at(edge) const` which returns the status of the specified edge.
 ///
 /// \param[in] g The graph
@@ -125,8 +124,7 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 template <class Graph,
 	typename = typename std::enable_if<detail::has_t_value_type<Graph>::value
 			&& detail::has_t_size_type<Graph>::value && detail::has_f_size<Graph>::value
-			&& detail::has_f_at<Graph>::value && detail::has_f_vertices<Graph>::value
-			&& detail::has_f_outgoing<Graph>::value,
+			&& detail::has_f_at<Graph>::value && detail::has_f_vertices<Graph>::value,
 		void>::type>
 std::tuple<vertex_list, bool> shortest_path_dijkstra(
 	const Graph & g, vertex start, vertex destination)
@@ -146,8 +144,6 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 ///   Must provide the following features:
 ///   - function `size_type size() const` which returns the number of nodes in the graph
 ///   - function `vertex_list vertices() const` which returns a `vertex_list` of all nodes
-///   - function `vertex_list outgoing(vertex) const` which returns a `vertex_list` of all
-///     neighbors of the specified node
 ///
 /// \tparam PropertyMap The mapping of edge to distance, must provide following features:
 ///   - type `mapped_type` which represents the distance type of an edge
@@ -166,7 +162,6 @@ std::tuple<vertex_list, bool> shortest_path_dijkstra(
 template <class Graph, class PropertyMap,
 	typename = typename std::enable_if<detail::has_t_size_type<Graph>::value
 			&& detail::has_f_size<Graph>::value && detail::has_f_vertices<Graph>::value
-			&& detail::has_f_outgoing<Graph>::value
 			&& detail::has_t_mapped_type<PropertyMap>::value
 			&& detail::has_t_const_iterator<PropertyMap>::value
 			&& detail::has_f_find<PropertyMap>::value && detail::has_f_end<PropertyMap>::value,

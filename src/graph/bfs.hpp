@@ -34,6 +34,7 @@
 #include <queue>
 #include <graph/type_traits.hpp>
 #include <graph/edge.hpp>
+#include <graph/graph.hpp>
 
 namespace graph
 {
@@ -62,12 +63,12 @@ template <class Graph, class Visitor,
 		void>::type>
 Visitor breadth_first_search(const Graph & g, vertex v, Visitor visitor)
 {
-	if (v >= g.size())
+	if (v >= size(g))
 		return visitor;
 
 	std::queue<vertex> q;
-	visited_vertex_list gray(g.size(), false);
-	visited_vertex_list black(g.size(), false);
+	visited_vertex_list gray(size(g), false);
+	visited_vertex_list black(size(g), false);
 
 	// starting vertex is gray and put into queue
 	gray[v] = true;
@@ -79,7 +80,7 @@ Visitor breadth_first_search(const Graph & g, vertex v, Visitor visitor)
 		q.pop();
 
 		// all white successors of u
-		for (vertex i = 0; i < g.size(); ++i) {
+		for (vertex i = 0; i < size(g); ++i) {
 			if (!gray[i] && !black[i] && g.at({u, i})) {
 				gray[i] = true;
 				q.push(i);

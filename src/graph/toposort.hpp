@@ -34,6 +34,7 @@
 #include <tuple>
 #include <graph/type_traits.hpp>
 #include <graph/edge.hpp>
+#include <graph/graph.hpp>
 
 namespace graph
 {
@@ -50,8 +51,6 @@ namespace graph
 ///   - function `size_type size() const` which returns the number of nodes in the graph
 ///   - function `bool at(edge) const` which returns the status of the specified edge.
 ///   - function `void remove(edge)` which removes an edge from the graph
-///   - function `size_type count_incoming(vertex) const` which returns the number of incoming
-///     edges for a node
 ///   - function `size_type count_edges() const` which returns the number of edges within the
 ///   graph
 ///
@@ -63,7 +62,6 @@ namespace graph
 template <class Graph, typename = typename std::enable_if<detail::has_t_size_type<Graph>::value
 							   && detail::has_f_remove<Graph>::value
 							   && detail::has_f_integral_type_at<Graph>::value
-							   && detail::has_f_count_incoming<Graph>::value
 							   && detail::has_f_count_edges<Graph>::value,
 						   void>::type>
 std::tuple<vertex_list, bool> topological_sort(const Graph & g)
@@ -73,8 +71,8 @@ std::tuple<vertex_list, bool> topological_sort(const Graph & g)
 
 	// all nodes with no incoming edges
 	vertex_list Q;
-	for (vertex i = 0; i < g.size(); ++i)
-		if (tm.count_incoming(i) == 0)
+	for (vertex i = 0; i < size(g); ++i)
+		if (count_incoming(tm, i) == 0)
 			Q.push_back(i);
 
 	vertex_list v;
@@ -95,7 +93,7 @@ std::tuple<vertex_list, bool> topological_sort(const Graph & g)
 				tm.remove({node, i}); // remove edge from graph
 
 				// has i other incoming edges?
-				if (tm.count_incoming(i) == 0)
+				if (count_incoming(tm, i) == 0)
 					Q.push_back(i);
 			}
 		}

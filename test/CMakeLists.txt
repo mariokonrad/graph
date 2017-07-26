@@ -7,6 +7,7 @@ add_executable(testrunner
 	utils/Test_priority_queue.cpp
 	graph/Test_adjmatrix.cpp
 	graph/Test_adjlist.cpp
+	graph/Test_graph.cpp
 	graph/Test_dfs.cpp
 	graph/Test_bfs.cpp
 	graph/Test_toposort.cpp

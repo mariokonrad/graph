@@ -3,7 +3,6 @@
 
 namespace
 {
-
 TEST(Test_adjmatrix, default_construction) { EXPECT_NO_THROW(graph::adjmatrix m{4}); }
 
 TEST(Test_adjmatrix, default_construction_status)
@@ -18,6 +17,12 @@ TEST(Test_adjmatrix, construction_initializer_list)
 	const graph::adjmatrix m{4, {{0, 1}, {0, 2}, {1, 3}}};
 	EXPECT_EQ(4u, m.size());
 	EXPECT_EQ(3u, m.count_edges());
+}
+
+TEST(Test_adjmatrix, size)
+{
+	const graph::adjmatrix m{4, {{0, 1}, {0, 2}, {1, 3}}};
+	EXPECT_EQ(4u, m.size());
 }
 
 TEST(Test_adjmatrix, add_edges)
@@ -47,26 +52,6 @@ TEST(Test_adjmatrix, add_edges_bidirectional)
 
 	EXPECT_TRUE(m.add(0, 1, graph::edge::type::bi));
 	EXPECT_EQ(2u, m.count_edges());
-}
-
-TEST(Test_adjmatrix, incoming)
-{
-	graph::adjmatrix m{4, {{0, 1}, {0, 2}, {0, 3}, {1, 0}, {1, 2}}};
-
-	EXPECT_EQ(1u, m.incoming(0).size());
-	EXPECT_EQ(1u, m.incoming(1).size());
-	EXPECT_EQ(2u, m.incoming(2).size());
-	EXPECT_EQ(1u, m.incoming(3).size());
-}
-
-TEST(Test_adjmatrix, outgoing)
-{
-	graph::adjmatrix m{4, {{0, 1}, {0, 2}, {0, 3}, {1, 0}, {1, 2}}};
-
-	EXPECT_EQ(3u, m.outgoing(0).size());
-	EXPECT_EQ(2u, m.outgoing(1).size());
-	EXPECT_EQ(0u, m.outgoing(2).size());
-	EXPECT_EQ(0u, m.outgoing(3).size());
 }
 
 TEST(Test_adjmatrix, remove)

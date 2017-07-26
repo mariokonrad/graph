@@ -53,6 +53,7 @@ class adjlist
 {
 public:
 	using size_type = vertex;
+	using value_type = bool;
 
 private:
 	const size_type n; // number of vertices
@@ -63,7 +64,7 @@ private:
 	std::vector<vertex_list> m;
 
 	/// Returns `true` if the specified vertex list contains the specified vertex.
-	static inline bool contains(const vertex_list & l, vertex v)
+	static inline value_type contains(const vertex_list & l, vertex v)
 	{
 		return std::find(std::begin(l), std::end(l), v) != std::end(l);
 	}
@@ -173,13 +174,13 @@ public:
 	/// to the graph and is not boundary checked.
 	///
 	/// Complexity: O(m)
-	bool at(edge e) const { return contains(m[e.from], e.to); }
+	value_type at(edge e) const { return contains(m[e.from], e.to); }
 
 	/// Convenience function. See \see at(edge) const
-	bool at(vertex from, vertex to) const { return at({from, to}); }
+	value_type at(vertex from, vertex to) const { return at({from, to}); }
 
 	/// Accessor for edges, uses index operator.
-	bool operator[](edge e) const { return at(e); }
+	value_type operator[](edge e) const { return at(e); }
 	/// \}
 
 	/// \{
@@ -195,54 +196,6 @@ public:
 		std::iota(v.begin(), v.end(), 0);
 		return v;
 	}
-
-	/// Returns the number of incoming edges to the specified vertex.
-	///
-	/// If the specified vertex is invalid the function returns 0.
-	///
-	/// Complexity: O(n)
-	size_type count_incoming(vertex to) const
-	{
-		if (to >= n)
-			return 0;
-		return std::count_if(
-			std::begin(m), std::end(m), [to](const auto & v) { return contains(v, to); });
-	}
-
-	/// Returns a list of nodes from where an edge exists.
-	///
-	/// If the specified vertex is invalid, an empty list will return.
-	///
-	/// Complexity: O(n)
-	vertex_list incoming(vertex to) const
-	{
-		vertex_list v;
-		if (to >= n)
-			return v;
-		for (vertex i = 0; i < n; ++i)
-			if (contains(m[i], to))
-				v.push_back(i);
-		return v;
-	}
-
-	/// Returns the number of outgoing edges of the specified vertex.
-	///
-	/// If the specified vertex is invalid the function returns 0.
-	///
-	/// Complexity: O(1)
-	size_type count_outgoing(vertex from) const
-	{
-		if (from >= n)
-			return 0;
-		return m[from].size();
-	}
-
-	/// Returns a list of nodes to where an edge exists.
-	///
-	/// If the specified vertex is invalid, an empty list will return.
-	///
-	/// Complexity: O(1)
-	const vertex_list & outgoing(vertex from) const { return m[from]; }
 	/// \}
 
 	/// \{

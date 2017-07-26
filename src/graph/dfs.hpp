@@ -33,6 +33,7 @@
 
 #include <graph/type_traits.hpp>
 #include <graph/edge.hpp>
+#include <graph/graph.hpp>
 
 namespace graph
 {
@@ -44,7 +45,7 @@ static void recursive_dfs(
 	const Graph & g, vertex id, Visitor & visitor, visited_vertex_list & visited)
 {
 	// guard
-	if (id >= g.size())
+	if (id >= size(g))
 		return;
 	if (visited[id])
 		return;
@@ -54,7 +55,7 @@ static void recursive_dfs(
 	visitor(g, id);
 
 	// search deeper
-	for (vertex i = 0; i < g.size(); ++i)
+	for (vertex i = 0; i < size(g); ++i)
 		if ((i != id) && g.at({id, i}))
 			recursive_dfs(g, i, visitor, visited);
 }
@@ -84,7 +85,7 @@ template <class Graph, class Visitor,
 		void>::type>
 Visitor depth_first_search(const Graph & g, vertex v, Visitor visitor)
 {
-	visited_vertex_list visited(g.size(), false);
+	visited_vertex_list visited(size(g), false);
 	detail::recursive_dfs(g, v, visitor, visited);
 	return visitor;
 }
