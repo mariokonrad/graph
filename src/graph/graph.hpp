@@ -52,17 +52,14 @@ typename Graph::size_type size(const Graph & g) noexcept
 /// If the specified vertex is invalid the function returns 0.
 ///
 /// Complexity: O(n)
-template <class Graph, typename = typename std::enable_if<
-	   detail::has_t_size_type<Graph>::value
-	&& detail::has_f_size<Graph>::value
-	&& detail::has_f_integral_type_at<Graph>::value,
-	void>::type>
+template <class Graph, typename
+	= typename std::enable_if<detail::has_f_integral_type_at<Graph>::value, void>::type>
 typename Graph::size_type count_incoming(const Graph & m, vertex to)
 {
-	if (to >= m.size())
+	if (to >= size(m))
 		return 0;
 	typename Graph::size_type num = 0;
-	for (vertex from = 0; from < m.size(); ++from)
+	for (vertex from = 0; from < size(m); ++from)
 		if (m.at({from, to}))
 			++num;
 	return num;
@@ -73,16 +70,14 @@ typename Graph::size_type count_incoming(const Graph & m, vertex to)
 /// If the specified vertex is invalid, an empty list will return.
 ///
 /// Complexity: O(n)
-template <class Graph, typename = typename std::enable_if<
-	   detail::has_f_size<Graph>::value
-	&& detail::has_f_integral_type_at<Graph>::value,
-	void>::type>
+template <class Graph, typename
+	= typename std::enable_if<detail::has_f_integral_type_at<Graph>::value, void>::type>
 vertex_list incoming(const Graph & m, vertex to)
 {
 	vertex_list v;
-	if (to >= m.size())
+	if (to >= size(m))
 		return v;
-	for (vertex from = 0; from < m.size(); ++from)
+	for (vertex from = 0; from < size(m); ++from)
 		if (m.at({from, to}))
 			v.push_back(from);
 	return v;
@@ -93,17 +88,14 @@ vertex_list incoming(const Graph & m, vertex to)
 /// If the specified vertex is invalid the function returns 0.
 ///
 /// Complexity: O(n)
-template <class Graph, typename = typename std::enable_if<
-	   detail::has_t_size_type<Graph>::value
-	&& detail::has_f_size<Graph>::value
-	&& detail::has_f_integral_type_at<Graph>::value,
-	void>::type>
+template <class Graph, typename
+	= typename std::enable_if<detail::has_f_integral_type_at<Graph>::value, void>::type>
 typename Graph::size_type count_outgoing(const Graph & m, vertex from)
 {
-	if (from >= m.size())
+	if (from >= size(m))
 		return 0;
 	typename Graph::size_type num = 0;
-	for (vertex to = 0; to < m.size(); ++to)
+	for (vertex to = 0; to < size(m); ++to)
 		if (m.at({from, to}))
 			++num;
 	return num;
@@ -114,43 +106,38 @@ typename Graph::size_type count_outgoing(const Graph & m, vertex from)
 /// If the specified vertex is invalid, an empty list will return.
 ///
 /// Complexity: O(n)
-template <class Graph, typename = typename std::enable_if<
-	   detail::has_f_size<Graph>::value
-	&& detail::has_f_integral_type_at<Graph>::value,
-	void>::type>
+template <class Graph, typename
+	= typename std::enable_if<detail::has_f_integral_type_at<Graph>::value, void>::type>
 vertex_list outgoing(const Graph & m, vertex from)
 {
 	vertex_list v;
-	if (from >= m.size())
+	if (from >= size(m))
 		return v;
-	for (vertex to = 0; to < m.size(); ++to)
+	for (vertex to = 0; to < size(m); ++to)
 		if (m.at({from, to}))
 			v.push_back(to);
 	return v;
 }
 
 /// Returns a list of vertices. This function is for convinience only.
-template <class Graph, typename = typename std::enable_if<
-   detail::has_f_vertices<Graph>::value,
-	void>::type>
+template <class Graph,
+	typename = typename std::enable_if<detail::has_f_vertices<Graph>::value, void>::type>
 vertex_list vertices(const Graph & m)
 {
 	return m.vertices();
 }
 
 /// Returns the total number of edges within the graph.
-template <class Graph, typename = typename std::enable_if<
-   detail::has_f_count_edges<Graph>::value,
-	void>::type>
+template <class Graph,
+	typename = typename std::enable_if<detail::has_f_count_edges<Graph>::value, void>::type>
 typename Graph::size_type count_edges(const Graph & m) noexcept
 {
 	return m.count_edges();
 }
 
 /// Returns a list of edges defined by the matrix.
-template <class Graph, typename = typename std::enable_if<
-   detail::has_f_edges<Graph>::value,
-	void>::type>
+template <class Graph,
+	typename = typename std::enable_if<detail::has_f_edges<Graph>::value, void>::type>
 edge_list edges(const Graph & m)
 {
 	return m.edges();
